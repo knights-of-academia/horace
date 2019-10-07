@@ -80,11 +80,11 @@ _Please adhere to the following guidelines._ We want to avoid duplicate issues, 
 1. Search the [Issue Tracker](https://github.com/Knights-Of-Academia/horace/issues) for any relevant threads to what you're looking to create a PR for.
 2. Keep it detailed. We want to know your vision, and the more you give us the better discussion we can have!
 3. Please make sure you have read the [license agreement](LICENSE.md). We're using the [MIT License](https://opensource.org/licenses/MIT)- it's only 3 paragraphs!  
-_The following will need to become more detailed over time_
 4. Make a new branch to fork your changes from
 5. Make sure to test your bot on a local/personal testing Discord server
 6. Make sure your branch is updated with the master branch before sending your pull request, in case other changes have been made
-7. Send your pull request to the [develop branch](https://github.com/Knights-Of-Academia/horace/tree/develop)
+7. Make sure that your new feature is properly tested, and that it can pass all tests before submitting the pull request.
+8. Send your pull request to the [develop branch](https://github.com/Knights-Of-Academia/horace/tree/develop)
 
 ### Merging a PR <a name = "mergepr"></a> _KOA Team Only_
 - Passes our CL (changelist) guidelines [here](TBW)
