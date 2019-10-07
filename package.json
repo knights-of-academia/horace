@@ -1,0 +1,36 @@
+{
+  "name": "aurelius",
+  "version": "0.0.1",
+  "description": "Main bot for Knights of Academia.",
+  "main": "app.js",
+  "scripts": {
+    "pretest": "eslint --ignore-path .gitignore .",
+    "fixlinting": "eslint --ignore-path .gitignore . --fix",
+    "start": "node app.js",
+    "test": "jest",
+    "coverage": "jest --coverage --collectCoverageFrom=commands/**/*.{js,jsx}"
+  },
+  "keywords": [
+    "node",
+    "discord"
+  ],
+  "author": "Knights of Academia",
+  "license": "MIT",
+  "dependencies": {
+    "data-store": "^4.0.3",
+    "discord.js": "^11.5.1",
+    "eslint-plugin-jest": "^22.17.0",
+    "habitica": "^4.0.0",
+    "rss-parser": "^3.7.2"
+  },
+  "engines": {
+    "node": "8.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-formatter-pretty": "^2.1.1",
+    "eslint-plugin-import": "^2.18.2",
+    "jest": "^24.9.0"
+  }
+}
