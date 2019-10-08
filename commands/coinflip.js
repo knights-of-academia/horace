@@ -1,6 +1,6 @@
 
 module.exports.execute = async (client, message) => {
-	const result = Math.floor(Math.random() * 2) == 0 ? 'Heads' : 'Tails';
+	const result = Math.floor(Math.random() * 2) === 0 ? 'Heads' : 'Tails';
 	return await message.channel.send(result);
 };
 
