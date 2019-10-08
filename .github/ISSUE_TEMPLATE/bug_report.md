@@ -7,26 +7,20 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Please Describe Your Issue**
+Go ahead and describe the issue here! Make sure you have included what channel you are trying this in, what command you are running (if any), and anything that may have changed.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**How to Reproduce**
+Please tell us how this error came about.
+1. Go ahead and fill in this list and try to recall the steps taken to get this issue to occur.
+2. If possible, you can also include a screenshot.
 
 **Expected behavior**
-A clear and concise description of what you expected to happen.
+What was supposed to happen?
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Discord Information**
+ - Are you updated to the most recent version of Discord?
+ - Are you on mobile or browser?
 
 **Smartphone (please complete the following information):**
  - Device: [e.g. iPhone6]
@@ -34,5 +28,5 @@ If applicable, add screenshots to help explain your problem.
  - Browser [e.g. stock browser, safari]
  - Version [e.g. 22]
 
-**Additional context**
-Add any other context about the problem here.
+**Extra Context**
+If you'd like, go ahead and include screenshots here. If you feel like you've left out any information, go ahead and put that in this box here!
