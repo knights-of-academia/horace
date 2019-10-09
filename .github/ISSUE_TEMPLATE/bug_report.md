@@ -7,6 +7,15 @@ assignees: ''
 
 ---
 
+---
+name: Bug report
+about: Create a report to help us improve
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 **Please Describe Your Issue**
 Go ahead and describe the issue here! Make sure you have included what channel you are trying this in, what command you are running (if any), and anything that may have changed.
 
