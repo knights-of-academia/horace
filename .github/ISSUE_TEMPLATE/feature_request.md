@@ -1,3 +1,11 @@
+---
+name: Feature request
+about: Suggest an idea for this project
+title: ''
+labels: ''
+assignees: ''
+
+---
 
 **Is your feature request related to a problem? Please describe.**
 Is there an issue with Horace that your feature will solve? Ex. I'm always frustrated when [...] so to fix that Horace should [...]
