@@ -1,8 +1,6 @@
 const choose = require('./choose.js');
 const messageStub = require('../stub/messageStub');
 
-// [ ',', 'Knights' ]
-
 
 test('Returns the correct message when no arguments are passed', async () => {
 	// Arrange
