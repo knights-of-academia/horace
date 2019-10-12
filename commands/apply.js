@@ -28,6 +28,6 @@ ${clan.formUrl}`;
 module.exports.config = {
 	name: 'apply',
 	aliases: ['apply', 'applyto'],
-    description: 'TEMPLATE',
-    usage: [`${prefix}TEMPLATE`]
+    description: 'I will send you an application form for the clan you wish to join.',
+    usage: [`apply clan`]
 };

@@ -5,6 +5,6 @@ module.exports.execute = async (client, message) => {
 module.exports.config = {
 	name: 'website',
 	aliases: ['website', 'koa'],
-    description: 'TEMPLATE',
-    usage: [`${prefix}TEMPLATE`]
+    description: 'I will fetch you the link for our website.',
+    usage: [`website`]
 };

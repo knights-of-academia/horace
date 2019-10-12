@@ -14,5 +14,5 @@ module.exports.config = {
 	name: 'cotw',
 	aliases: ['cotw'],
     description: 'TEMPLATE',
-    usage: [`${prefix}TEMPLATE`]
+    usage: [`TEMPLATE`]
 };
