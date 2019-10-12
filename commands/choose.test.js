@@ -1,6 +1,8 @@
 const choose = require('./choose.js');
 const messageStub = require('../stub/messageStub');
 
+// [ ',', 'Knights' ]
+
 
 test('Returns the correct message when no arguments are passed', async () => {
 	// Arrange
@@ -11,6 +13,18 @@ test('Returns the correct message when no arguments are passed', async () => {
 
 	// Assert
 	const expectedResponse = 'Please specify the options I should choose from!\nHint: !choose option1, option2, ..., optionX';
+	expect(responseMessage).toBe(expectedResponse);
+});
+
+test('Returns the correct message when partial input is passed', async () => {
+	// Arrange
+	const message = new messageStub();
+
+	// Act
+	const responseMessage = await choose.execute(null, message, [',', 'Knights']);
+
+	// Assert
+	const expectedResponse = 'Choices cannot be empty!';
 	expect(responseMessage).toBe(expectedResponse);
 });
 
