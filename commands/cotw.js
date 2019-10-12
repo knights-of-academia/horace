@@ -13,6 +13,6 @@ module.exports.execute = async (client, message) => {
 module.exports.config = {
 	name: 'cotw',
 	aliases: ['cotw'],
-    description: 'TEMPLATE',
-    usage: [`TEMPLATE`]
+    description: 'I will tell you what the challenge of the week is.',
+    usage: [`cotw`]
 };
