@@ -16,4 +16,6 @@ module.exports.execute = async (client, message) => {
 module.exports.config = {
 	name: 'clans',
 	aliases: ['clanlist', 'clans'],
+    description: 'TEMPLATE',
+    usage: [`${prefix}TEMPLATE`]
 };

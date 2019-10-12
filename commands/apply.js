@@ -28,4 +28,6 @@ ${clan.formUrl}`;
 module.exports.config = {
 	name: 'apply',
 	aliases: ['apply', 'applyto'],
+    description: 'TEMPLATE',
+    usage: [`${prefix}TEMPLATE`]
 };

@@ -16,4 +16,6 @@ module.exports.execute = async (client, message, args) => {
 module.exports.config = {
 	name: 'invite',
 	aliases: ['invite', 'discord'],
+    description: 'TEMPLATE',
+    usage: [`${prefix}TEMPLATE`]
 };

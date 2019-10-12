@@ -12,4 +12,6 @@ module.exports.execute = async (client, message) => {
 module.exports.config = {
 	name: 'newsletter',
 	aliases: ['newsletter', 'news'],
+    description: 'TEMPLATE',
+    usage: [`${prefix}TEMPLATE`],
 };

@@ -12,5 +12,7 @@ module.exports.execute = async (client, message) => {
 
 module.exports.config = {
 	name: 'cotw',
-	aliases: ['cotw']
+	aliases: ['cotw'],
+    description: 'TEMPLATE',
+    usage: [`${prefix}TEMPLATE`]
 };

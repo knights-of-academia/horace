@@ -6,5 +6,7 @@ module.exports.execute = async (client, message) => {
 
 module.exports.config = {
 	name: 'coinflip',
-	aliases: ['flipcoin', 'coinflip']
+	aliases: ['flipcoin', 'coinflip'],
+    description: 'TEMPLATE',
+    usage: [`${prefix}TEMPLATE`]
 };

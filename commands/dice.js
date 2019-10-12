@@ -1,3 +1,6 @@
+
+const prefix = require('../config.json').prefix;
+
 module.exports.execute = async (client, message, args) => {
 	if(!args || !args.length === 0 ) {
 		return await message.channel.send('❌ Please specify the dice size.');
@@ -16,4 +19,6 @@ module.exports.execute = async (client, message, args) => {
 module.exports.config = {
 	name: 'dice',
 	aliases: ['dice'],
+	description: 'Roll the dice for a random number.',
+	usage: [`${prefix}dice <sides>`]
 };
