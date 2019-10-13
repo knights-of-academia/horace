@@ -33,7 +33,7 @@ module.exports.execute = async (client, message, args) => {
 		if (command) {
 			let helpMessage = [`__**Help for the ${command.config.name} command:**__\n\n`];
 			helpMessage.push(command.config.description, '\n\n');
-			helpMessage.push('Aliasses: ', command.config.aliases.map(alias => '`' + alias + '`').join(', '), '\n');
+			helpMessage.push('Aliases: ', command.config.aliases.map(alias => '`' + alias + '`').join(', '), '\n');
 			helpMessage.push('Usage: ', command.config.usage.map(usage => '`' + usage + '`').join(', '), '\n');
 
 			await message.author.send(helpMessage.join('')).catch(err => {
