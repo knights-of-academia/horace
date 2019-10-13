@@ -1,4 +1,11 @@
-const prefix = (require('../config.json')) ? require('../config.json').prefix : '!';
+const fs = require('fs');
+let prefix;
+if (fs.existsSync('../config.json')) {
+	prefix = require('../config.json');
+} else {
+	prefix = '!';
+}
+
 module.exports.execute = async (client, message, args) => {
 
 
