@@ -12,7 +12,10 @@ module.exports.execute = async (client, message, args) => {
 			);
 		});
 
-		message.author.send(helpMessage.join('')).then(res => message.reply('I have sent you a private message with the command list.')).catch(err => {
+		message.author.send(helpMessage.join('')).catch(err => {
+			console.error(err);
+		});
+		message.reply('I have sent you a private message with the command list.').catch(err => {
 			console.error(err);
 		});
 	} else if (args.length === 1) {
@@ -25,7 +28,10 @@ module.exports.execute = async (client, message, args) => {
 			helpMessage.push('Aliasses: ', command.config.aliases.map(alias => '`' + alias + '`').join(', '), '\n');
 			helpMessage.push('Usage: ', command.config.usage.map(usage => '`' + usage + '`').join(', '), '\n');
 
-			message.author.send(helpMessage.join('')).then(res => message.reply('I have sent you a private message with command information for that command.')).catch(err => {
+			message.author.send(helpMessage.join('')).catch(err => {
+				console.error(err);
+			});
+			message.reply('I have sent you a private message with command information for that command.').catch(err => {
 				console.error(err);
 			});
 		} else {
