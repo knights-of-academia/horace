@@ -1,6 +1,7 @@
-const prefix = require('../config.json').prefix;
-
+const prefix = (require('../config.json')) ? require('../config.json').prefix : '!';
 module.exports.execute = async (client, message, args) => {
+
+
 	let commands = client.commands;
 	let commandNames = [];
 
@@ -12,10 +13,10 @@ module.exports.execute = async (client, message, args) => {
 			);
 		});
 
-		message.author.send(helpMessage.join('')).catch(err => {
+		await message.author.send(helpMessage.join('')).catch(err => {
 			console.error(err);
 		});
-		message.reply('I have sent you a private message with the command list.').catch(err => {
+		return await message.channel.send('I have sent you a private message with the command list.').catch(err => {
 			console.error(err);
 		});
 	} else if (args.length === 1) {
@@ -28,10 +29,10 @@ module.exports.execute = async (client, message, args) => {
 			helpMessage.push('Aliasses: ', command.config.aliases.map(alias => '`' + alias + '`').join(', '), '\n');
 			helpMessage.push('Usage: ', command.config.usage.map(usage => '`' + usage + '`').join(', '), '\n');
 
-			message.author.send(helpMessage.join('')).catch(err => {
+			await message.author.send(helpMessage.join('')).catch(err => {
 				console.error(err);
 			});
-			message.reply('I have sent you a private message with command information for that command.').catch(err => {
+			return await message.channel.send('I have sent you a private message with command information for that command.').catch(err => {
 				console.error(err);
 			});
 		} else {
@@ -39,13 +40,13 @@ module.exports.execute = async (client, message, args) => {
 				commandNames.push(command.config.name);
 				command.config.aliases.forEach(alias => commandNames.push(alias));
 			});
-			didYouMean(commandNames, args[0].toLowerCase(), message);
+			return didYouMean(commandNames, args[0].toLowerCase(), message);
 		}
 	}
 };
 
 
-function didYouMean(commands, search, message) {
+async function didYouMean(commands, search, message) {
 	if (!commands.includes(search)) {
 		let score = [];
 		let lev = 1000;
@@ -69,10 +70,10 @@ function didYouMean(commands, search, message) {
 					}
 				}
 			}
-			return message.channel.send(`Did you mean \`${prefix}help ${str[score.indexOf(Math.max(...score))]}\`?`).catch(err => console.log(err));
+			return await message.channel.send(`Did you mean \`${prefix}help ${str[score.indexOf(Math.max(...score))]}\`?`).catch(err => console.log(err));
 
 		} else {
-			return message.channel.send(`Did you mean \`${prefix}help ${str[0]}\`?`).catch(err => console.log(err));
+			return await message.channel.send(`Did you mean \`${prefix}help ${str[0]}\`?`).catch(err => console.log(err));
 		}
 	}
 }
