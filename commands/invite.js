@@ -16,6 +16,6 @@ module.exports.execute = async (client, message, args) => {
 module.exports.config = {
 	name: 'invite',
 	aliases: ['invite', 'discord'],
-    description: 'Want to invite a friend to the server? This will get you the invite link.',
-    usage: ['invite','invite camelot', 'invite koai'],
+	description: 'Want to invite a friend to the server? This will get you the invite link.',
+	usage: ['invite','invite camelot', 'invite koai'],
 };

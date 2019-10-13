@@ -7,6 +7,6 @@ module.exports.execute = async (client, message) => {
 module.exports.config = {
 	name: 'raid',
 	aliases: ['raid'],
-    description: 'RAAAAAAAAAID!',
-    usage: [`raid`],
+	description: 'RAAAAAAAAAID!',
+	usage: ['raid'],
 };

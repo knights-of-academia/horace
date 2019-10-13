@@ -17,5 +17,5 @@ module.exports.config = {
 	name: 'dice',
 	aliases: ['dice'],
 	description: 'Roll the dice for a random number.',
-	usage: [`dice <sides>`]
+	usage: ['dice <sides>']
 };
