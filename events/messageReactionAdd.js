@@ -1,7 +1,7 @@
 const config = require('../config.json');
 
 module.exports = async (client, reaction, user) => {
-	// Handle ToC acceptance
+	// Handle reaction to the ToS message in ToS channel
 	if (reaction.message.channel.id === config.channels.tos
         && reaction._emoji.name === config.emotes.acceptTOS) {
 		reaction.message.guild.fetchMember(user.id).then(guildMember => {
