@@ -15,5 +15,7 @@ module.exports.execute = async (client, message, args) => {
 
 module.exports.config = {
 	name: 'choose',
-	aliases: ['choose', 'pick']
+	aliases: ['choose', 'pick'],
+	description: 'I will choose one of your options at random.',
+	usage: ['choose option1, option2, ..., optionX']
 };
