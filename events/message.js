@@ -17,8 +17,8 @@ module.exports = async (client, message) => {
 
 	// Handle COTW case
 	if (
-		message.channel.id === config.cotw.channel &&
-    message.member.roles.has(config.cotw.managerrole)
+		message.channel.id === config.channels.cotw &&
+    message.member.roles.has(config.roles.cotwManager)
 	) {
 		const store = require('data-store')({
 			path: process.cwd() + '/data/cotw.json'
@@ -30,7 +30,7 @@ module.exports = async (client, message) => {
 		) {
 			const winner = message.mentions.members.first();
 			const cotwRole = message.guild.roles.find(
-				role => role.id === config.cotw.role
+				role => role.id === config.roles.cotwChampion
 			);
 			winner.addRole(cotwRole);
 			return message.channel.send('Success!');
@@ -65,7 +65,6 @@ module.exports = async (client, message) => {
 					challengeId = x.split('/challenges/')[1];
 				}
 			});
-			console.log(challengeId);
 			store.set('challengeId', challengeId);
 			const challengeName = await api
 				.get(`/challenges/${challengeId}`)
