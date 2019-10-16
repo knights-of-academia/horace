@@ -2,13 +2,21 @@
   "token": "T0K3N",
   "prefix": "!",
   "botname": "Horace",
-  "cotw": {
-    "channel": "629729655760000562",
-    "role": "629729900004639104",
-    "managerrole": "629729918220000888"
-  },
   "habitica": {
     "id": "0000-0000-0000",
     "token": "0000-0000-0000"
+  },
+  "roles": {
+    "cotwChampion": "000",
+    "cotwManager": "000",
+    "initiate": "000"
+  },
+  "channels": {
+    "citadel": "000",
+    "cotw": "000",
+    "tos": "000"
+  },
+  "emotes": {
+    "acceptTOS": "✅"
   }
 }
