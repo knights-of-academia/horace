@@ -17,9 +17,9 @@ module.exports = async (client, message) => {
 	// Handle good morning and goodnight
 	if (config.citadelid) {
 		if (message.channel.id === config.citadelid) {
-			if (/(goo+d)\s+(morning)(\s+koa)?/mi.test(message.content)) {
+			if (/goo+d\s+morning\s+koa/mi.test(message.content)) {
 				return await message.react('🌞');
-			} else if (/(good)\s+(night)(\s+koa)?/mi.test(message.content)) {
+			} else if (/good\s+night\s+koa/mi.test(message.content)) {
 				return await message.react('🌜');
 			}
 		}
