@@ -14,7 +14,16 @@ module.exports = async (client, message) => {
 
 		if (commandfile) commandfile.execute(client, message, args); // Execute found command
 	}
-
+	// Handle good morning and goodnight
+	if (config.citadelid) {
+		if (message.channel.id === config.citadelid) {
+			if (/(goo+d)\s+(morning)(\s+koa)?/mi.test(message.content)) {
+				return await message.react('🌞');
+			} else if (/(good)\s+(night)(\s+koa)?/mi.test(message.content)) {
+				return await message.react('🌜');
+			}
+		}
+	}
 	// Handle COTW case
 	if (
 		message.channel.id === config.cotw.channel &&
