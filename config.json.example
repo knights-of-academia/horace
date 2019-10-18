@@ -14,7 +14,9 @@
   "channels": {
     "citadel": "000",
     "cotw": "000",
-    "tos": "000"
+    "tos": "000",
+    "snapshots": "000",
+    "moderation": "000"
   },
   "emotes": {
     "acceptTOS": "✅"

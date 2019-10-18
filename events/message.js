@@ -1,5 +1,6 @@
 const config = require('../config.json');
 const cotwActions = require('../eventActions/cotwActions');
+const snapshotActions = require('../eventActions/snapshotActions');
 
 module.exports = async (client, message) => {
 	if (!message.guild || message.author.bot) return;
@@ -16,6 +17,8 @@ module.exports = async (client, message) => {
 		if (commandfile) commandfile.execute(client, message, args); // Execute found command
 	}
 
+	// Handle snapshots
+	snapshotActions.userPostsImage(client, message);
 	// Handle COTW case
 	cotwActions.updateCotw(client, message);
 };
