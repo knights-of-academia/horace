@@ -17,6 +17,7 @@
     "tos": "000"
   },
   "emotes": {
-    "acceptTOS": "✅"
+    "acceptTOS": "✅",
+    "hocReaction": "000"
   }
 }
