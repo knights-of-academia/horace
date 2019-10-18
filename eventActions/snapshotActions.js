@@ -18,8 +18,8 @@ class snapshotActions {
 				.setDescription(`An unapproved message was sent in <#${config.channels.snapshots}>`)
 				.addField('User', message.author, true);
 
-            // Split message into multiple, in case takes up more space than
-            // what discordjs allows for a field.
+			// Split message into multiple, in case takes up more space than
+			// what discordjs allows for a field.
 			const messageCunks = message.content.match(/[\s\S]{1,1024}/g);
 
 			for (let chunk of messageCunks) {
