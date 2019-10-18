@@ -17,6 +17,8 @@
     "tos": "000"
   },
   "emotes": {
-    "acceptTOS": "✅"
+    "acceptTOS": "✅",
+    "cotwVow": "✅",
+    "cotwReflection": "🛏"
   }
 }
