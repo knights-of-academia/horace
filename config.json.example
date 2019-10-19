@@ -14,10 +14,14 @@
   "channels": {
     "citadel": "000",
     "cotw": "000",
-    "tos": "000"
+    "tos": "000",
+    "sleepclub": "000"
   },
   "emotes": {
     "acceptTOS": "✅",
     "hocReaction": "000"
+    "sleeplogReaction": "🛏️"
+    "cotwVow": "⚔",
+    "cotwReflection": "🛡"
   }
 }
