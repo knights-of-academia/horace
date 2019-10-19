@@ -1,5 +1,6 @@
 const config = require('../config.json');
 const cotwActions = require('../eventActions/cotwActions');
+const hocActions = require('../eventActions/hocActions');
 const snapshotActions = require('../eventActions/snapshotActions');
 const sleepclubActions = require('../eventActions/sleepclubActions');
 
@@ -18,6 +19,8 @@ module.exports = async (client, message) => {
 		if (commandfile) commandfile.execute(client, message, args); // Execute found command
 	}
 
+	// Handle hall of conquests
+	hocActions.reactWithLetsGo(client, message);
 	// Handle snapshots
 	snapshotActions.userPostsImage(client, message);
 	// Handle sleep club case
