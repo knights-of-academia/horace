@@ -20,9 +20,9 @@ class snapshotActions {
 
 			// Split message into multiple, in case takes up more space than
 			// what discordjs allows for a field.
-			const messageCunks = message.content.match(/[\s\S]{1,1024}/g);
+			const messageChunks = message.content.match(/[\s\S]{1,1024}/g);
 
-			for (let chunk of messageCunks) {
+			for (let chunk of messageChunks) {
 				embedMessage.addField('Message', chunk);
 			}
 			// Send message to moderation log
