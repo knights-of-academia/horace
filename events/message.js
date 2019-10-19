@@ -1,5 +1,6 @@
 const config = require('../config.json');
 const cotwActions = require('../eventActions/cotwActions');
+const sleepclubActions = require('../eventActions/sleepclubActions');
 
 module.exports = async (client, message) => {
 	if (!message.guild || message.author.bot) return;
@@ -16,6 +17,9 @@ module.exports = async (client, message) => {
 		if (commandfile) commandfile.execute(client, message, args); // Execute found command
 	}
 
+	// Handle sleep club case
+	sleepclubActions.reactToSleepLog(client, message);
 	// Handle COTW case
+	cotwActions.reactToVowAndReflections(client, message);
 	cotwActions.updateCotw(client, message);
 };
