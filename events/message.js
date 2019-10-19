@@ -1,6 +1,7 @@
 const config = require('../config.json');
 const cotwActions = require('../eventActions/cotwActions');
 const snapshotActions = require('../eventActions/snapshotActions');
+const sleepclubActions = require('../eventActions/sleepclubActions');
 
 module.exports = async (client, message) => {
 	if (!message.guild || message.author.bot) return;
@@ -19,6 +20,9 @@ module.exports = async (client, message) => {
 
 	// Handle snapshots
 	snapshotActions.userPostsImage(client, message);
+	// Handle sleep club case
+	sleepclubActions.reactToSleepLog(client, message);
 	// Handle COTW case
+	cotwActions.reactToVowAndReflections(client, message);
 	cotwActions.updateCotw(client, message);
 };

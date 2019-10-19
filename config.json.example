@@ -17,8 +17,12 @@
     "tos": "000",
     "snapshots": "000",
     "moderation": "000"
+    "sleepclub": "000"
   },
   "emotes": {
-    "acceptTOS": "✅"
+    "acceptTOS": "✅",
+    "sleeplogReaction": "🛏️"
+    "cotwVow": "⚔",
+    "cotwReflection": "🛡"
   }
 }

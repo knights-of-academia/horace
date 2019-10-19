@@ -1,15 +1,31 @@
 const config = require('../config.json');
 
 class cotwActions {
+
+	static async reactToVowAndReflections(client, message) {
+		// React to vow
+		if (message.channel.id === config.channels.cotw
+			&& message.content.toLowerCase().includes('i vow to')) {
+			const emote = config.emotes.cotwVow;
+			message.react(emote);
+		}
+
+		// React to reflection
+		if (message.channel.id === config.channels.cotw
+			&& message.content.toLowerCase().includes('reflection')) {
+			const emote = config.emotes.cotwReflection;
+			message.react(emote);
+		}
+	}
 	static async updateCotw(client, message) {
 		if (message.channel.id === config.channels.cotw
-            && message.member.roles.has(config.roles.cotwManager)) {
+			&& message.member.roles.has(config.roles.cotwManager)) {
 			const store = require('data-store')({
 				path: process.cwd() + '/data/cotw.json'
 			});
 
 			if (message.content.toLowerCase().includes('congratulations')
-                && message.mentions.members) {
+				&& message.mentions.members) {
 				const winner = message.mentions.members.first();
 				const cotwRole = message.guild.roles.find(role => role.id === config.roles.cotwChampion
 				);
