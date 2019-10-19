@@ -20,5 +20,6 @@ module.exports = async (client, message) => {
 	// Handle sleep club case
 	sleepclubActions.reactToSleepLog(client, message);
 	// Handle COTW case
+	cotwActions.reactToVowAndReflections(client, message);
 	cotwActions.updateCotw(client, message);
 };

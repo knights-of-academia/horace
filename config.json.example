@@ -20,5 +20,7 @@
   "emotes": {
     "acceptTOS": "✅",
     "sleeplogReaction": "🛏️"
+    "cotwVow": "⚔",
+    "cotwReflection": "🛡"
   }
 }
