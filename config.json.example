@@ -16,13 +16,13 @@
     "cotw": "000",
     "tos": "000",
     "snapshots": "000",
-    "moderation": "000"
+    "moderation": "000",
     "sleepclub": "000"
   },
   "emotes": {
     "acceptTOS": "✅",
-    "hocReaction": "000"
-    "sleeplogReaction": "🛏️"
+    "hocReaction": "000",
+    "sleeplogReaction": "🛏️",
     "cotwVow": "⚔",
     "cotwReflection": "🛡"
   }
