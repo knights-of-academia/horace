@@ -12,6 +12,8 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # Config file
 config.json
 
+data/*.json
+
 # Runtime data
 pids
 *.pid
