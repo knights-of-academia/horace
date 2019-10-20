@@ -26,5 +26,8 @@
     "cotwVow": "⚔",
     "cotwReflection": "🛡"
     "pinMessage": "📌"
+  },
+  "pinLimit": {
+  "pin": 5
   }
 }

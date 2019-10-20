@@ -4,11 +4,12 @@ class pinAction {
 
 	static async pinMessage(client, reaction) {
 		if (reaction.message.channel.id === config.channels.accountability) return;
-		if (reaction._emoji.name === config.emotes.pinMessage && reaction.count >= 3) {
+		const pinLimit = config.pinLimit.limit;
+		if (reaction._emoji.name === config.emotes.pinMessage && reaction.count >= pinLimit) {
 			return reaction.message.pin();
 		} else if (reaction._emoji.name === config.emotes.pinMessage &&
 			reaction.message.pinned &&
-			reaction.message < 3) {
+			reaction.message < pinLimit) {
 			reaction.message.channel.send('Your message was successfully unpinned');
 			return reaction.message.unpin();
 		}
