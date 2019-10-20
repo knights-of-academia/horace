@@ -1,5 +1,7 @@
 const config = require('../config.json');
 const cotwActions = require('../eventActions/cotwActions');
+const hocActions = require('../eventActions/hocActions');
+const snapshotActions = require('../eventActions/snapshotActions');
 const sleepclubActions = require('../eventActions/sleepclubActions');
 
 module.exports = async (client, message) => {
@@ -28,6 +30,10 @@ module.exports = async (client, message) => {
 	}
 =======
 
+	// Handle hall of conquests
+	hocActions.reactWithLetsGo(client, message);
+	// Handle snapshots
+	snapshotActions.userPostsImage(client, message);
 	// Handle sleep club case
 	sleepclubActions.reactToSleepLog(client, message);
 	// Handle COTW case
