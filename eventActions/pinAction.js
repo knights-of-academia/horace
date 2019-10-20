@@ -4,7 +4,7 @@ class pinAction {
 
 	static async pinMessage(client, reaction) {
 		if (reaction.message.channel.id === config.channels.accountability) return;
-		const pinLimit = config.pinLimit.limit;
+		const pinLimit = config.pinLimit;
 		if (reaction._emoji.name === config.emotes.pinMessage && reaction.count >= pinLimit) {
 			return reaction.message.pin();
 		} else if (reaction._emoji.name === config.emotes.pinMessage &&

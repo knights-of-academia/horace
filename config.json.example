@@ -27,7 +27,5 @@
     "cotwReflection": "🛡"
     "pinMessage": "📌"
   },
-  "pinLimit": {
-  "pin": 5
-  }
+  "pinLimit": 5
 }
