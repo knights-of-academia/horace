@@ -12,7 +12,7 @@
     "initiate": "000"
   },
   "channels": {
-    "citadel": "632002605891059725",
+    "citadel": "000",
     "cotw": "000",
     "tos": "000",
     "accountability": "000"
@@ -20,7 +20,6 @@
   "emotes": {
     "acceptTOS": "✅",
     "hocReaction": "🎉",
-    "pinMessage": "📌",
     "sleeplogReaction": "🛏️",
     "cotwVow": "⚔",
     "cotwReflection": "🛡"
