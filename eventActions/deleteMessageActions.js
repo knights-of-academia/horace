@@ -12,7 +12,6 @@ class deleteMessageActions {
 			.addField('Author', message.author, true)
 			.addField('Channel', message.channel, true)
 			.addField('Message', message.content)
-			.addField('Link', `[Go to message](${message.url})`, true)
 			.addField('Deleted by', entry.executor);
 		// Send message to moderation log
 		client.channels.get(config.channels.moderation).send(embed);
