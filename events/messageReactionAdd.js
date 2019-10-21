@@ -6,6 +6,6 @@ module.exports = async (client, reaction, user) => {
 	tosActions.userAcceptsTOS(reaction, user, client);
 
 	// Handle reaction to a message in accountability cahnnel
-	accountabilityActions.userPinsMessage(reaction, user, client);
+	accountabilityActions.userPinsMessage(reaction, user);
 };
 

@@ -19,14 +19,8 @@
   },
   "emotes": {
     "acceptTOS": "✅",
-    "pinMessage": "📌"
-    "snapshots": "000",
-    "moderation": "000",
-    "sleepclub": "000"
-  },
-  "emotes": {
-    "acceptTOS": "✅",
-    "hocReaction": "000",
+    "hocReaction": "🎉",
+    "pinMessage": "📌",
     "sleeplogReaction": "🛏️",
     "cotwVow": "⚔",
     "cotwReflection": "🛡"
