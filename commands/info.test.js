@@ -10,7 +10,7 @@ test('Returns the correct message when no argument is passed', async () => {
 	const responseMessage = await info.execute(null, message, []);
 
 	// Assert
-	const expectedResponse = '❌ Please specify a search term.';
+	const expectedResponse = 'I have sent you a private message with the list of available search terms.';
 	expect(responseMessage).toBe(expectedResponse);
 });
 
