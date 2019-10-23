@@ -22,8 +22,6 @@ test('Returns the correct URL when a valid argument is passed', async () => {
 	const responseMessage = await search.execute(null, message, args);
 
 	// Assert
-	const searchTerm = args.join(' ');
-	const query = args.join('+');
-	const expectedResponse = `Search for ${searchTerm}: https://www.google.com/search?q=${query}`;
+	const expectedResponse = 'Search for Knights of Academia: https://www.google.com/search?q=Knights+of+Academia';
 	expect(responseMessage).toBe(expectedResponse);
 });
