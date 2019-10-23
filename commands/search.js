@@ -16,6 +16,6 @@ module.exports.execute = async (client, message, args) => {
 module.exports.config = {
 	name: 'search',
 	aliases: ['search'],
-	description: 'I will send you link to a Google search based on your query.',
+	description: 'I will send you a link to a Google search based on your query.',
 	usage: ['search'],
 };
