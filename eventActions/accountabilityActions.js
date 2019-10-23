@@ -42,8 +42,9 @@ class accountabilityActions {
 		}
 	}
 
+	// Unpin message via command
 	static async userUnpinsMessage(message, user){
-		if(message.channel.id == config.channels.accountability) {
+		if(message.channel.id === config.channels.accountability) {
 
 			var currentChannel = message.channel;
 
@@ -70,6 +71,19 @@ class accountabilityActions {
 				currentChannel.send('Hey, ' + user.username + ', I\'ve unpinned your most recent message as requested!');
 			} else {
 				currentChannel.send('Sorry, ' + user.username + '! I couldn\'t seem to find any pinned messages from you.');
+			}
+		}
+	}
+
+	// Unpin message by removing the reaction
+	static async userManuallyUnpinsMessage(reaction, user){
+		var curMessage = reaction.message;
+		if(curMessage.channel.id === config.channels.accountability){
+			if(curMessage.author.id === user.id){
+				if(curMessage.pinned){
+					curMessage.unpin();
+					curMessage.channel.send('Hey, ' + user.username + ', I\'ve unpinned your message as requested!');
+				}
 			}
 		}
 	}

@@ -6,7 +6,7 @@ module.exports = async (client, reaction, user) => {
 	// Handle reaction to the ToS message in ToS channel
 	tosActions.userAcceptsTOS(reaction, user, client);
 
-	// Handle reaction to a message in accountability cahnnel
+	// Handle reaction to a message in accountability channel
 	accountabilityActions.userPinsMessage(reaction, user);
 	// Handle message pinning in channels
 	pinAction.pinMessage(client, reaction);
