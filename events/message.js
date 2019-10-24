@@ -22,7 +22,7 @@ module.exports = async (client, message) => {
 	}
 
 	// Check the message for profanity
-	// profanityActions.checkForProfanity(client, message);  <--- This line is commented, because it throws an exception. The function is not found
+	profanityActions.checkForProfanity(client, message);
 	// Handle greetings
 	greetinAction.reactToGreeting(client, message);
 	// Handle hall of conquests
