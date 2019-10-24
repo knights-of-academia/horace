@@ -4,6 +4,7 @@ const hocActions = require('../eventActions/hocActions');
 const snapshotActions = require('../eventActions/snapshotActions');
 const sleepclubActions = require('../eventActions/sleepclubActions');
 const profanityActions = require('../eventActions/profanityActions');
+const greetinAction = require('../eventActions/greetingAction');
 
 module.exports = async (client, message) => {
 	if (!message.guild || message.author.bot) return;
@@ -19,21 +20,11 @@ module.exports = async (client, message) => {
 
 		if (commandfile) commandfile.execute(client, message, args); // Execute found command
 	}
-	// Handle good morning and goodnight
-	if (config.channels.citadel) {
-		if (message.channel.id === config.channels.citadel) {
-			if (/g+oo+d+\s+m+o+r+n+i+n+g([\s,]+.+)?/mi.test(message.content)) {
-				return await message.react('🌞');
-			} else if (/g+oo+d+\s+n+i+g+h+t+([\s,]+.+)?/mi.test(message.content)) {
-				return await message.react('🌜');
-			}
-		}
-	}
-=======
 
 	// Check the message for profanity
-	profanityActions.checkForProfanity(client, message);
-
+	// profanityActions.checkForProfanity(client, message);  <--- This line is commented, because it throws an exception. The function is not found
+	// Handle greetings
+	greetinAction.reactToGreeting(client, message);
 	// Handle hall of conquests
 	hocActions.reactWithLetsGo(client, message);
 	// Handle snapshots
