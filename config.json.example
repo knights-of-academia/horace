@@ -11,5 +11,27 @@
   "habitica": {
     "id": "0000-0000-0000",
     "token": "0000-0000-0000"
-  }
+  },
+  "roles": {
+    "cotwChampion": "000",
+    "cotwManager": "000",
+    "initiate": "000"
+  },
+  "channels": {
+    "citadel": "000",
+    "cotw": "000",
+    "tos": "000",
+    "snapshots": "000",
+    "moderation": "000",
+    "sleepclub": "000"
+  },
+  "emotes": {
+    "acceptTOS": "✅",
+    "hocReaction": "000",
+    "sleeplogReaction": "🛏️",
+    "cotwVow": "⚔",
+    "cotwReflection": "🛡",
+    "pinMessage": "📌"
+  },
+  "pinLimit": 5
 }
