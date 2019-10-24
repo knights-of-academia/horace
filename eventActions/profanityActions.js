@@ -1,8 +1,8 @@
 const config = require('../config.json');
 const Discord = require('discord.js');
 
-class snapshotActions {
-	static async userPostsImage(client, message) {
+class profanityActions {
+	static async checkForProfanity(client, message) {
 		const profanityList = [
 			'bitch',
 			'cock',
@@ -44,4 +44,4 @@ class snapshotActions {
 
 }
 
-module.exports = snapshotActions;
+module.exports = profanityActions;
