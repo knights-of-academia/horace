@@ -1,7 +1,6 @@
 const config = require('../config.json');
 const cotwActions = require('../eventActions/cotwActions');
 const hocActions = require('../eventActions/hocActions');
-const citadelActions = require('../eventActions/citadelActions');
 const snapshotActions = require('../eventActions/snapshotActions');
 const sleepclubActions = require('../eventActions/sleepclubActions');
 const profanityActions = require('../eventActions/profanityActions');
