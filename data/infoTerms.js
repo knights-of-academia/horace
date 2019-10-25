@@ -88,5 +88,10 @@ module.exports = [
 		displayname: 'XP',
 		names: ['xp', 'exp'],
 		description: 'XP is something that you get for contributions to the server i.e. sending messages. 15-25 XP is given every message, and you can only gain XP once a minute. Keep in mind that XP is off in <#382364344731828226>, <#415261994887938048>, <#382921625768689665> and <#529505169168138240>. Event channels are also ignored.'
+	},
+	{
+		displayname: 'Monk Club',
+		names: ['monkclub', 'monk-club'],
+		description: 'The monk club is KOA\'s very own meditation club! Join us for daily group meditations by staying tuned into the #meditation channel. Practice mindfulness!'
 	}
 ];

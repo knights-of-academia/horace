@@ -21,17 +21,17 @@
     "citadel": "000",
     "cotw": "000",
     "tos": "000",
-    "snapshots": "000",
-    "moderation": "000",
-    "sleepclub": "000"
+    "accountability": "000"
   },
   "emotes": {
     "acceptTOS": "✅",
-    "hocReaction": "000",
+    "hocReaction": "🎉",
     "sleeplogReaction": "🛏️",
     "cotwVow": "⚔",
     "cotwReflection": "🛡",
-    "pinMessage": "📌"
+    "pinMessage": "📌",
+    "goodmorning": "🌞",
+    "goodnight": "🌜"
   },
   "pinLimit": 5
 }
