@@ -4,7 +4,7 @@ const hocActions = require('../eventActions/hocActions');
 const snapshotActions = require('../eventActions/snapshotActions');
 const sleepclubActions = require('../eventActions/sleepclubActions');
 const profanityActions = require('../eventActions/profanityActions');
-const greetinAction = require('../eventActions/greetingAction');
+const greetingAction = require('../eventActions/greetingAction');
 
 module.exports = async (client, message) => {
 	if (!message.guild || message.author.bot) return;
@@ -24,7 +24,7 @@ module.exports = async (client, message) => {
 	// Check the message for profanity
 	profanityActions.checkForProfanity(client, message);
 	// Handle greetings
-	greetinAction.reactToGreeting(client, message);
+	greetingAction.reactToGreeting(client, message);
 	// Handle hall of conquests
 	hocActions.reactWithLetsGo(client, message);
 	// Handle snapshots
