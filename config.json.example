@@ -9,7 +9,8 @@
   "roles": {
     "cotwChampion": "000",
     "cotwManager": "000",
-    "initiate": "000"
+    "initiate": "000",
+    "focused-raider": "000"
   },
   "channels": {
     "citadel": "000",
