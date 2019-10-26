@@ -24,7 +24,9 @@
     "sleeplogReaction": "🛏️",
     "cotwVow": "⚔",
     "cotwReflection": "🛡",
-    "pinMessage": "📌"
+    "pinMessage": "📌",
+    "goodmorning": "🌞",
+    "goodnight": "🌜"
   },
   "pinLimit": 5
 }
