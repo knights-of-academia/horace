@@ -27,5 +27,6 @@
     "goodmorning": "🌞",
     "goodnight": "🌜"
   },
-  "pinLimit": 5
+  "pinLimit": 5,
+  "reflectionCheckDepth": 5
 }
