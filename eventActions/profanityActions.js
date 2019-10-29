@@ -45,4 +45,5 @@ class profanityActions {
 
 }
 
+
 module.exports = profanityActions;
