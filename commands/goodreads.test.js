@@ -9,6 +9,6 @@ test('sends correct goodreads message to channel', async () => {
 	const responseMessage = await goodreads.execute(null, message);
 
 	//Assert
-	const expectedResponse = 'KOA goodreads page: https://www.goodreads.com/group/show/756579-knights-of-academia';
+	const expectedResponse = 'KOA Goodreads page: https://www.goodreads.com/group/show/756579-knights-of-academia';
 	expect(responseMessage).toBe(expectedResponse);
 });
