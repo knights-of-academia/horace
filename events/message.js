@@ -1,10 +1,10 @@
 const config = require('../config.json');
 const cotwActions = require('../eventActions/cotwActions');
 const hocActions = require('../eventActions/hocActions');
-const citadelActions = require('../eventActions/citadelActions');
 const snapshotActions = require('../eventActions/snapshotActions');
 const sleepclubActions = require('../eventActions/sleepclubActions');
 const profanityActions = require('../eventActions/profanityActions');
+const greetingAction = require('../eventActions/greetingAction');
 
 module.exports = async (client, message) => {
 	if (!message.guild || message.author.bot) return;
@@ -27,9 +27,8 @@ module.exports = async (client, message) => {
 
 	// Check the message for profanity
 	profanityActions.checkForProfanity(client, message);
-
-	// Greet users in the citadel when they say good morning or night
-	citadelActions.greetMorningOrNight(client, message);
+	// Handle greetings
+	greetingAction.reactToGreeting(client, message);
 	// Handle hall of conquests
 	hocActions.reactWithLetsGo(client, message);
 	// Handle snapshots
