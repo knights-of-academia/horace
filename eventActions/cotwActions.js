@@ -11,10 +11,14 @@ class cotwActions {
 		}
 
 		// React to reflection
-		if (message.channel.id === config.channels.cotw
-			&& message.content.toLowerCase().includes('reflection')) {
-			const emote = config.emotes.cotwReflection;
-			message.react(emote);
+		if (message.channel.id === config.channels.cotw) {
+			let arrayMatching = message.content.toLowerCase().replace(/  +/g, ' ').split(' ').slice(0, config.reflectionCheckDepth);
+			if (arrayMatching.some(str => {
+				return str.includes('reflection');
+			})) {
+				const emote = config.emotes.cotwReflection;
+				message.react(emote);
+			}
 		}
 	}
 	static async updateCotw(client, message) {

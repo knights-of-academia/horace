@@ -18,7 +18,8 @@ class profanityActions {
 			'tranny'
 		];
 
-		const containedProfanity = profanityList.some(substring => message.content.includes(substring));
+		const lowerCaseMessage = message.content.toLowerCase();
+		const containedProfanity = profanityList.some(substring => lowerCaseMessage.includes(substring));
 
 		if (containedProfanity) {
 			const embedMessage = new Discord.RichEmbed()
@@ -43,5 +44,6 @@ class profanityActions {
 	}
 
 }
+
 
 module.exports = profanityActions;
