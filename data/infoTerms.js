@@ -136,5 +136,10 @@ module.exports = [
 		names: ['page'],
 		description: 'The Page role is awarded at **Level 10** for seasoned, contributive members of our community. You earn:
 - Complimentary DJ permissions that gives you full access to our music bot <@235088799074484224>'
+},
+	{
+		displayname: 'Monk Club',
+		names: ['monkclub', 'monk-club'],
+		description: 'The monk club is KOA\'s very own meditation club! Join us for daily group meditations by staying tuned into the #meditation channel. Practice mindfulness!'
 	}
 ];
