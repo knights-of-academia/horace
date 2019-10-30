@@ -13,7 +13,7 @@ class deleteMessageActions {
 				.setTitle('🟡 Warning: Message deleted 🟡')
 				.setColor('#ffae42')
 				.addField('Author', message.author, true)
-				.addField('Channel', message.channel, true)
+				.addField('Channel', message.channel, true);
 			
 			if(message.content.length > 0){
 				embed.addField('Message', message.content);
