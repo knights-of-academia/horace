@@ -58,12 +58,11 @@ class accountabilityActions {
 
 				for (var i = 0; i < fetchedPins.size; i++){
 					var msgVal = pinMsgIterator.next().value;
-					if(msgVal.author.id === user.id){
+					if(msgVal.author.id == user.id){
 						hasPinnedMessage = true;
 						msgVal.unpin();
 						break;
 					}
-					break;
 				}
 			});
 
@@ -79,7 +78,7 @@ class accountabilityActions {
 	static async userManuallyUnpinsMessage(reaction, user){
 		var curMessage = reaction.message;
 		if(curMessage.channel.id === config.channels.accountability){
-			if(curMessage.author.id === user.id){
+			if(curMessage.author.id == user.id){
 				if(curMessage.pinned){
 					curMessage.unpin();
 					curMessage.channel.send('Hey, ' + user.username + ', I\'ve unpinned your message as requested!');
