@@ -88,5 +88,53 @@ module.exports = [
 		displayname: 'XP',
 		names: ['xp', 'exp'],
 		description: 'XP is something that you get for contributions to the server i.e. sending messages. 15-25 XP is given every message, and you can only gain XP once a minute. Keep in mind that XP is off in <#382364344731828226>, <#415261994887938048>, <#382921625768689665> and <#529505169168138240>. Event channels are also ignored.'
+	},
+	{
+		displayname: 'Squire',
+		names: ['squire'],
+		description: 'The Squire role is awarded at **Level 20** for seasoned, contributive members of our community. You earn:
+- Your name in a proud shade of pink
+- Ability to use external emojis
+- Bragging rights'
+	},
+	{
+		displayname: 'Knight',
+		names: ['knight'],
+		description: 'The Knight role is awarded at **Level 30** and is a coveted title for the Knights of Acedemia. Only a handful have been dubbed with this. You earn:
+- Your name in a cool shade of orange
+- Ability to create instant invites
+- Bragging rights'
+	},
+	{
+		displayname: 'Baron',
+		names: ['baron'],
+		description: 'The Baron role is awarded at **Level 40** and is a prestigious and powerful title for the truest Knights of Academia. Very few have earned this title. You earn:
+- Your name in a clean, bright shade of Red
+- Ability to weigh in with Guardians in what emojis are in and added to KOA
+- Ability to have priority votes in <#386619185356210178> (worth 2 votes instead of 1)
+- Bragging rights'
+	},
+	{
+		displayname: 'Member',
+		names: ['member'],
+		description: 'The Member role is awarded at **Level 2** for participating members of our community. You earn:
+- Access to all Discussion Wing channels
+- Ability to react to messages
+- Ability to vote in <#386619185356210178>
+- Ability to embed links and send images
+- and the Ability to Connect & Speak in Voice Channels'
+	},
+	{
+		displayname: 'Champion',
+		names: ['champion'],
+		description: 'The Champion role is awarded at **Level 50** and is the Ultimate and highest title of KOA. You earn:
+- Your name in a brilliant shade of yellow
+- A limited-edition KOA Pendant shipped to your door (entirely free of charge and all shipping and handling is covered by us)'
+	},
+	{
+		displayname: 'Page',
+		names: ['page'],
+		description: 'The Page role is awarded at **Level 10** for seasoned, contributive members of our community. You earn:
+- Complimentary DJ permissions that gives you full access to our music bot <@235088799074484224>'
 	}
 ];
