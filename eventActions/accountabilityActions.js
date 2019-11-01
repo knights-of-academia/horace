@@ -3,7 +3,7 @@ const config = require('../config.json');
 // Helper method to loop through pins. I was getting mad when I named it...
 function isMessagePinnedAtAll(messageToCheck, setOfPinnedMessages){
 	const fetchedMessagesIterator = setOfPinnedMessages.values();
-	var msgVal = fetchedMessagesIterator.next().value;
+	let msgVal = fetchedMessagesIterator.next().value;
 	while(msgVal != null){
 		if(msgVal.id === messageToCheck.id){
 			return true;
@@ -20,8 +20,8 @@ class accountabilityActions {
 		if(reaction.message.channel.id == config.channels.accountability
             && reaction._emoji.name == config.emotes.pinMessage) {
 
-			var sentMessage = reaction.message;
-			var currentChannel = sentMessage.channel;
+			const sentMessage = reaction.message;
+			const currentChannel = sentMessage.channel;
 
 			// Make sure a user is pinning their own message
 			if(user.id != sentMessage.author.id) return;
@@ -31,16 +31,16 @@ class accountabilityActions {
 				// If the pushpin reaction from the bot does not exist, pin the message
 				if(!isMessagePinnedAtAll(sentMessage, fetchedPins)){
 					// Pin the message
-					var existingMessageCount = 0;
+					let existingMessageCount = 0;
 
 
 					// Get the pinned messages within a channel
 					if(isMessagePinnedAtAll(sentMessage, fetchedPins) == true) return;
 					// Check to see if they already have pinned messages
-					var pinMsgIterator = fetchedPins.values();
+					const pinMsgIterator = fetchedPins.values();
 
-					for (var i = 0; i < fetchedPins.size; i++){
-						var msgVal = pinMsgIterator.next().value;
+					for (let i = 0; i < fetchedPins.size; i++){
+						const msgVal = pinMsgIterator.next().value;
 						if(msgVal.author.id === user.id){
 							existingMessageCount++;
 						}
@@ -69,19 +69,19 @@ class accountabilityActions {
 	static async userUnpinsMessage(message, user){
 		if(message.channel.id === config.channels.accountability) {
 
-			var currentChannel = message.channel;
+			const currentChannel = message.channel;
 
-			var hasPinnedMessage = false;
+			let hasPinnedMessage = false;
 
 			// Get the pinned messages within a channel
 			await currentChannel.fetchPinnedMessages().then(fetchedPins => {
 
 				// Check to see if they already have pinned messages
-				var pinMsgIterator = fetchedPins.values();
+				const pinMsgIterator = fetchedPins.values();
 
-				for (var i = 0; i < fetchedPins.size; i++){
-					var msgVal = pinMsgIterator.next().value;
-					if(msgVal.author.id == user.id){
+				for (let i = 0; i < fetchedPins.size; i++){
+					const msgVal = pinMsgIterator.next();
+					if(msgVal.value.author.id == user.id){
 						hasPinnedMessage = true;
 						msgVal.unpin();
 						break;
@@ -104,7 +104,7 @@ class accountabilityActions {
 		const random_emotes = config.emotes.accountability_emotes_array;
 
 		// Flag emotes
-		var length = random_emotes.length;
+		const length = random_emotes.length;
 		const flags = [
 			{ language: 'french', emote: '🇫🇷'},
 			{ language: 'spanish', emote: '🇪🇸'},
@@ -116,8 +116,8 @@ class accountabilityActions {
 		const pomEmote = config.emotes.pom;
 
 		// Pull a random reaction from the common emotes for and add to post (personally I like the separation of variables, let me know if that's not preferred style)
-		var rand = Math.floor(Math.random() * length);
-		var selectedEmote = random_emotes[rand];
+		const rand = Math.floor(Math.random() * length);
+		const selectedEmote = random_emotes[rand];
 		message.react(selectedEmote.toString());
 
 		// Check for languages
