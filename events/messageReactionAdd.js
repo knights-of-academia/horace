@@ -1,6 +1,7 @@
 const tosActions = require('../eventActions/tosActions');
 const accountabilityActions = require('../eventActions/accountabilityActions');
 const pinAction = require('../eventActions/pinAction');
+const focusedRaiderActions = require('../eventActions/focusedRaiderActions');
 
 module.exports = async (client, reaction, user) => {
 	// Handle reaction to the ToS message in ToS channel
@@ -10,5 +11,9 @@ module.exports = async (client, reaction, user) => {
 	accountabilityActions.userPinsMessage(reaction, user);
 	// Handle message pinning in channels
 	pinAction.pinMessage(client, reaction);
+
+	// Add focused raider role
+	focusedRaiderActions.giveRole(reaction, user);
+
 };
 
