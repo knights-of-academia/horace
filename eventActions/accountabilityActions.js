@@ -2,7 +2,7 @@ const config = require('../config.json');
 
 // Helper method to loop through pins. I was getting mad when I named it...
 function isMessagePinnedAtAll(messageToCheck, setOfPinnedMessages){
-	var fetchedMessagesIterator = setOfPinnedMessages.values();
+	const fetchedMessagesIterator = setOfPinnedMessages.values();
 	var msgVal = fetchedMessagesIterator.next().value;
 	while(msgVal != null){
 		if(msgVal.id === messageToCheck.id){
@@ -33,8 +33,6 @@ class accountabilityActions {
 					// Pin the message
 					var existingMessageCount = 0;
 
-					// Let the Discord message inform a user something was pinned
-					// currentChannel.send('Hey, ' + user.username + ', I\'ve pinned your message for you as requested!');
 
 					// Get the pinned messages within a channel
 					if(isMessagePinnedAtAll(sentMessage, fetchedPins) == true) return;
@@ -54,7 +52,7 @@ class accountabilityActions {
 
 					// If they have other pinned messages, give them a good 'ol reminder.
 					if (existingMessageCount > 1){
-						currentChannel.send('Hey, ' + user.username + ', I just wanted to remind you that you have ' + existingMessageCount + ' other pinned messages :smile:');
+						currentChannel.send('Hey, ' + user.username + ', I just wanted to remind you that you have ' + existingMessageCount + ' other pinned messages 😄');
 					}
 				} else {
 					// Otherwise, the message has already been pinned, so unpin it
@@ -103,7 +101,7 @@ class accountabilityActions {
 		if(message.channel.id != config.channels.accountability) return;
 		if(message.content.toLowerCase().includes('!unpin')) return;
 		// Define an array of emojis to pull from
-		var random_emotes = ['💯', '529488404103299074', '👍', '🔥', '🙌', '👏', '👌', '💪', '587455770283737110', '531663637694382089'];
+		var random_emotes = config.emotes.accountability_emotes_array;
 
 		// Flag emotes
 		var length = random_emotes.length;
@@ -114,8 +112,8 @@ class accountabilityActions {
 		];
 
 		// Define special emotes (I didn't want to put all of them in the configuration...)
-		var checkmark = '562072692086276118';
-		var pomEmote = '🍅';
+		var customCheckmark = config.emotes.yes2;
+		var pomEmote = config.emotes.pom;
 
 		// Pull a random reaction from the common emotes for and add to post (personally I like the separation of variables, let me know if that's not preferred style)
 		var rand = Math.floor(Math.random() * length);
@@ -131,7 +129,7 @@ class accountabilityActions {
 
 		// Check for emotes
 		if(message.content.toLowerCase().includes(':yes:') || message.content.toLowerCase().includes(':yes2:')){
-			message.react(checkmark);
+			message.react(customCheckmark);
 		}
 		if(message.content.toLowerCase().includes(' pom')){
 			message.react(pomEmote);
