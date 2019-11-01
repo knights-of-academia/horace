@@ -101,19 +101,19 @@ class accountabilityActions {
 		if(message.channel.id != config.channels.accountability) return;
 		if(message.content.toLowerCase().includes('!unpin')) return;
 		// Define an array of emojis to pull from
-		var random_emotes = config.emotes.accountability_emotes_array;
+		const random_emotes = config.emotes.accountability_emotes_array;
 
 		// Flag emotes
 		var length = random_emotes.length;
-		var flags = [
+		const flags = [
 			{ language: 'french', emote: '🇫🇷'},
 			{ language: 'spanish', emote: '🇪🇸'},
 			{ language: 'italian', emote: '🇮🇹'}
 		];
 
 		// Define special emotes (I didn't want to put all of them in the configuration...)
-		var customCheckmark = config.emotes.yes2;
-		var pomEmote = config.emotes.pom;
+		const customCheckmark = config.emotes.yes2;
+		const pomEmote = config.emotes.pom;
 
 		// Pull a random reaction from the common emotes for and add to post (personally I like the separation of variables, let me know if that's not preferred style)
 		var rand = Math.floor(Math.random() * length);
