@@ -5,6 +5,7 @@ const snapshotActions = require('../eventActions/snapshotActions');
 const sleepclubActions = require('../eventActions/sleepclubActions');
 const profanityActions = require('../eventActions/profanityActions');
 const greetingAction = require('../eventActions/greetingAction');
+const accountabilityActions = require('../eventActions/accountabilityActions');
 
 module.exports = async (client, message) => {
 	if (!message.guild || message.author.bot) return;
@@ -38,4 +39,6 @@ module.exports = async (client, message) => {
 	// Handle COTW case
 	cotwActions.reactToVowAndReflections(client, message);
 	cotwActions.updateCotw(client, message);
+	// Handle accountability reactions
+	accountabilityActions.addReaction(client, message);
 };

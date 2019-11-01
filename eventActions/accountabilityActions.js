@@ -1,5 +1,17 @@
 const config = require('../config.json');
 
+// Helper method to loop through pins. I was getting mad when I named it...
+function isMessagePinnedAtAll(messageToCheck, setOfPinnedMessages){
+	var fetchedMessagesIterator = setOfPinnedMessages.values();
+	var msgVal = fetchedMessagesIterator.next().value;
+	while(msgVal != null){
+		if(msgVal.id === messageToCheck.id){
+			return true;
+		}
+		msgVal = fetchedMessagesIterator.next().value;
+	}
+}
+
 class accountabilityActions {
 	static async userPinsMessage(reaction, user) {
 		/* Structure taken from tosActions.js for sake of consistency */
@@ -8,37 +20,50 @@ class accountabilityActions {
 		if(reaction.message.channel.id == config.channels.accountability
             && reaction._emoji.name == config.emotes.pinMessage) {
 
-			// Pin the message
 			var sentMessage = reaction.message;
 			var currentChannel = sentMessage.channel;
 
 			// Make sure a user is pinning their own message
-			if(user.id != sentMessage.member.id) return;
-			currentChannel.send('Hey, ' + user.username + ', I\'ve pinned your message for you as requested!');
+			if(user.id != sentMessage.author.id) return;
 
-			// Get the pinned messages within a channel
-			await currentChannel.fetchPinnedMessages().then(fetchedPins => {
+			await currentChannel.fetchPinnedMessages().then(fetchedPins =>{
 
-				// Check to see if they already have pinned messages
-				var pinMsgIterator = fetchedPins.values();
-				var existingMessageCount = 0;
+				// If the pushpin reaction from the bot does not exist, pin the message
+				if(!isMessagePinnedAtAll(sentMessage, fetchedPins)){
+					// Pin the message
+					var existingMessageCount = 0;
 
-				for (var i = 0; i < fetchedPins.size; i++){
-					var msgVal = pinMsgIterator.next().value;
-					if(msgVal.author.id === user.id){
-						existingMessageCount++;
+					// Let the Discord message inform a user something was pinned
+					// currentChannel.send('Hey, ' + user.username + ', I\'ve pinned your message for you as requested!');
+
+					// Get the pinned messages within a channel
+					if(isMessagePinnedAtAll(sentMessage, fetchedPins) == true) return;
+					// Check to see if they already have pinned messages
+					var pinMsgIterator = fetchedPins.values();
+
+					for (var i = 0; i < fetchedPins.size; i++){
+						var msgVal = pinMsgIterator.next().value;
+						if(msgVal.author.id === user.id){
+							existingMessageCount++;
+						}
 					}
-				}
 
-				// If they have other pinned messages, give them a good 'ol reminder.
-				if (existingMessageCount > 1){
-					currentChannel.send('Also, I just wanted to remind you that you have ' + existingMessageCount + ' other pinned messages :smile:');
+					// Pin the message
+					sentMessage.clearReactions();
+					sentMessage.pin();
+
+					// If they have other pinned messages, give them a good 'ol reminder.
+					if (existingMessageCount > 1){
+						currentChannel.send('Hey, ' + user.username + ', I just wanted to remind you that you have ' + existingMessageCount + ' other pinned messages :smile:');
+					}
+				} else {
+					// Otherwise, the message has already been pinned, so unpin it
+					sentMessage.unpin();
+					currentChannel.send('Hey, ' + user.username + ', I\'ve unpinned your selected message as requested!');
 				}
+				sentMessage.react(config.emotes.pinMessage);
+
 			});
-
-			// Pin the message
-			sentMessage.pin();
-
 		}
 	}
 
@@ -73,17 +98,43 @@ class accountabilityActions {
 			}
 		}
 	}
+	// Add a random reaction to a message sent
+	static async addReaction(client, message){
+		if(message.channel.id != config.channels.accountability) return;
+		if(message.content.toLowerCase().includes('!unpin')) return;
+		// Define an array of emojis to pull from
+		var random_emotes = ['💯', '529488404103299074', '👍', '🔥', '🙌', '👏', '👌', '💪', '587455770283737110', '531663637694382089'];
 
-	// Unpin message by removing the reaction
-	static async userManuallyUnpinsMessage(reaction, user){
-		var curMessage = reaction.message;
-		if(curMessage.channel.id === config.channels.accountability){
-			if(curMessage.author.id == user.id){
-				if(curMessage.pinned){
-					curMessage.unpin();
-					curMessage.channel.send('Hey, ' + user.username + ', I\'ve unpinned your message as requested!');
-				}
+		// Flag emotes
+		var length = random_emotes.length;
+		var flags = [
+			{ language: 'french', emote: '🇫🇷'},
+			{ language: 'spanish', emote: '🇪🇸'},
+			{ language: 'italian', emote: '🇮🇹'}
+		];
+
+		// Define special emotes (I didn't want to put all of them in the configuration...)
+		var checkmark = '562072692086276118';
+		var pomEmote = '🍅';
+
+		// Pull a random reaction from the common emotes for and add to post (personally I like the separation of variables, let me know if that's not preferred style)
+		var rand = Math.floor(Math.random() * length);
+		var selectedEmote = random_emotes[rand];
+		message.react(selectedEmote.toString());
+
+		// Check for languages
+		flags.forEach(function(langName){
+			if(message.content.toLowerCase().includes(' ' + langName.language)){
+				message.react(langName.emote);
 			}
+		});
+
+		// Check for emotes
+		if(message.content.toLowerCase().includes(':yes:') || message.content.toLowerCase().includes(':yes2:')){
+			message.react(checkmark);
+		}
+		if(message.content.toLowerCase().includes(' pom')){
+			message.react(pomEmote);
 		}
 	}
 }
