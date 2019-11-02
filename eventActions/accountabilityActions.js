@@ -83,7 +83,7 @@ class accountabilityActions {
 					const msgVal = pinMsgIterator.next();
 					if(msgVal.value.author.id == user.id){
 						hasPinnedMessage = true;
-						msgVal.unpin();
+						msgVal.value.unpin();
 						break;
 					}
 				}
