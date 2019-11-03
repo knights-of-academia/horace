@@ -112,13 +112,7 @@ class accountabilityActions {
 		];
 
 		// Define special emotes (I didn't want to put all of them in the configuration...)
-		const customCheckmark = config.emotes.yes2;
 		const pomEmote = config.emotes.pom;
-
-		// Pull a random reaction from the common emotes for and add to post (personally I like the separation of variables, let me know if that's not preferred style)
-		const rand = Math.floor(Math.random() * length);
-		const selectedEmote = random_emotes[rand];
-		message.react(selectedEmote.toString());
 
 		// Check for languages
 		flags.forEach(function(langName){
@@ -128,8 +122,11 @@ class accountabilityActions {
 		});
 
 		// Check for emotes
-		if(message.content.toLowerCase().includes(':yes:') || message.content.toLowerCase().includes(':yes2:')){
-			message.react(customCheckmark);
+		if(message.content.toLowerCase().includes(':yes:') || message.content.toLowerCase().includes(':yes2:') || message.content.toLowerCase().includes(':white_check_mark:')){
+			// Pull a random reaction from the common emotes for and add to post (personally I like the separation of variables, let me know if that's not preferred style)
+			const rand = Math.floor(Math.random() * length);
+			const selectedEmote = random_emotes[rand];
+			message.react(selectedEmote.toString());
 		}
 		if(message.content.toLowerCase().includes(' pom')){
 			message.react(pomEmote);
