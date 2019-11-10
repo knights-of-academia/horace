@@ -10,6 +10,6 @@ test('Sends correct raid message to channel', async () => {
 	const responseMessage = await raid.execute(null, message);
 
 	// Assert
-	const expectedResponse = '**RAAAAAAAAAAAAAAAAAAAID!**' + message.author + '⚔\nhttps://cuckoo.team/koa';
+	const expectedResponse = '**RAAAAAAAAAAAAAAAAAAAID with**' + message.author + '⚔\nhttps://cuckoo.team/koa';
 	expect(responseMessage).toBe(expectedResponse);
 });
