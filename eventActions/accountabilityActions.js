@@ -83,7 +83,11 @@ class accountabilityActions {
 					const msgVal = pinMsgIterator.next();
 					if(msgVal.value.author.id == user.id){
 						hasPinnedMessage = true;
+<<<<<<< HEAD
 						msgVal.value.unpin();
+=======
+						msgVal.unpin();
+>>>>>>> 83df7b1a0087fc84407eb2bed8b473b26b8e2d7d
 						break;
 					}
 				}
@@ -112,8 +116,19 @@ class accountabilityActions {
 		];
 
 		// Define special emotes (I didn't want to put all of them in the configuration...)
+<<<<<<< HEAD
 		const pomEmote = config.emotes.pom;
 
+=======
+		const customCheckmark = config.emotes.yes2;
+		const pomEmote = config.emotes.pom;
+
+		// Pull a random reaction from the common emotes for and add to post (personally I like the separation of variables, let me know if that's not preferred style)
+		const rand = Math.floor(Math.random() * length);
+		const selectedEmote = random_emotes[rand];
+		message.react(selectedEmote.toString());
+
+>>>>>>> 83df7b1a0087fc84407eb2bed8b473b26b8e2d7d
 		// Check for languages
 		flags.forEach(function(langName){
 			if(message.content.toLowerCase().includes(' ' + langName.language)){
@@ -122,11 +137,16 @@ class accountabilityActions {
 		});
 
 		// Check for emotes
+<<<<<<< HEAD
 		if(message.content.toLowerCase().includes(':yes:') || message.content.toLowerCase().includes(':yes2:') || message.content.toLowerCase().includes(':white_check_mark:')){
 			// Pull a random reaction from the common emotes for and add to post (personally I like the separation of variables, let me know if that's not preferred style)
 			const rand = Math.floor(Math.random() * length);
 			const selectedEmote = random_emotes[rand];
 			message.react(selectedEmote.toString());
+=======
+		if(message.content.toLowerCase().includes(':yes:') || message.content.toLowerCase().includes(':yes2:')){
+			message.react(customCheckmark);
+>>>>>>> 83df7b1a0087fc84407eb2bed8b473b26b8e2d7d
 		}
 		if(message.content.toLowerCase().includes(' pom')){
 			message.react(pomEmote);
@@ -134,4 +154,8 @@ class accountabilityActions {
 	}
 }
 
+<<<<<<< HEAD
 module.exports = accountabilityActions;
+=======
+module.exports = accountabilityActions;
+>>>>>>> 83df7b1a0087fc84407eb2bed8b473b26b8e2d7d
