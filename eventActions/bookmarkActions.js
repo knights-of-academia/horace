@@ -1,6 +1,6 @@
 const config = require('../config.json');
 
-class bookmarkAction {
+class bookmarkActions {
 
     static async bookmarkMessage(client, reaction) {
         if (reaction._emoji.name === config.emotes.bookmark) {
@@ -22,3 +22,5 @@ class bookmarkAction {
             }
         }
 }
+
+module.exports = bookmarkActions;
