@@ -18,6 +18,4 @@ module.exports = async (client, reaction, user) => {
 
 	// Bookmark messages in DMs
 	bookmarkActions.bookmarkMessage(client, reaction);
-
 };
-
