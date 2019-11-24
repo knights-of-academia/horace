@@ -3,7 +3,10 @@ const config = require('../config.json');
 class pinAction {
 
 	static async pinMessage(client, reaction) {
+		// Accountability station has its own manager
 		if (reaction.message.channel.id === config.channels.accountability) return;
+
+		// Server-wide pin feature
 		const pinLimit = config.pinLimit;
 		if (reaction._emoji.name === config.emotes.pinMessage && reaction.count >= pinLimit) {
 			return reaction.message.pin();
