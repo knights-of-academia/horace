@@ -14,6 +14,7 @@ function isMessagePinnedAtAll(messageToCheck, setOfPinnedMessages){
 
 class accountabilityActions {
 	static async userPinsMessage(reaction, user) {
+
 		/* Structure taken from tosActions.js for sake of consistency */
 
 		// Check if we are in the accountability channel and the reaction emote is the proper emote
@@ -22,6 +23,15 @@ class accountabilityActions {
 
 			const sentMessage = reaction.message;
 			const currentChannel = sentMessage.channel;
+
+			// Check if there are too many existing pins
+			currentChannel.fetchPinnedMessages().then(messages => {
+				const numOfPins = messages.size;
+				if(numOfPins == 50){
+					currentChannel.send('**Uh oh!** This channel has reached its pin limit. Contact a Helper to purge the list.');
+					return;
+				}
+			});
 
 			// Make sure a user is pinning their own message
 			if(user.id != sentMessage.author.id) return;
