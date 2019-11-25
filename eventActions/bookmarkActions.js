@@ -2,7 +2,7 @@ const config = require('../config.json');
 const Discord = require('discord.js');
 
 class bookmarkActions {
-	
+
 	static async bookmarkMessage(client, reaction) {
 		if (reaction._emoji.name === config.emotes.bookmark) {
 			const workingMessage = reaction.message;
@@ -14,11 +14,11 @@ class bookmarkActions {
 					.addField('Channel', workingMessage.channel)
 					.addField('Author', workingMessage.author);
 				const messageChunks = workingMessage.content.match(/[\s\S]{1,1024}/g);
-				
-				for (let chunk of messageChunks) {
+
+				for (const chunk of messageChunks) {
 					bookmarkEmbed.addField('Message', chunk);
 				}
-				
+
 				guildMember.send(bookmarkEmbed);
 			});
 		}

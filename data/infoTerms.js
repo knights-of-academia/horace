@@ -93,10 +93,5 @@ module.exports = [
 		displayname: 'Monk Club',
 		names: ['monkclub', 'monk-club'],
 		description: 'The monk club is KOA\'s very own meditation club! Join us for daily group meditations by staying tuned into the #meditation channel. Practice mindfulness!'
-	},
-	{
-		displayname: 'cosmicdev',
-		names: ['cosmiccdev'],
-		description: 'Need a quick fix for Horace or the website? Ping him! Front-end web developer, still tryna work on the Javascript part though....'
 	}
 ];
