@@ -5,7 +5,6 @@ class bookmarkActions {
 
 	static async bookmarkMessage(client, reaction, message) {
 		if (reaction._emoji.name === config.emotes.bookmark) {
-            console.log('bookmark emoji detected');
             const workingMessage = reaction.message;
 			workingMessage.guild.fetchMember(workingMessage.author.id).then(guildMember => {
 				const bookmarkEmbed = new Discord.RichEmbed()
@@ -16,11 +15,7 @@ class bookmarkActions {
                     .addField('Author', workingMessage.author)
                     .addField('Message', workingMessage.content);
 
-                    console.log('embed created');
-
 			        guildMember.send(bookmarkEmbed);
-
-			        console.log('message sent');
 			});
 		}
 	}
