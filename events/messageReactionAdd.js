@@ -4,7 +4,7 @@ const pinAction = require('../eventActions/pinAction');
 const focusedRaiderActions = require('../eventActions/focusedRaiderActions');
 const bookmarkActions = require ('../eventActions/bookmarkActions');
 
-module.exports = async (client, reaction, user, message) => {
+module.exports = async (client, reaction, user) => {
 	// Handle reaction to the ToS message in ToS channel
 	tosActions.userAcceptsTOS(reaction, user, client);
 
@@ -18,5 +18,5 @@ module.exports = async (client, reaction, user, message) => {
 	focusedRaiderActions.giveRole(reaction, user);
 
 	// Bookmark messages in DMs
-	bookmarkActions.bookmarkMessage(client, reaction, message);
+	bookmarkActions.bookmarkMessage(client, reaction);
 };

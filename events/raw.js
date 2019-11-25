@@ -7,7 +7,7 @@ module.exports = (client, packet) => {
 		const reaction = message.reactions.get(emoji);
 		if (reaction) reaction.users.set(packet.d.user_id, client.users.get(packet.d.user_id));
 		if (packet.t === 'MESSAGE_REACTION_ADD') {
-			client.emit('messageReactionAdd', reaction, client.users.get(packet.d.user_id), packet.d.message);
+			client.emit('messageReactionAdd', reaction, client.users.get(packet.d.user_id));
 		}
 		if (packet.t === 'MESSAGE_REACTION_REMOVE') {
 			client.emit('messageReactionRemove', reaction, client.users.get(packet.d.user_id));
