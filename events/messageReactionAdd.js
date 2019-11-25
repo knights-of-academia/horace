@@ -10,6 +10,7 @@ module.exports = async (client, reaction, user, message) => {
 
 	// Handle reaction to a message in accountability channel
 	accountabilityActions.userPinsMessage(reaction, user);
+
 	// Handle message pinning in channels
 	pinAction.pinMessage(client, reaction);
 
