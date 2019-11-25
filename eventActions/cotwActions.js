@@ -85,7 +85,7 @@ class cotwActions {
 						return challengeName.replace('Challenge of the Week: ', '');
 					});
 				store.set('challengeName', challengeName);
-				const emote = config.emotes.cotwReflection
+				const emote = config.emotes.cotwReflection;
 				message.react(emote);
 				return message.channel.send(
 					`The COTW has been updated to ${challengeName}.`
