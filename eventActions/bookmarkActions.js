@@ -5,21 +5,20 @@ class bookmarkActions {
     static async bookmarkMessage(client, reaction, message) {
         if (reaction._emoji.name === config.emotes.bookmark) {
             console.log('bookmark emoji detected')
-            console.log(message)
-            // reaction.message.guild.fetchMember(message.author.id).then(guildMember => {
-            //     const bookmarkEmbed = new Discord.RichEmbed()
-            //         .setColor('#0F9BF1')
-            //         .setTitle('Knights of Academia Bookmark')
-            //         .setDescription('You asked to bookmark this post from the Knights of Academia server.')
-            //         .addField('Channel', message.channel)
-            //         .addField('Author', message.author)
-            // });
+            reaction.message.guild.fetchMember(message.author.id).then(guildMember => {
+                const bookmarkEmbed = new Discord.RichEmbed()
+                    .setColor('#0F9BF1')
+                    .setTitle('Knights of Academia Bookmark')
+                    .setDescription('You asked to bookmark this post from the Knights of Academia server.')
+                    .addField('Channel', message.channel)
+                    .addField('Author', message.author)
+            });
 
-            //     console.log('embed created')
+                console.log('embed created')
 
-            //     guildMember.send(embedMessage);
+                guildMember.send(embedMessage);
 
-            //     console.log('message sent')
+                console.log('message sent')
             }
         }
 }
