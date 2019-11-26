@@ -6,10 +6,11 @@ class bookmarkActions {
 	static async bookmarkMessage(client, reaction) {
 		if (reaction._emoji.name === config.emotes.bookmark) {
 			const workingMessage = reaction.message;
+			const swordsEmote = '⚔';
 			workingMessage.guild.fetchMember(workingMessage.author.id).then(guildMember => {
 				const bookmarkEmbed = new Discord.RichEmbed()
 					.setColor('#0F9BF1')
-					.setTitle(`${config.emotes.cotwVow} Knights of Academia Bookmark ${config.emotes.cotwVow}`)
+					.setTitle(`${swordsEmote} Knights of Academia Bookmark ${swordsEmote}`)
 					.setDescription('You asked to bookmark this post from the Knights of Academia server.')
 					.addField('Channel', workingMessage.channel)
 					.addField('Author', workingMessage.author);
