@@ -4,7 +4,7 @@ module.exports = async (client, channel) => {
 	currentChannel.fetchPinnedMessages().then(messages => {
 		const numOfPins = messages.size;
 		// currentChannel.send('**Listen!** Currently at ' + numOfPins + ' pins');
-		if(numOfPins == 50){
+		if(numOfPins === 50){
 			currentChannel.send('**Uh oh!** This channel has reached its pin limit. Contact a Helper to purge the list.');
 			return;
 		}

@@ -27,7 +27,7 @@ class accountabilityActions {
 			// Check if there are too many existing pins
 			currentChannel.fetchPinnedMessages().then(messages => {
 				const numOfPins = messages.size;
-				if(numOfPins == 50){
+				if(numOfPins === 50){
 					currentChannel.send('**Uh oh!** This channel has reached its pin limit. Contact a Helper to purge the list.');
 					return;
 				}
