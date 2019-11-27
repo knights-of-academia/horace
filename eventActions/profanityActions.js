@@ -3,20 +3,7 @@ const Discord = require('discord.js');
 
 class profanityActions {
 	static async checkForProfanity(client, message) {
-		const profanityList = [
-			'bitch',
-			'cock',
-			'dick',
-			'fag',
-			'fuck',
-			'idiot',
-			'piss',
-			'pussy',
-			'porn',
-			'retard',
-			'shit',
-			'tranny'
-		];
+		const profanityList = config.modules.profanityArray;
 
 		const lowerCaseMessage = message.content.toLowerCase();
 		const containedProfanity = profanityList.some(substring => lowerCaseMessage.includes(substring));
