@@ -14,6 +14,7 @@ function isMessagePinnedAtAll(messageToCheck, setOfPinnedMessages){
 
 class accountabilityActions {
 	static async userPinsMessage(reaction, user) {
+
 		/* Structure taken from tosActions.js for sake of consistency */
 
 		// Check if we are in the accountability channel and the reaction emote is the proper emote
@@ -22,6 +23,15 @@ class accountabilityActions {
 
 			const sentMessage = reaction.message;
 			const currentChannel = sentMessage.channel;
+
+			// Check if there are too many existing pins
+			currentChannel.fetchPinnedMessages().then(messages => {
+				const numOfPins = messages.size;
+				if(numOfPins === 50){
+					currentChannel.send('**Uh oh!** This channel has reached its pin limit. Contact a Helper to purge the list.');
+					return;
+				}
+			});
 
 			// Make sure a user is pinning their own message
 			if(user.id != sentMessage.author.id) return;
@@ -83,7 +93,7 @@ class accountabilityActions {
 					const msgVal = pinMsgIterator.next();
 					if(msgVal.value.author.id == user.id){
 						hasPinnedMessage = true;
-						msgVal.unpin();
+						msgVal.value.unpin();
 						break;
 					}
 				}
@@ -112,13 +122,7 @@ class accountabilityActions {
 		];
 
 		// Define special emotes (I didn't want to put all of them in the configuration...)
-		const customCheckmark = config.emotes.yes2;
 		const pomEmote = config.emotes.pom;
-
-		// Pull a random reaction from the common emotes for and add to post (personally I like the separation of variables, let me know if that's not preferred style)
-		const rand = Math.floor(Math.random() * length);
-		const selectedEmote = random_emotes[rand];
-		message.react(selectedEmote.toString());
 
 		// Check for languages
 		flags.forEach(function(langName){
@@ -128,8 +132,11 @@ class accountabilityActions {
 		});
 
 		// Check for emotes
-		if(message.content.toLowerCase().includes(':yes:') || message.content.toLowerCase().includes(':yes2:')){
-			message.react(customCheckmark);
+		if(message.content.toLowerCase().includes(':yes:') || message.content.toLowerCase().includes(':yes2:') || message.content.toLowerCase().includes(':white_check_mark:')){
+			// Pull a random reaction from the common emotes for and add to post (personally I like the separation of variables, let me know if that's not preferred style)
+			const rand = Math.floor(Math.random() * length);
+			const selectedEmote = random_emotes[rand];
+			message.react(selectedEmote.toString());
 		}
 		if(message.content.toLowerCase().includes(' pom')){
 			message.react(pomEmote);
