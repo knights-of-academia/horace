@@ -41,10 +41,12 @@ class cotwActions {
 				});
 
 				winner.addRole(cotwRole);
+				const emote = config.emotes.congrats;
+				message.react(emote);
 				return message.channel.send(`Congratulations <@${winner.id}>!`);
 			}
 
-			// If message contains link to a new poll, update it in store.
+			// If message contains link to a new poll, update it in store and send message to confirm the action.
 			if (message.content.includes('https://forms.gle')) {
 				const messageContent = message.content.split(' ');
 				let link;
@@ -54,6 +56,8 @@ class cotwActions {
 					}
 				});
 				store.set('pollActive', true), store.set('pollLink', link);
+				const emote = config.emotes.acceptTOS;
+				message.react(emote);
 				return;
 			}
 
@@ -81,6 +85,8 @@ class cotwActions {
 						return challengeName.replace('Challenge of the Week: ', '');
 					});
 				store.set('challengeName', challengeName);
+				const emote = config.emotes.cotwReflection;
+				message.react(emote);
 				return message.channel.send(
 					`The COTW has been updated to ${challengeName}.`
 				);
