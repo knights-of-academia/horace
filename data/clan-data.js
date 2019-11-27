@@ -1,17 +1,17 @@
 module.exports = [
 	{
-		formUrl: 'https://goo.gl/forms/m5onrVAaFc7RN1kg2',
+		formUrl: 'https://knightsofacademia.org/the-round-table/',
 		names: ['trt', 'theroundtable', 'the round table', 'hard mode'],
 		roleName: 'hard mode knights'
 	},
 	{
-		formUrl: 'https://goo.gl/forms/3csyULhB5aqCHjoB3',
+		formUrl: 'https://knightsofacademia.org/bards-of-academia/',
 		names: ['bards', 'the bards', 'music'],
 		roleName: 'bards member'
 	},
 	{
 		formUrl:
-            'https://docs.google.com/forms/d/e/1FAIpQLSe9--e6nEVI44FIUzOSL-gsjWDmAFqWVBtyxW5Q7dLIy94j7A/viewform?vc=0&c=0&w=1',
+            'https://knightsofacademia.org/fiction-faction/',
 		names: [
 			'thefictionfaction',
 			'the fiction faction',
@@ -23,17 +23,17 @@ module.exports = [
 		roleName: 'fiction faction'
 	},
 	{
-		formUrl: 'https://goo.gl/forms/QJDWzppdgGsniPWG2',
+		formUrl: 'https://knightsofacademia.org/wolf-pack/',
 		names: ['thewolfpack', 'the wolf pack', 'wp', 'twp', 'stem'],
 		roleName: 'wolf pack member'
 	},
 	{
-		formUrl: 'https://goo.gl/forms/69tZ0ovv6Asd32zg2',
+		formUrl: 'https://knightsofacademia.org/the-gathering/',
 		names: ['thegathering', 'the gathering', 'gathering', 'accountability'],
 		roleName: 'the gathering'
 	},
 	{
-		formUrl: 'https://goo.gl/forms/5klpWjPVeCkRfdWF2',
+		formUrl: 'https://knightsofacademia.org/the-clockwork-knights/',
 		names: [
 			'theclockworkknights',
 			'the clockwork knights',
@@ -44,7 +44,7 @@ module.exports = [
 		roleName: 'clockwork knights member'
 	},
 	{
-		formUrl: 'https://goo.gl/forms/GcPz3zG8kmh3ZJBw1',
+		formUrl: 'https://knightsofacademia.org/the-silver-tongues/',
 		names: [
 			'thesilvertongues',
 			'the silver tongues ',
@@ -54,7 +54,7 @@ module.exports = [
 		roleName: 'silver tongued'
 	},
 	{
-		formUrl: 'https://goo.gl/forms/mwHlk2Kj3kfC9Bfw1',
+		formUrl: 'https://knightsofacademia.org/the-students/',
 		names: ['thestudents', 'the students', 'students', 'study'],
 		roleName: 'students of koa'
 	}
