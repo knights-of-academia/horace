@@ -23,6 +23,10 @@
     "accountability": "000",
     "chooseroles": "000"
   },
+  "modules": {
+    "profanityArray": [
+      "bitch", "cock", "dick", "fag", "fuck", "idiot", "piss", "pussy", "porn", "retard", "shit", "tranny"]
+  },
   "emotes": {
     "acceptTOS": "✅",
     "bookmark": "🔖",
