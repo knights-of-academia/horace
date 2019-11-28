@@ -10,8 +10,7 @@ module.exports = [
 		roleName: 'bards member'
 	},
 	{
-		formUrl:
-            'https://knightsofacademia.org/fiction-faction/',
+		formUrl: 'https://knightsofacademia.org/fiction-faction/',
 		names: [
 			'thefictionfaction',
 			'the fiction faction',
