@@ -17,7 +17,7 @@ module.exports.execute = async (client, message, args) => {
 		let helpMessage = new Discord.RichEmbed()
 			.setColor('#ff0000')
 			.setTitle('List of available commands')
-			.setDescription(`Commands available in ${message.guild.name}`);
+			.setDescription('Commands available in' + message.guild.name);
 		commands.forEach(command => {
 			helpMessage.addField(`**${command.config.name}**`, `${command.config.description}`);
 		});
