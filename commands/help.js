@@ -1,4 +1,5 @@
 const fs = require('fs');
+const Discord = require('discord.js');
 let prefix;
 if (fs.existsSync('../config.json')) {
 	prefix = require('../config.json');
@@ -13,16 +14,19 @@ module.exports.execute = async (client, message, args) => {
 	let commandNames = [];
 
 	if (!args || args.length === 0) {
-		let helpMessage = ['__**List of available commands:**__\n\n'];
+		let helpMessage = new Discord.RichEmbed()
+			.setColor('#ff0000')
+			.setTitle('List of available commands')
+			.setDescription(`Commands available in ${message.guild.name}`);
 		commands.forEach(command => {
-			helpMessage.push(
-				`**${command.config.name}** - ${command.config.description}\n`,
-			);
+			helpMessage.addField(`**${command.config.name}**`, `${command.config.description}`);
 		});
-
-		await message.author.send(helpMessage.join('')).catch(err => {
-			console.error(err);
-		});
+		try {
+			message.author.send(helpMessage);
+		}
+		catch(err) {
+			console.log(err);
+		}
 		return await message.channel.send('I have sent you a private message with the command list.').catch(err => {
 			console.error(err);
 		});
@@ -31,17 +35,20 @@ module.exports.execute = async (client, message, args) => {
             || command.config.aliases.find(alias => alias === args[0].toLowerCase()));
 
 		if (command) {
-			let helpMessage = [`__**Help for the ${command.config.name} command:**__\n\n`];
-			helpMessage.push(command.config.description, '\n\n');
-			helpMessage.push('Aliases: ', command.config.aliases.map(alias => '`' + alias + '`').join(', '), '\n');
-			helpMessage.push('Usage: ', command.config.usage.map(usage => '`' + usage + '`').join(', '), '\n');
+			let helpMessage = new Discord.RichEmbed()
+				.setColor('#ff0000')
+				.setTitle(command.config.name)
+				.setDescription(`You asked for information on ${command.config.name} `);
+			helpMessage.addField('Description:', command.config.description);
+			helpMessage.addField('Aliases:', command.config.aliases);
+			helpMessage.addField('Usage:', command.config.usage);
 
-			await message.author.send(helpMessage.join('')).catch(err => {
-				console.error(err);
-			});
-			return await message.channel.send('I have sent you a private message with command information for that command.').catch(err => {
-				console.error(err);
-			});
+			try {
+				message.channel.send(helpMessage);
+			}
+			catch(err) {
+				console.log(err);
+			}
 		} else {
 			commands.forEach(command => {
 				commandNames.push(command.config.name);
