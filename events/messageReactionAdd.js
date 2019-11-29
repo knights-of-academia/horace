@@ -18,5 +18,5 @@ module.exports = async (client, reaction, user) => {
 	focusedRaiderActions.giveRole(reaction, user);
 
 	// Bookmark messages in DMs
-	bookmarkActions.bookmarkMessage(client, reaction);
+	bookmarkActions.bookmarkMessage(client, user, reaction);
 };
