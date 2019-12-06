@@ -93,5 +93,26 @@ module.exports = [
 		displayname: 'Monk Club',
 		names: ['monkclub', 'monk-club'],
 		description: 'The monk club is KOA\'s very own meditation club! Join us for daily group meditations by staying tuned into the #meditation channel. Practice mindfulness!'
+	},
+	{
+		displayname: 'Notion',
+		names: ['notion'],
+		description: 'Notion is an amazing productivity tool (I hear Pocket is a big fan...) that combines many useful features across various different apps into one nice hub. If you\'re a student, you can get their premium plan for free!'
+	},
+	{
+		displayname: 'Pom War',
+		names: ['pomwar', 'pom-war'],
+		description: 'The pom war is an event that takes place on KOA, versus another productivity community, every once in a while. In the latest intense battle, team Marinara took the win over team Caprese, but you can join our next one and fight for your team- and your productivity! It is based on each team getting the most "poms", based on the Pomodoro Technique. Stay tuned for our next war!'
+	},
+	{
+		displayname: 'Donate to KOA',
+		names: ['donate','donation'],
+		description: 'KOA is a community run organization, all done as a group effort by our amazing staff team! However, in order to hold up things like COTW and challenge gems alongside our beautiful website, money is a factor. If KOA has helped you in any way, feel free to donate via PayPal or by donating some gems to the Habitica bank! If donating puts you in a difficult financial situation, please do not donate- you come first above all else, it\'s the thought that counts.'
+	},
+	{
+		displayname: 'disturbedman',
+		names: ['disturbedman'],
+		description: 'A master economist, and maybe tennis player? 🤔 Not to mention the most exciting love life you\'ve ever seen, what else does a man need?'
 	}
+
 ];

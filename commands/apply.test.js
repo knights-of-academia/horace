@@ -38,6 +38,6 @@ test('Returns the correct form url when a valid argument is passed', async () =>
 	// Assert
 	const expectedResponse = `✔ **Fill out your user ID to receive an invite!**
 *Average Response Time: 24 hours or less*
-https://goo.gl/forms/m5onrVAaFc7RN1kg2`;
+https://knightsofacademia.org/the-round-table/`;
 	expect(responseMessage).toBe(expectedResponse);
 });

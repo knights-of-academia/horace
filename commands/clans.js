@@ -7,7 +7,8 @@ module.exports.execute = async (client, message) => {
 🔸 **The Gathering**: Accountability by **nurse4truth**#0929
 🔸 **The Clockwork Knights**: Productivity & Efficiency through the use of Systems by **vonKobra**#0286
 🔸 **The Silver Tongues**: Language & Culture by **Dotty**#6792
-🔸 **The Students**: Academics & all things Education by **erschmid**#2994`);
+🔸 **The Students**: Academics & all things Education by **erschmid**#2994
+🔸 **The Wolf Pack**: On the move for Health by **QueenWolf**#5509`);
 };
 
 module.exports.config = {
