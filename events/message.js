@@ -3,9 +3,10 @@ const cotwActions = require('../eventActions/cotwActions');
 const hocActions = require('../eventActions/hocActions');
 const snapshotActions = require('../eventActions/snapshotActions');
 const sleepclubActions = require('../eventActions/sleepclubActions');
-const profanityActions = require('../eventActions/profanityActions');
+// TEMP const profanityActions = require('../eventActions/profanityActions');
 const greetingAction = require('../eventActions/greetingAction');
 const accountabilityActions = require('../eventActions/accountabilityActions');
+const chainMessageAction = require ('../eventActions/checkChainMessage');
 
 module.exports = async (client, message) => {
 	if (!message.guild || message.author.bot) return;
@@ -27,7 +28,7 @@ module.exports = async (client, message) => {
 	}
 
 	// Check the message for profanity
-	profanityActions.checkForProfanity(client, message);
+	// TEMP profanityActions.checkForProfanity(client, message);
 	// Handle greetings
 	greetingAction.reactToGreeting(client, message);
 	// Handle hall of conquests
@@ -41,4 +42,7 @@ module.exports = async (client, message) => {
 	cotwActions.updateCotw(client, message);
 	// Handle accountability reactions
 	accountabilityActions.addReaction(client, message);
+	// Handle chain messages
+	chainMessageAction.chainMessageCheck(message);
+
 };
