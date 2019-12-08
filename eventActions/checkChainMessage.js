@@ -14,7 +14,6 @@ class CheckChainMessage {
 		});
 
 		console.log('Channels have been added to track chain messages!');
-		// DEBUG: console.log(trackerObject);
 	}
 
 	// Helper method to reset a chain
@@ -27,7 +26,7 @@ class CheckChainMessage {
 	static async makeChainMessage(channelId, channelInst){
 		if(trackerObject.msgCounts[channelId] == 3){
 			channelInst.send('' + trackerObject.msgContents[channelId]);
-			this.resetChannelChain(channelId, 'NIL'); // We don't want Horace continuing to send messages if people continue the chain (or do we? :eyes:)
+			// this.resetChannelChain(channelId, 'NIL'); If this is set, then we'd have another message sent if 3 more people send the same message... Anyway, all good!
 		}
 	}
 
@@ -49,9 +48,7 @@ class CheckChainMessage {
 		} else {
 			this.resetChannelChain(channelId, messageContent);
 		}
-        
-		console.log('The message, [' + messageContent + '] in channel with id [' + channelId + '] has a count of (' +
-        trackerObject.msgCounts['' + channelId + ''] + ') and the stored chain is (' + trackerObject.msgContents['' + channelId + ''] + ')');
+
 	}
 }
 
