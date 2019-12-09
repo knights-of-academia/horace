@@ -32,6 +32,7 @@
     "bookmark": "🔖",
     "hocReaction": "🎉",
     "sleeplogReaction": "🛏️",
+    "sleeplog": "<:log:644552324702011402>",
     "cotwVow": "⚔",
     "cotwReflection": "🛡",
     "pinMessage": "📌",
@@ -39,7 +40,8 @@
     "goodnight": "🌜",
     "accountability_emotes_array": ["💯", "529488404103299074", "👍", "🔥", "🙌", "👏", "👌", "💪", "587455770283737110", "531663637694382089"],
     "pom": "🍅",
-    "yes2": "562072692086276118"
+    "yes2": "562072692086276118",
+    "congrats": "✔️"
   },
   "pinLimit": 5,
   "reflectionCheckDepth": 5,
