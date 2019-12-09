@@ -19,7 +19,7 @@ module.exports.execute = async (client, message, args) => {
 			.setTitle('List of available commands')
 			.setDescription('Commands available in' + message.guild.name);
 		commands.forEach(command => {
-			helpMessage.addField(`**${command.config.name}**`, `${command.config.description}`);
+			helpMessage.addField(`**${prefix}${command.config.name}**`, `${command.config.description}`);
 		});
 		try {
 			message.author.send(helpMessage);
