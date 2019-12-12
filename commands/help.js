@@ -37,8 +37,8 @@ module.exports.execute = async (client, message, args) => {
 		if (command) {
 			let helpMessage = new Discord.RichEmbed()
 				.setColor('#ff0000')
-				.setTitle(command.config.name)
-				.setDescription(`You asked for information on ${command.config.name}`);
+				.setTitle(`${prefix}${command.config.name}`)
+				.setDescription(`You asked for information on ${prefix}${command.config.name}`);
 			helpMessage.addField('Description:', command.config.description);
 			helpMessage.addField('Aliases:', command.config.aliases);
 			helpMessage.addField('Usage:', command.config.usage);
