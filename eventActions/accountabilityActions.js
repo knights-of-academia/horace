@@ -159,7 +159,7 @@ class accountabilityActions {
 		});
 
 		// Check for emotes
-		if(message.content.toLowerCase().includes(':yes:') || message.content.toLowerCase().includes(':yes2:') || message.content.toLowerCase().includes(':white_check_mark:')){
+		if(message.content.toLowerCase().includes(':yes:') || message.content.toLowerCase().includes(':v_:') || message.content.toLowerCase().includes(':white_check_mark:')){
 			// Pull a random reaction from the common emotes for and add to post (personally I like the separation of variables, let me know if that's not preferred style)
 			const rand = Math.floor(Math.random() * length);
 			const selectedEmote = random_emotes[rand];
