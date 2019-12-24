@@ -107,3 +107,4 @@ public
 
 # VSCode Workspace Files
 .vscode
+/sequelizeFiles/connection.json

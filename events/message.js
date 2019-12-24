@@ -6,9 +6,10 @@ const sleepclubActions = require('../eventActions/sleepclubActions');
 const profanityActions = require('../eventActions/profanityActions');
 const greetingAction = require('../eventActions/greetingAction');
 const accountabilityActions = require('../eventActions/accountabilityActions');
-const chainMessageAction = require ('../eventActions/checkChainMessage');
+const chainMessageAction = require('../eventActions/checkChainMessage');
 
 module.exports = async (client, message) => {
+
 	if (!message.guild || message.author.bot) return;
 	const args = message.content.split(/\s+/g); // Return the message content and split the prefix.
 	const command =
