@@ -1,7 +1,0 @@
-{
-    "_comment": "Copy this file into one called 'connection.json', and fill in the proper info. That file is ignored by git, so your database information will not be leaked",
-    "database": "db",
-    "username": "userlogin",
-    "password": "passlogin",
-    "host": "localhost"
-}

@@ -2,7 +2,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const config = require('./config.json');
-const connect = require('./sequelizeFiles/connect.js');
+const connect = require('./databaseFiles/connect.js');
 
 const client = new Discord.Client();
 
