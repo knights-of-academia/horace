@@ -28,7 +28,7 @@ module.exports.execute = async (client, message, args) => {
 		const store = await Highlights.findAll({
 			where: { users: userID },
 		}).catch(errHandler);
-		message.channel.send('Here are all the stored things for your id, ' + userID + ': ' + JSON.stringify(store));
+		// message.channel.send('Here are all the stored things for your id, ' + userID + ': ' + JSON.stringify(store));
 		return await message.channel.send('I have gone ahead and highlighted the following for you: ' + keywords);
 
 		// Ensure database matches memory (?)

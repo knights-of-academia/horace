@@ -7,6 +7,7 @@ const sleepclubActions = require('../eventActions/sleepclubActions');
 const greetingAction = require('../eventActions/greetingAction');
 const accountabilityActions = require('../eventActions/accountabilityActions');
 const chainMessageAction = require('../eventActions/checkChainMessage');
+const highlightActions = require ('../eventActions/highlightActions');
 
 module.exports = async (client, message) => {
 
@@ -45,5 +46,8 @@ module.exports = async (client, message) => {
 	accountabilityActions.addReaction(client, message);
 	// Handle chain messages
 	chainMessageAction.chainMessageCheck(message);
+	// Check for highlights
+	highlightActions.checkForHighlight(client, message);
+
 
 };
