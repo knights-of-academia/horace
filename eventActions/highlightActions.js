@@ -5,6 +5,7 @@ class highlightActions {
 
 	// Method to call to check a message for a highlighted message
 	static async checkForHighlight(client, message){
+		if(message.content.charAt(0) === '!') return; // Ensure commands aren't caught
 		// For every phrase in the table
 		Highlights.findAll({
 			attributes: ['phrase', 'users']
@@ -12,12 +13,9 @@ class highlightActions {
 			for(var i = 0; i < result.length; i++){
 				let currentPhrase = result[i].phrase;
 				let currentId = result[i].users;
-				console.log('Looking for phrase... ' + currentPhrase);
-				console.log('That phrase has a user id of... ' + currentId);
 				// Check if the message.contains(that phrase)
-				if(message.content.includes(currentPhrase)){
+				if(message.content.toLowerCase().includes(currentPhrase)){
 					const user = client.users.get(currentId);
-					console.log('The user is... ' + user.username);
 					this.sendHighlightDM(client, user, message, currentPhrase);
 				}
 			}
@@ -29,10 +27,10 @@ class highlightActions {
 	// Method to call that DMs a user about a message containing a highlighted phrase
 	static async sendHighlightDM(client, user, message, highlightedPhrase) {
 		const workingMessage = message;
-		const starEmote = '⭐';
+		const sunEmote = '☀️';
 		const highlightNotification = new Discord.RichEmbed()
-			.setColor('#0F9BF1')
-			.setTitle(`${starEmote} Knights of Academia Highlight Alert ${starEmote}`)
+			.setColor('#FFEC09')
+			.setTitle(`${sunEmote} Knights of Academia Highlight Alert ${sunEmote}`)
 			.setDescription('One of your highlights has been triggered!')
 			.addField('Highlighted Phrase', highlightedPhrase)
 			.addField('Full Message', workingMessage)
