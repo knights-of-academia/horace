@@ -34,6 +34,7 @@ class highlightActions {
 			.setDescription('One of your highlights has been triggered!')
 			.addField('Highlighted Phrase', highlightedPhrase)
 			.addField('Full Message', workingMessage)
+			.addField('From', workingMessage.author)
 			.addField('Channel', workingMessage.channel);
 
 		user.send(highlightNotification);

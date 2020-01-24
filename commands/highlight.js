@@ -30,13 +30,14 @@ module.exports.execute = async (client, message, args) => {
 		Highlights.sync();
 
 		if(cmd === 'add') {
+
+			// If highlight is already added, say so
+
 			// Add entry to table
 			await Highlights.create({
 				phrase: keywords,
 				users: userID
 			}).catch(errHandler);
-
-			// TODO: If highlight is already added, say so
 
 			// Confirm highlight addition
 			const highlightsHelp = new Discord.RichEmbed()
@@ -54,9 +55,14 @@ module.exports.execute = async (client, message, args) => {
 					phrase: keywords,
 					users: userID
 				}
-			}).catch(errHandler);
-
-			// TODO: If the highlight doesn't exist, say so.
+			}).then(result =>{
+				console.log('Removal result: ' + result);
+				if(result == 0){
+					// TODO: If the highlight doesn't exist, say so.
+					user.send('You tried to remove a highlight, `' + keywords + '`, but it doesn\'t seem to exist.');
+					return;
+				}
+			});
 
 			// Confirm highlight addition
 			const highlightsHelp = new Discord.RichEmbed()
