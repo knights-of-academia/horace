@@ -50,6 +50,7 @@ module.exports.execute = async (client, message, args) => {
 		}
 		else if (cmd === 'remove') {
 			// Remove entry
+			let cont = true;
 			await Highlights.destroy({
 				where: {
 					phrase: keywords,
@@ -60,10 +61,13 @@ module.exports.execute = async (client, message, args) => {
 				if(result == 0){
 					// TODO: If the highlight doesn't exist, say so.
 					user.send('You tried to remove a highlight, `' + keywords + '`, but it doesn\'t seem to exist.');
-					return;
+					cont = false;
 				}
 			});
 
+			if(!cont){
+				return;
+			}
 			// Confirm highlight addition
 			const highlightsHelp = new Discord.RichEmbed()
 				.setColor('#FFEC09')

@@ -15,7 +15,7 @@ test('Sends correct clans message to channel', async () => {
 🔸 **The Round Table**: All things Hard Mode by **Alex**#8758
 🔸 **Bards of Academia**: All things music by **alivia_trivia**#9195
 🔸 **The Fiction Faction**: Creative Writing & Story Telling by **varrictethras**#5383
-🔸 **The Gathering**: Accountability by **nurse4truth**#0929
+🔸 **The Gathering**: Accountability by **anhero**#3771
 🔸 **The Clockwork Knights**: Productivity & Efficiency through the use of Systems by **vonKobra**#0286
 🔸 **The Silver Tongues**: Language & Culture by **Dotty**#6792
 🔸 **The Students**: Academics & all things Education by **erschmid**#2994
