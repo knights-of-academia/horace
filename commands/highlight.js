@@ -1,6 +1,7 @@
 // Get the Highlights Table stored in the SQLite database
 const Highlights = require('../databaseFiles/highlightsTable.js');
 const Discord = require('discord.js');
+const config = require('../config.json');
 
 // Error handler
 const errHandler = err => {
@@ -13,7 +14,7 @@ module.exports.execute = async (client, message, args) => {
 	const keywords = entirePhrase.substring(entirePhrase.indexOf(' ')+1); // Remove the first word, i.e. the command
 	const user = message.author;
 	const userID = user.id;
-	const sunEmote = '☀️';
+	const sunEmote = config.emotes.highlights;
 
 	if(keywords.length === 0){
 		const highlightsHelp = new Discord.RichEmbed()
@@ -57,7 +58,6 @@ module.exports.execute = async (client, message, args) => {
 					users: userID
 				}
 			}).then(result =>{
-				console.log('Removal result: ' + result);
 				if(result == 0){
 					// TODO: If the highlight doesn't exist, say so.
 					user.send('You tried to remove a highlight, `' + keywords + '`, but it doesn\'t seem to exist.');
@@ -83,7 +83,7 @@ module.exports.execute = async (client, message, args) => {
 			await Highlights.findAll({
 				users: userID
 			}).then(result => {
-				for(var i = 0; i < result.length; i++){
+				for(let i = 0; i < result.length; i++){
 					listOfWords.push(result[i].phrase);
 				}
 			});

@@ -10,7 +10,7 @@ class highlightActions {
 		Highlights.findAll({
 			attributes: ['phrase', 'users']
 		}).then(result => {
-			for(var i = 0; i < result.length; i++){
+			for(let i = 0; i < result.length; i++){
 				let currentPhrase = result[i].phrase;
 				let currentId = result[i].users;
 				// Check if the message.contains(that phrase)
