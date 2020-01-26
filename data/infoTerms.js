@@ -1,5 +1,15 @@
 module.exports = [
 	{
+		displayname: 'Horace',
+		names: ['horace', 'horacebot'],
+		description: 'Horace is KOA\'s own Discord Bot! Horace does a lot of things around the server. Feel free to contribute to Horace on GitHub (he\'s open source!) More information in the CompSci sector.'
+	},
+	{
+		displayname: 'Kugoi',
+		names: ['kugoi', 'mama-kugoi'],
+		description: 'There is so much to say about kugoi, where shall I begin?'
+	},
+	{
 		displayname: 'Book of the Month',
 		names: ['botm', 'book-of-the-month'],
 		description: 'The Book of the Month (BOTM) activity involves our BOTM Moderator posting polls for people to vote on what they want the next month\'s book to be, that every member of the club will endeavour to read over the course of the month. Look forward to interesting discussion and listening to other people\'s perspectives on the book! Feel free to check out <#382510727614824448> for more info.'

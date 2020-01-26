@@ -107,3 +107,5 @@ public
 
 # VSCode Workspace Files
 .vscode
+/sequelizeFiles/connection.json
+/sequelizeFiles/storagedata.db
