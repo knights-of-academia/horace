@@ -27,10 +27,10 @@ class highlightActions {
 	// Method to call that DMs a user about a message containing a highlighted phrase
 	static async sendHighlightDM(client, user, message, highlightedPhrase) {
 		const workingMessage = message;
-		const sunEmote = '☀️';
+		const highlightsEmote = '☀️';
 		const highlightNotification = new Discord.RichEmbed()
 			.setColor('#FFEC09')
-			.setTitle(`${sunEmote} Knights of Academia Highlight Alert ${sunEmote}`)
+			.setTitle(`${highlightsEmote} Knights of Academia Highlight Alert ${highlightsEmote}`)
 			.setDescription('One of your highlights has been triggered!')
 			.addField('Highlighted Phrase', highlightedPhrase)
 			.addField('Full Message', workingMessage)

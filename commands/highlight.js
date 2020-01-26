@@ -14,12 +14,12 @@ module.exports.execute = async (client, message, args) => {
 	const keywords = entirePhrase.substring(entirePhrase.indexOf(' ')+1); // Remove the first word, i.e. the command
 	const user = message.author;
 	const userID = user.id;
-	const sunEmote = config.emotes.highlights;
+	const highlightsEmote = config.emotes.highlights;
 
 	if(keywords.length === 0){
 		const highlightsHelp = new Discord.RichEmbed()
 			.setColor('#FFEC09')
-			.setTitle(`${sunEmote} Knights of Academia Highlight Help ${sunEmote}`)
+			.setTitle(`${highlightsEmote} Knights of Academia Highlight Help ${highlightsEmote}`)
 			.setDescription('Here are some commands to help you out with highlights!')
 			.addField('Add a highlight', '`!highlight add <word/phrase>`')
 			.addField('Remove a highlight', '`!highlight remove <word/phrase>`')
@@ -43,7 +43,7 @@ module.exports.execute = async (client, message, args) => {
 			// Confirm highlight addition
 			const highlightsHelp = new Discord.RichEmbed()
 				.setColor('#FFEC09')
-				.setTitle(`${sunEmote} Knights of Academia Highlight Addition ${sunEmote}`)
+				.setTitle(`${highlightsEmote} Knights of Academia Highlight Addition ${highlightsEmote}`)
 				.setDescription('I have added the following highlight as requested!')
 				.addField('Recently added highlight', `${keywords}`);
 			// Maybe send them the remaining highlights (if any)?
@@ -71,7 +71,7 @@ module.exports.execute = async (client, message, args) => {
 			// Confirm highlight addition
 			const highlightsHelp = new Discord.RichEmbed()
 				.setColor('#FFEC09')
-				.setTitle(`${sunEmote} Knights of Academia Highlight Removal ${sunEmote}`)
+				.setTitle(`${highlightsEmote} Knights of Academia Highlight Removal ${highlightsEmote}`)
 				.setDescription('I have removed the following highlight as requested!')
 				.addField('Recently removed highlight', `${keywords}`);
 			// Maybe send them the remaining highlights (if any)?
@@ -89,7 +89,7 @@ module.exports.execute = async (client, message, args) => {
 			});
 			const highlightsHelp = new Discord.RichEmbed()
 				.setColor('#FFEC09')
-				.setTitle(`${sunEmote} Knights of Academia Highlight List ${sunEmote}`)
+				.setTitle(`${highlightsEmote} Knights of Academia Highlight List ${highlightsEmote}`)
 				.setDescription('Here are your current highlights!')
 				.addField('Highlighted words and phrases', `${listOfWords}`);
 
