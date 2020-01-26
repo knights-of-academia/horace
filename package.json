@@ -21,7 +21,10 @@
     "discord.js": "^11.5.1",
     "eslint-plugin-jest": "^22.17.0",
     "habitica": "^4.0.0",
-    "rss-parser": "^3.7.2"
+    "mysql2": "^2.0.2",
+    "rss-parser": "^3.7.2",
+    "sequelize": "^5.21.3",
+    "sqlite3": "^4.1.1"
   },
   "engines": {
     "node": "8.10.0"
