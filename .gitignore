@@ -104,3 +104,8 @@ public
 
 # TernJS port file
 .tern-port
+
+# VSCode Workspace Files
+.vscode
+/sequelizeFiles/connection.json
+/sequelizeFiles/storagedata.db

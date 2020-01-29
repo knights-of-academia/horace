@@ -9,24 +9,43 @@
   "roles": {
     "cotwChampion": "000",
     "cotwManager": "000",
-    "initiate": "000"
+    "initiate": "000",
+    "focusedraider": "000"
   },
   "channels": {
     "citadel": "000",
     "cotw": "000",
     "tos": "000",
-    "accountability": "000"
+    "snapshots": "000",
+    "moderation": "000",
+    "sleepclub": "000",
+    "hallofconquests": "000",
+    "accountability": "000",
+    "chooseroles": "000"
+  },
+  "modules": {
+    "profanityArray": [
+      "bitch", "cock", "dick", "fag", "fuck", "idiot", "piss", "pussy", "porn", "retard", "shit", "tranny"]
   },
   "emotes": {
     "acceptTOS": "✅",
+    "bookmark": "🔖",
     "hocReaction": "🎉",
     "sleeplogReaction": "🛏️",
+    "sleeplog": "<:log:644552324702011402>",
     "cotwVow": "⚔",
     "cotwReflection": "🛡",
     "pinMessage": "📌",
     "goodmorning": "🌞",
-    "goodnight": "🌜"
+    "goodnight": "🌜",
+    "accountability_emotes_array": ["💯", "529488404103299074", "👍", "🔥", "🙌", "👏", "👌", "💪", "587455770283737110", "531663637694382089"],
+    "pom": "🍅",
+    "yes2": "562072692086276118",
+    "congrats": "✔️",
+    "highlights": "☀️"
   },
   "pinLimit": 5,
-  "reflectionCheckDepth": 5
+  "reflectionCheckDepth": 5,
+  "focusedRaiderMessageId": "000",
+  "chainMessageCharLimit": "40"
 }

@@ -1,5 +1,15 @@
 module.exports = [
 	{
+		displayname: 'Horace',
+		names: ['horace', 'horacebot'],
+		description: 'Horace is KOA\'s own Discord Bot! Horace does a lot of things around the server. Feel free to contribute to Horace on GitHub (he\'s open source!) More information in the CompSci sector.'
+	},
+	{
+		displayname: 'Kugoi',
+		names: ['kugoi', 'mama-kugoi'],
+		description: 'There is so much to say about kugoi, where shall I begin?'
+	},
+	{
 		displayname: 'Book of the Month',
 		names: ['botm', 'book-of-the-month'],
 		description: 'The Book of the Month (BOTM) activity involves our BOTM Moderator posting polls for people to vote on what they want the next month\'s book to be, that every member of the club will endeavour to read over the course of the month. Look forward to interesting discussion and listening to other people\'s perspectives on the book! Feel free to check out <#382510727614824448> for more info.'
@@ -93,5 +103,26 @@ module.exports = [
 		displayname: 'Monk Club',
 		names: ['monkclub', 'monk-club'],
 		description: 'The monk club is KOA\'s very own meditation club! Join us for daily group meditations by staying tuned into the #meditation channel. Practice mindfulness!'
+	},
+	{
+		displayname: 'Notion',
+		names: ['notion'],
+		description: 'Notion is an amazing productivity tool (I hear Pocket is a big fan...) that combines many useful features across various different apps into one nice hub. If you\'re a student, you can get their premium plan for free!'
+	},
+	{
+		displayname: 'Pom War',
+		names: ['pomwar', 'pom-war'],
+		description: 'The pom war is an event that takes place on KOA, versus another productivity community, every once in a while. In the latest intense battle, team Marinara took the win over team Caprese, but you can join our next one and fight for your team- and your productivity! It is based on each team getting the most "poms", based on the Pomodoro Technique. Stay tuned for our next war!'
+	},
+	{
+		displayname: 'Donate to KOA',
+		names: ['donate','donation'],
+		description: 'KOA is a community run organization, all done as a group effort by our amazing staff team! However, in order to hold up things like COTW and challenge gems alongside our beautiful website, money is a factor. If KOA has helped you in any way, feel free to donate via PayPal or by donating some gems to the Habitica bank! If donating puts you in a difficult financial situation, please do not donate- you come first above all else, it\'s the thought that counts.'
+	},
+	{
+		displayname: 'disturbedman',
+		names: ['disturbedman'],
+		description: 'A master economist, and maybe tennis player? 🤔 Not to mention the most exciting love life you\'ve ever seen, what else does a man need?'
 	}
+
 ];
