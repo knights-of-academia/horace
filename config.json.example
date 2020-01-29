@@ -46,5 +46,6 @@
   },
   "pinLimit": 5,
   "reflectionCheckDepth": 5,
-  "focusedRaiderMessageId": "000"
+  "focusedRaiderMessageId": "000",
+  "chainMessageCharLimit": "40"
 }
