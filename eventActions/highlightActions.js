@@ -34,7 +34,8 @@ class highlightActions {
 			.setDescription('One of your highlights has been triggered!')
 			.addField('Highlighted Phrase', highlightedPhrase)
 			.addField('Full Message', workingMessage)
-			.addField('From', workingMessage.author)
+			.addField('From', workingMessage.author, true)
+			.addField('Link to Message', `[Jump to Message](${workingMessage.url})`, true)
 			.addField('Channel', workingMessage.channel);
 
 		user.send(highlightNotification);
