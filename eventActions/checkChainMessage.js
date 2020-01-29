@@ -1,3 +1,5 @@
+const config = require('../config.json');
+
 let trackerObject = {
 	msgContents: [],
 	msgCounts: []
@@ -22,11 +24,16 @@ class CheckChainMessage {
 		trackerObject.msgCounts[channelId] = 1;
 	}
 
-	// Helper method to run the comparison if enough chains have been reached
+	// Helper method to run the comparison if enough chains have been reached. Horace will randomly chain after 3, 4, or 5 messages.
 	static async makeChainMessage(channelId, channelInst){
-		if(trackerObject.msgCounts[channelId] == 3){
+		// Send a message randomly on message number 3 or 4
+		const rand = Math.round(Math.random(3)+3);
+		if(trackerObject.msgCounts[channelId] == rand){
 			channelInst.send('' + trackerObject.msgContents[channelId]);
-			// this.resetChannelChain(channelId, 'NIL'); If this is set, then we'd have another message sent if 3 more people send the same message... Anyway, all good!
+		}
+		// Worst case, send it on 6
+		else if(trackerObject.msgCounts[channelId] == 6){
+			channelInst.send('' + trackerObject.msgContents[channelId]);
 		}
 	}
 
@@ -35,8 +42,8 @@ class CheckChainMessage {
 		const channelId = message.channel.id;
 		const messageContent = message.content;
 
-		// If the message length is greater than 20, forgettaboutit (potentially something editable in config?)
-		if(messageContent.length >= 20) {
+		// If the message length is greater than limit set in configuration, forgettaboutit
+		if(messageContent.length >= config.chainMessageCharLimit) {
 			this.resetChannelChain(channelId);
 		}
 
