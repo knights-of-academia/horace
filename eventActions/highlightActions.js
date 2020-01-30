@@ -1,11 +1,13 @@
 const Highlights = require('../databaseFiles/highlightsTable.js');
 const Discord = require('discord.js');
+const config = require('../config.json');
 
 class highlightActions {
 
 	// Method to call to check a message for a highlighted message
 	static async checkForHighlight(client, message){
 		if(message.content.charAt(0) === '!') return; // Ensure commands aren't caught
+		if(config.forbiddenHighlightChannels.includes(message.channel.id)) return; // Ensure people can't "spy" on channels
 		// For every phrase in the table
 		Highlights.findAll({
 			attributes: ['phrase', 'users']
