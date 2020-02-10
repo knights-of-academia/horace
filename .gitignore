@@ -109,3 +109,4 @@ public
 .vscode
 /sequelizeFiles/connection.json
 /sequelizeFiles/storagedata.db
+/databaseFiles/storagedata.db
