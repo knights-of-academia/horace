@@ -9,7 +9,7 @@ module.exports = async (client, channel) => {
 			return;
 		}
 		else if(numOfPins >= 45){
-			currentChannel.send('**Heads up!** This channel has almost at its pin limit! There are currently ' + numOfPins + ' pinned messages.');
+			currentChannel.send('**Heads up!** This channel is almost at its pin limit! There are currently ' + numOfPins + ' pinned messages.');
 			return;
 		}
 	});
