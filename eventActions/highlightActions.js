@@ -18,7 +18,7 @@ class highlightActions {
 				let currentPhrase = result[i].phrase;
 				let currentId = result[i].users;
 				// Check if the message.contains(that phrase)
-				if(message.content.toLowerCase().includes(currentPhrase)){
+				if(message.content.toLowerCase().includes(' ' + currentPhrase + ' ')){
 					const user = client.users.get(currentId);
 					this.sendHighlightDM(client, user, message, currentPhrase);
 				}
