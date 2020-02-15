@@ -107,6 +107,9 @@ public
 
 # VSCode Workspace Files
 .vscode
-/sequelizeFiles/connection.json
-/sequelizeFiles/storagedata.db
+
+# Highlight database files
 /databaseFiles/storagedata.db
+
+# COTW information file
+/data/cotw.json
