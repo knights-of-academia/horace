@@ -25,6 +25,11 @@ module.exports = [
 		description: 'The only person with control over the Guardians, but I have heard that he is owned by a mighty creature by the name of Merlin.'
 	},
 	{
+		displayname: 'Pocket',
+		names: ['pocket'],
+		description: 'A true wizard of words, a real world yogi and a world class actor!'
+	},
+	{
 		displayname: 'Kugoi',
 		names: ['kugoi', 'mama-kugoi'],
 		description: 'There is so much to say about kugoi, where shall I begin?'
