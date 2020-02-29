@@ -22,7 +22,7 @@ module.exports = [
 	{
 		displayname: 'Alex',
 		names: ['alex'],
-		description: 'The only person with control over the Guardians, but I have heard that he is owned by a mighty creatured by the name of Merlin.'
+		description: 'The only person with control over the Guardians, but I have heard that he is owned by a mighty creature by the name of Merlin.'
 	},
 	{
 		displayname: 'Kugoi',
