@@ -5,6 +5,31 @@ module.exports = [
 		description: 'Horace is KOA\'s own Discord Bot! Horace does a lot of things around the server. Feel free to contribute to Horace on GitHub (he\'s open source!) More information in the CompSci sector.'
 	},
 	{
+		displayname: 'GRK',
+		names: ['grk', 'gherkins'],
+		description: 'A sensate in disguise, a sensate who really likes Hamilton.'
+	},
+	{
+		displayname: 'Tekrus',
+		names: ['tekrus', 'tek'],
+		description: 'I know about Tekrus, no need to teach me.'
+	},
+	{
+		displayname: '5.5',
+		names: ['55', '5.5'],
+		description: 'People in the +5.5 timezone, they are a really nice bunch.'
+	},
+	{
+		displayname: 'Alex',
+		names: ['alex'],
+		description: 'The only person with control over the Guardians, but I have heard that he is owned by a mighty creature by the name of Merlin.'
+	},
+	{
+		displayname: 'Pocket',
+		names: ['pocket'],
+		description: 'A true wizard of words, a real world yogi, and a world class actor!'
+	},
+	{
 		displayname: 'Kugoi',
 		names: ['kugoi', 'mama-kugoi'],
 		description: 'There is so much to say about kugoi, where shall I begin?'
