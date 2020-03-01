@@ -27,7 +27,7 @@ module.exports = [
 	{
 		displayname: 'Pocket',
 		names: ['pocket'],
-		description: 'A true wizard of words, a real world yogi and a world class actor!'
+		description: 'A true wizard of words, a real world yogi, and a world class actor!'
 	},
 	{
 		displayname: 'Kugoi',
