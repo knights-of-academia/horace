@@ -5,6 +5,31 @@ module.exports = [
 		description: 'Horace is KOA\'s own Discord Bot! Horace does a lot of things around the server. Feel free to contribute to Horace on GitHub (he\'s open source!) More information in the CompSci sector.'
 	},
 	{
+		displayname: 'Wordvalkyrie',
+		names: ['wordvalkyrie', 'valkyrie'],
+		description: 'Translator of rock and roll into ASL. 🤘'
+	},
+	{
+		displayname: 'Shaur',
+		names: ['shaur'],
+		description: ' Is she 12? 35? Who knows? All we know is that birds love her.'
+	},
+	{
+		displayname: 'Art',
+		names: ['art'],
+		description: 'wwwwww'
+	},
+	{
+		displayname: 'wwwwww',
+		names: ['truly an Art'],
+		description: 'truly an Art'
+	},
+	{
+		displayname: 'Unlucki',
+		names: ['unlucki'],
+		description: 'Watcher of KOA, she has the sharpest eyes and will always notice if the sidebar changes.'
+	},
+	{
 		displayname: 'GRK',
 		names: ['grk', 'gherkins'],
 		description: 'A sensate in disguise, a sensate who really likes Hamilton.'
