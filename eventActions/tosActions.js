@@ -28,7 +28,7 @@ Here are a few things you can ask me:
 -!help
 -!highlight
 -!clans/!apply
--!invite [koa][koai][camelot]
+-!invite [koa][koai][jesters]
 -!choose [choice 1],[choice 2]`);
 			});
 		}
