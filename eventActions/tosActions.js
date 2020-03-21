@@ -11,25 +11,25 @@ class tosActions {
 					// Send welcome message to the Citadel
 					client.channels.get(config.channels.citadel).send(`🎉 **A new member has arrived!** 🎉\nWelcome to Knights of Academia <@${user.id}>!`);
 					// Send message to user directly
-					user.send("**Welcome to KOA!** :blush:
+				}
+				user.send(`**Welcome to KOA!** :blush:
 
-To begin, say hello in [link to citadel] and read up in [link to map-of-koa] for our step by step guide.
+To begin, say hello in <#382364344731828226> and read up in <#384040181763670026> for our step by step guide.
 Lastly, to learn more visit us any time at: <https://knightsofacademia.org>.
 
 
-**Ask me questions, tell me to do stuff.** :horace:
+**Ask me questions, tell me to do stuff.**
 I am your all in one assistant, designed to help and cater to your needs. It's nice to meet you. 
 
 Here are a few things you can ask me:
 
-> • `!info [term]`
-> • `!raid`
-> • `!help`
-> • `!highlight`
-> • `!clans/!apply`
-> • `!invite[koa][koai][camelot]`
-> • `!choose[choice one],[choice two]`")
-				}
+-!info [term]
+-!raid
+-!help
+-!highlight
+-!clans/!apply
+-!invite [koa][koai][camelot]
+-!choose [choice 1],[choice 2]`);
 			});
 		}
 	}
