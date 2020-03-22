@@ -65,9 +65,9 @@ module.exports = [
 		description: 'The Book of the Month (BOTM) activity involves our BOTM Moderator posting polls for people to vote on what they want the next month\'s book to be, that every member of the club will endeavour to read over the course of the month. Look forward to interesting discussion and listening to other people\'s perspectives on the book! Feel free to check out <#382510727614824448> for more info.'
 	},
 	{
-		displayname: 'Camelot',
-		names: ['camelot'],
-		description: 'The place for memes, ranting, debates, and pretty much anything else that might not be allowed in KOA Main. Feel free to grab a link to it with `!invite camelot` or in <#403260793644384266>!'
+		displayname: 'Jesters of Academia',
+		names: ['jesters', 'jesters-of-academia', 'camelot'],
+		description: 'The place for memes, ranting, debates, and pretty much anything else that might not be allowed in KOA Main. Feel free to grab a link to it with `!invite jesters` or in <#403260793644384266>!'
 	},
 	{
 		displayname: 'Citadel',
