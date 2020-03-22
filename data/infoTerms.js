@@ -66,7 +66,7 @@ module.exports = [
 	},
 	{
 		displayname: 'Jesters of Academia',
-		names: ['jesters', 'jesters-of-academia'],
+		names: ['jesters', 'jesters-of-academia', 'camelot'],
 		description: 'The place for memes, ranting, debates, and pretty much anything else that might not be allowed in KOA Main. Feel free to grab a link to it with `!invite jesters` or in <#403260793644384266>!'
 	},
 	{
