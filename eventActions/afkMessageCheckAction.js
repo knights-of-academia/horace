@@ -69,12 +69,11 @@ class afkMessageCheckAction {
 					}
 				}).then(result => {
 					if (result.length == 1) {
-
 						message.guild.fetchMember(result[0].user).then(user => {
 							let name = user.nickname ? user.nickname : user.user.username;
 							const embed = new Discord.RichEmbed()
 								.setTitle(`${name} is not here`)
-								.setDescription(result[0].message)
+								.addField('Message:',result[0].message)
 								.setColor('#FFEC09');
 							message.channel.send(embed).then(msg => msg.delete(5000).catch(() => console.log('Tried deleting afk message that was already deleted')));
 						});
