@@ -6,11 +6,11 @@ const sequelize = connect.sequelize;
 module.exports = sequelize.define('Afk', {
 	message: {
 		type: Sequelize.STRING,
-        allowNull: true
+		allowNull: true
 	},
 	user: {
 		type: Sequelize.STRING,
-        allowNull: false,
-        unique: true        
+		allowNull: false,
+		unique: true        
 	}
 });
