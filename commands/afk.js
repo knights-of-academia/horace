@@ -12,7 +12,7 @@ module.exports.execute = async (client, message, args) => {
 			message: afkMessage,
 			user: sender.id
 		}).then(() => {
-			message.channel.send('I have marked you as AFK. Safe travels!').then(msg => msg.delete(5000).catch());
+			sender.send('I have marked you as AFK. Safe travels!').then(msg => msg.delete(5000).catch());
 		}).catch(err => {
 			if (err.name == 'SequelizeUniqueConstraintError') {
 				return;

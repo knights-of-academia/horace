@@ -45,7 +45,7 @@ class afkMessageCheckAction {
 				}
 			}).then(result => {
 				if (result.length == 1) {
-					message.channel.send(noLongerAFKMessage).then(msg => {
+					message.author.send(noLongerAFKMessage).then(msg => {
 						msg.react('✅');
 						msg.react('❌');
 						let collector = msg.createReactionCollector(reactionFilter, { time: 15000 });
