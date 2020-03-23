@@ -81,7 +81,9 @@ module.exports.execute = async (client, message, args) => {
 			// Fetch all of the keywords where the user is the user
 			let listOfWords = new Array();
 			await Highlights.findAll({
-				users: userID
+				where: {
+					users: userID
+				}
 			}).then(result => {
 				for(let i = 0; i < result.length; i++){
 					listOfWords.push(result[i].phrase);
