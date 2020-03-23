@@ -1,34 +1,24 @@
 // Get the afk Table stored in the SQLite database
 const Afks = require('../databaseFiles/afkTable.js');
-const Discord = require('discord.js');
-const config = require('../config.json');
 
 
 module.exports.execute = async (client, message, args) => {
-	const noLongerAFKMessage = new Discord.RichEmbed()
-		.setTitle(`You are currently AFK, ${message.member.nickname}`)
-		.addField('Are you back?', 'Then react with ✅. Otherwise react with ❌ or leave this message.')
-		.setColor('#FFEC09');
+	const sender = message.author;
 	const afkMessage = args.length > 0 ? args.join(' ') : 'They didn\'t tell us where they went...';
-	const user = message.author.id;   
-	Afks.sync();
 
-	await Afks.create({
-		message: afkMessage,
-		user: user
-	}).then(() => {
-		message.channel.send('I have marked you as AFK. Safe travels!').then(msg => msg.delete(5000));
-	}).catch(err => {
-		if (err.name == 'SequelizeUniqueConstraintError') {
-			message.channel.send(noLongerAFKMessage).then(msg => {
-				msg.react('✅');
-				msg.react('❌');
-				msg.delete(15000);
-			});
-			return;
-		}
-		console.error('Afk sequelize error: ', err);
-	});
+	Afks.sync().then(() =>
+
+		Afks.create({
+			message: afkMessage,
+			user: sender.id
+		}).then(() => {
+			message.channel.send('I have marked you as AFK. Safe travels!').then(msg => msg.delete(5000).catch());
+		}).catch(err => {
+			if (err.name == 'SequelizeUniqueConstraintError') {
+				return;
+			}
+			console.error('Afk sequelize error: ', err);
+		}));
 };
 
 module.exports.config = {

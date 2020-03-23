@@ -8,6 +8,7 @@ const greetingAction = require('../eventActions/greetingAction');
 const accountabilityActions = require('../eventActions/accountabilityActions');
 const chainMessageAction = require('../eventActions/checkChainMessage');
 const highlightActions = require ('../eventActions/highlightActions');
+const afkAction = require('../eventActions/afkMessageCheckAction');
 
 module.exports = async (client, message) => {
 
@@ -48,6 +49,9 @@ module.exports = async (client, message) => {
 	chainMessageAction.chainMessageCheck(message);
 	// Check for highlights
 	highlightActions.checkForHighlight(client, message);
+	// Check afk status and mentions
+	afkAction.checkIfUserIsAFK(message);
+	afkAction.checkForMention(message);
 
 
 };
