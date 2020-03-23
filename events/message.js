@@ -4,7 +4,7 @@ const hocActions = require('../eventActions/hocActions');
 const snapshotActions = require('../eventActions/snapshotActions');
 const sleepclubActions = require('../eventActions/sleepclubActions');
 const profanityActions = require('../eventActions/profanityActions');
-const greetingAction = require('../eventActions/greetingAction');
+const citadelActions = require('../eventActions/citadelActions');
 const accountabilityActions = require('../eventActions/accountabilityActions');
 const chainMessageAction = require('../eventActions/checkChainMessage');
 const highlightActions = require ('../eventActions/highlightActions');
@@ -32,7 +32,7 @@ module.exports = async (client, message) => {
 	// Check the message for profanity
 	profanityActions.checkForProfanity(client, message);
 	// Handle greetings
-	greetingAction.reactToGreeting(client, message);
+	citadelActions.greetMorningOrNight(client, message);
 	// Handle hall of conquests
 	hocActions.reactWithLetsGo(client, message);
 	// Handle snapshots
