@@ -18,8 +18,9 @@ class afkMessageCheckAction {
 							user: sender.id
 						}
 					}).then(result => {
+						// User successfully removed from table
 						if (result == 1) {
-							sender.send('Welcome back, knight!');
+							sender.send('Welcome back, knight!').then(message => message.delete(5000));
 							reaction.message.delete().catch(() => console.log('Tried deleting afk message that was already deleted'));
 							return;
 						}
@@ -34,7 +35,9 @@ class afkMessageCheckAction {
 		};
 		const noLongerAFKMessage = new Discord.RichEmbed()
 			.setTitle(`You are currently AFK, ${message.member.nickname ? message.member.nickname : message.author.username}`)
-			.addField('Are you back?', 'Then react with ✅. Otherwise react with ❌ or leave this message.')
+			.addField('Are you back?', 'Then react with ✅',true)
+			.addField('If you are not back!', 'Then react with ❌',true)
+			.setFooter('This message will delete itself after 15 seconds')
 			.setColor('#FFEC09');
 		const user = message.author;
 
@@ -48,6 +51,7 @@ class afkMessageCheckAction {
 					message.author.send(noLongerAFKMessage).then(msg => {
 						msg.react('✅');
 						msg.react('❌');
+						// Use reaction filter to remove to remove the user from the database rather than an event
 						let collector = msg.createReactionCollector(reactionFilter, { time: 15000 });
 						collector.on('end', () => {
 							msg.delete().catch(() => console.log('Tried deleting afk message that was already deleted'));
@@ -73,7 +77,7 @@ class afkMessageCheckAction {
 							let name = user.nickname ? user.nickname : user.user.username;
 							const embed = new Discord.RichEmbed()
 								.setTitle(`${name} is not here`)
-								.addField('Message:',result[0].message)
+								.addField('AFK Message:',result[0].message)
 								.setColor('#FFEC09');
 							message.channel.send(embed).then(msg => msg.delete(5000).catch(() => console.log('Tried deleting afk message that was already deleted')));
 						});
