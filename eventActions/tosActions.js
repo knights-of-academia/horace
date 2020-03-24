@@ -10,9 +10,9 @@ class tosActions {
 					guildMember.removeRole(initiateRole);
 					// Send welcome message to the Citadel
 					client.channels.get(config.channels.citadel).send(`🎉 **A new member has arrived!** 🎉\nWelcome to Knights of Academia <@${user.id}>!`)
-					.then(message => {
-						message.react(config.emotes.wave);
-					});
+						.then(message => {
+							message.react(config.emotes.wave);
+						});
 				}
 			});
 		}
