@@ -40,6 +40,6 @@ fs.readdir('./commands/', (err, files) => {
 });
 
 // Connect to given database
-connect.instantiateConnection();
+//connect.instantiateConnection();
 
 client.login(config.token);
