@@ -5,6 +5,56 @@ module.exports = [
 		description: 'Horace is KOA\'s own Discord Bot! Horace does a lot of things around the server. Feel free to contribute to Horace on GitHub (he\'s open source!) More information in the CompSci sector.'
 	},
 	{
+		displayname: 'Wordvalkyrie',
+		names: ['wordvalkyrie', 'valkyrie'],
+		description: 'Translator of rock and roll into ASL. 🤘'
+	},
+	{
+		displayname: 'Shaur',
+		names: ['shaur'],
+		description: ' Is she 12? 35? Who knows? All we know is that birds love her.'
+	},
+	{
+		displayname: 'Art',
+		names: ['art'],
+		description: 'wwwwww'
+	},
+	{
+		displayname: 'wwwwww',
+		names: ['truly an Art'],
+		description: 'truly an Art'
+	},
+	{
+		displayname: 'Unlucki',
+		names: ['unlucki'],
+		description: 'Watcher of KOA, she has the sharpest eyes and will always notice if the sidebar changes.'
+	},
+	{
+		displayname: 'GRK',
+		names: ['grk', 'gherkins'],
+		description: 'A sensate in disguise, a sensate who really likes Hamilton.'
+	},
+	{
+		displayname: 'Tekrus',
+		names: ['tekrus', 'tek'],
+		description: 'I know about Tekrus, no need to teach me.'
+	},
+	{
+		displayname: '5.5',
+		names: ['55', '5.5'],
+		description: 'People in the +5.5 timezone, they are a really nice bunch.'
+	},
+	{
+		displayname: 'Alex',
+		names: ['alex'],
+		description: 'The only person with control over the Guardians, but I have heard that he is owned by a mighty creature by the name of Merlin.'
+	},
+	{
+		displayname: 'Pocket',
+		names: ['pocket'],
+		description: 'A true wizard of words, a real world yogi, and a world class actor!'
+	},
+	{
 		displayname: 'Kugoi',
 		names: ['kugoi', 'mama-kugoi'],
 		description: 'There is so much to say about kugoi, where shall I begin?'
@@ -15,9 +65,9 @@ module.exports = [
 		description: 'The Book of the Month (BOTM) activity involves our BOTM Moderator posting polls for people to vote on what they want the next month\'s book to be, that every member of the club will endeavour to read over the course of the month. Look forward to interesting discussion and listening to other people\'s perspectives on the book! Feel free to check out <#382510727614824448> for more info.'
 	},
 	{
-		displayname: 'Camelot',
-		names: ['camelot'],
-		description: 'The place for memes, ranting, debates, and pretty much anything else that might not be allowed in KOA Main. Feel free to grab a link to it with `!invite camelot` or in <#403260793644384266>!'
+		displayname: 'Jesters of Academia',
+		names: ['jesters', 'jesters-of-academia', 'camelot'],
+		description: 'The place for memes, ranting, debates, and pretty much anything else that might not be allowed in KOA Main. Feel free to grab a link to it with `!invite jesters` or in <#403260793644384266>!'
 	},
 	{
 		displayname: 'Citadel',
@@ -123,6 +173,45 @@ module.exports = [
 		displayname: 'disturbedman',
 		names: ['disturbedman'],
 		description: 'A master economist, and maybe tennis player? 🤔 Not to mention the most exciting love life you\'ve ever seen, what else does a man need?'
+	},
+	{
+		displayname: 'Page',
+		names: ['page'],
+		description: 'A role for seasoned, contributive members of our community. You gain access complimentary DJ permissions for full access to our music bot'
+	},
+	{
+		displayname: 'Squire',
+		names: ['squire'],
+		description: 'A role for seasoned, contributive members of our community. You have your name in a proud shade of pink, the ability to use external emojis and those juicy bragging rights.'
+	},
+	{
+		displayname: 'Knight',
+		names: ['knight'],
+		description: 'A coveted title for the Knights of Academia. Only a handful have been dubbed with this title. You have your name is a cool shade of orange, the ability to create instant invites, and even more juicy bragging rights!'
+	},
+	{
+		displayname: 'Baron',
+		names: ['baron'],
+		description: 'A prestigious and powerful title for the truest Knights of Academia. Very few have earned this title. You\'ll have your name in a clean, bright shade of red, the ability to weigh in with Guardians in what emojis are added, priority votes in #voting-hall, and even more bragging rights.'
+	},
+	{
+		displayname: 'Champion',
+		names: ['champion'],
+		description: 'The ultimate and highest title of KOA. It remians a legendary myth for thos who seek to claim it. You\'ll have your name in a brilliant shade of yellow, and a limited edition KOA Pendant shipped to you free of charge.'
+	},
+	{
+		displayname: 'Sector Leaders',
+		names: ['sector-leader', 'sectorleader'],
+		description: 'The overseers of our sector communities, co-ordinators of fun, themed challenges, and seers of the sectors\' futures.'
+	},
+	{
+		displayname: 'Sector Hands',
+		names: ['sector-hand', 'sectorhand'],
+		description: 'The right hand men, and women, of our Sector Leaders. 2nd in command when the leaders are unavailable.'
+	},
+	{
+		displayname: 'RaniOfTheRain',
+		names: ['ranioftherain'],
+		description: 'CybSec Devotee and Renaissance Woman of Epic Proportions. Time? Not so much.'
 	}
-
 ];
