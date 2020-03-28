@@ -64,7 +64,7 @@ module.exports.execute = async (client, message, args) => {
 				return user.send(highlightsHelp);
 			}
 		}
-		else if (cmd === 'remove') {
+		else if (cmd === 'remove' || cmd === 'delete') {
 			// Remove entry
 			let cont = true;
 			await Highlights.destroy({
