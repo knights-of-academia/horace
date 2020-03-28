@@ -33,9 +33,9 @@ test('Returns the correct response when given a search term', async () => {
 	const message = new messageStub();
 
 	// Act
-	const responseMessage = await info.execute(null, message, ['camelot']);
+	const responseMessage = await info.execute(null, message, ['jesters']);
 
 	// Assert
-	const expectedResponse = 'The place for memes, ranting, debates, and pretty much anything else that might not be allowed in KOA Main. Feel free to grab a link to it with `!invite camelot` or in <#403260793644384266>!';
+	const expectedResponse = 'The place for memes, ranting, debates, and pretty much anything else that might not be allowed in KOA Main. Feel free to grab a link to it with `!invite jesters` or in <#403260793644384266>!';
 	expect(responseMessage.description).toBe(expectedResponse);
 });
