@@ -20,7 +20,7 @@ class bookmarkActions {
 				bookmarkEmbed.addField('Full Message', chunk);
 				if(workingMessage.attachments.array().length > 0){
 					const attchmnt = workingMessage.attachments.array()[0].url;
-					bookmarkEmbed.addField('Attachment', attchmnt)
+					bookmarkEmbed.addField('Attachment', attchmnt);
 				}
 			}
 
