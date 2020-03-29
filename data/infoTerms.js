@@ -147,7 +147,7 @@ module.exports = [
 	{
 		displayname: 'XP',
 		names: ['xp', 'exp'],
-		description: 'XP is something that you get for contributions to the server i.e. sending messages. 15-25 XP is given every message, and you can only gain XP once a minute. Keep in mind that XP is off in <#382364344731828226>, <#415261994887938048>, <#382921625768689665> and <#529505169168138240>. Event channels are also ignored.'
+		description: 'XP is something that you get for contributions to the server i.e. sending messages. 15-25 XP is given every message, and you can only gain XP once a minute. Keep in mind that XP is off in <#382364344731828226>, <#415261994887938048>, and <#382921625768689665>. Event channels are also ignored.'
 	},
 	{
 		displayname: 'Monk Club',
