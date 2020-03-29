@@ -18,10 +18,14 @@ class bookmarkActions {
 
 			for (const chunk of messageChunks) {
 				bookmarkEmbed.addField('Full Message', chunk);
-				if(workingMessage.attachments.array().length > 0){
-					const attchmnt = workingMessage.attachments.array()[0].url;
-					bookmarkEmbed.addField('Attachment', attchmnt);
-				}
+			}
+
+			// Add link to attachment
+			if(workingMessage.attachments.array().length > 0){
+				const attchmnt = workingMessage.attachments.array()[0].url;
+				console.log(attchmnt);
+				bookmarkEmbed.addField('Attachment', attchmnt)
+					.setImage(attchmnt);
 			}
 
 			user.send(bookmarkEmbed);
