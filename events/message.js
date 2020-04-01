@@ -4,10 +4,11 @@ const hocActions = require('../eventActions/hocActions');
 const snapshotActions = require('../eventActions/snapshotActions');
 const sleepclubActions = require('../eventActions/sleepclubActions');
 const profanityActions = require('../eventActions/profanityActions');
-const greetingAction = require('../eventActions/greetingAction');
+const citadelActions = require('../eventActions/citadelActions');
 const accountabilityActions = require('../eventActions/accountabilityActions');
 const chainMessageAction = require('../eventActions/checkChainMessage');
 const highlightActions = require ('../eventActions/highlightActions');
+const afkAction = require('../eventActions/afkMessageCheckAction');
 
 module.exports = async (client, message) => {
 
@@ -32,7 +33,7 @@ module.exports = async (client, message) => {
 	// Check the message for profanity
 	profanityActions.checkForProfanity(client, message);
 	// Handle greetings
-	greetingAction.reactToGreeting(client, message);
+	citadelActions.greetMorningOrNight(client, message);
 	// Handle hall of conquests
 	hocActions.reactWithLetsGo(client, message);
 	// Handle snapshots
@@ -48,6 +49,9 @@ module.exports = async (client, message) => {
 	chainMessageAction.chainMessageCheck(message);
 	// Check for highlights
 	highlightActions.checkForHighlight(client, message);
+	// Check afk status and mentions
+	afkAction.checkIfUserIsAFK(message);
+	afkAction.checkForMention(message);
 
 
 };
