@@ -21,7 +21,7 @@ module.exports = [
 	},
 	{
 		displayname: 'wwwwww',
-		names: ['truly an Art'],
+		names: ['wwwwww'],
 		description: 'truly an Art'
 	},
 	{
