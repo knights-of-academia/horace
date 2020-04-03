@@ -14,11 +14,11 @@ InfoTerms.sync();
 SearchWords.sync();
 
 module.exports.execute = async (client, message, args) => {
-	const cmd = args[0]; //The command action word
+	const cmd = args[0];
 	const term = args[1];
 	const entirePhrase = args.join(' ');
 	const keywords = entirePhrase.substring(entirePhrase.indexOf(' ')+1);
-	const descript = keywords.substring(keywords.indexOf('-')+1);
+	const desc = keywords.substring(keywords.indexOf('-')+1);
 	const user = message.author;
 	const infoEmote = config.emotes.info;
 	
@@ -40,7 +40,7 @@ module.exports.execute = async (client, message, args) => {
 		await message.author.send(infoMessage).catch(err => {
 			console.error(err);
 		});
-		return await message.channel.send('I have sent you a private message with the list of available search terms').catch(err => {
+		return await message.channel.send('I have sent you a private message with the list of available search terms.').catch(err => {
 			console.error(err);
 		});
 		
@@ -69,7 +69,7 @@ module.exports.execute = async (client, message, args) => {
 				//Add entry to InfoTerm Table
 				await InfoTerms.create({
 					term: term,
-					description: descript
+					description: desc
 				}).catch(errHandler);
 					
 				//Add keywords to SearchWords Table
@@ -144,7 +144,7 @@ module.exports.execute = async (client, message, args) => {
 				}).catch(errHandler);
 							
 				await InfoTerms.update({
-					description: descript
+					description: desc
 				}, {
 					where: {
 						term: termToUpdate[0].term
@@ -208,5 +208,5 @@ module.exports.config = {
 	name: 'info',
 	aliases: ['info', 'about'],
 	description: 'I will send you information about a term.',
-	usage: ['info']
+	usage: ['info', 'info add', 'info remove', 'info edit']
 };
