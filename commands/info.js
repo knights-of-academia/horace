@@ -6,7 +6,7 @@ const config = require('../config.json');
 
 // Error handler
 const errHandler = err => {
-    console.error('Info sequelize error: ', err);
+	console.error('Info sequelize error: ', err);
 };
 
 //Ensure the tables exist if not already
@@ -22,9 +22,9 @@ module.exports.execute = async (client, message, args) => {
 	const user = message.author;
 	const infoEmote = config.emotes.info;
 
-    if(keywords.length === 0){
-        // if no term or command is provided, show available search terms
-        const delimiter = ',';
+	if(keywords.length === 0){
+		// if no term or command is provided, show available search terms
+		const delimiter = ',';
 		let theInfoTerms = new Array();
 		await InfoTerms.findAll({
 			attributes: ['term'],
@@ -35,17 +35,17 @@ module.exports.execute = async (client, message, args) => {
 			}
 		});
 
-        const infoMessage = '___**List of available search terms:**__\n\n' + theInfoTerms.join(delimiter);
+		const infoMessage = '___**List of available search terms:**__\n\n' + theInfoTerms.join(delimiter);
 
-        await message.author.send(infoMessage).catch(err => {
-            console.error(err);
-        });
-        return await message.channel.send('I have sent you a private message with the list of available search terms').catch(err => {
-            console.error(err);
-        })
+		await message.author.send(infoMessage).catch(err => {
+			console.error(err);
+		});
+		return await message.channel.send('I have sent you a private message with the list of available search terms').catch(err => {
+			console.error(err);
+		});
 
-    }
-    else if (keywords.length > 1) {
+	}
+	else if (keywords.length > 1) {
 
 		if (cmd === 'add') { //Add a new term
 			if(message.channel.id === config.channels.commandcenter
@@ -89,7 +89,7 @@ module.exports.execute = async (client, message, args) => {
 				if (!message.member.roles.has(config.roles.guardian) || !message.member.roles.has(config.roles.helper)){
 					message.channel.send('You do not have the experience to complete this command');
 				}
-		}
+			}
 		
 		}
 		else if (cmd === 'remove'){
@@ -196,12 +196,12 @@ module.exports.execute = async (client, message, args) => {
 
 			const response = new Discord.RichEmbed()
 				.setTitle(result[0].term)
-				.setDescription(result[0].description)
+				.setDescription(result[0].description);
 			return await message.channel.send(response);
-		};
+		}
 
 		
-    };
+	}
 };
 
 module.exports.config = {
