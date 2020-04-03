@@ -21,7 +21,7 @@ module.exports.execute = async (client, message, args) => {
 	const descript = keywords.substring(keywords.indexOf('-')+1);
 	const user = message.author;
 	const infoEmote = config.emotes.info;
-
+	
 	if(keywords.length === 0){
 		// if no term or command is provided, show available search terms
 		const delimiter = ',';
@@ -34,24 +34,24 @@ module.exports.execute = async (client, message, args) => {
 				theInfoTerms.push(result[i].term);
 			}
 		});
-
+		
 		const infoMessage = '___**List of available search terms:**__\n\n' + theInfoTerms.join(delimiter);
-
+		
 		await message.author.send(infoMessage).catch(err => {
 			console.error(err);
 		});
 		return await message.channel.send('I have sent you a private message with the list of available search terms').catch(err => {
 			console.error(err);
 		});
-
+		
 	}
 	else if (keywords.length > 1) {
-
+		
 		if (cmd === 'add') { //Add a new term
 			if(message.channel.id === config.channels.commandcenter
-			&& (message.member.roles.has(config.roles.guardian) || message.member.roles.has(config.roles.helper))){
+				&& (message.member.roles.has(config.roles.guardian) || message.member.roles.has(config.roles.helper))){
 				const searchTerms = args[2].split(',');
-
+					
 				let result = await InfoTerms.findAll({
 					attributes: ['term', 'description'],
 					where: {
@@ -59,30 +59,30 @@ module.exports.execute = async (client, message, args) => {
 					},
 					raw: true
 				}).catch(errHandler);
-
+					
 				console.log(result);
-
+					
 				if (result.length > 0){
 					return await message.channel.send(`${term} already exists. Did you mean to type !info edit?`);
 				}
-
+					
 				//Add entry to InfoTerm Table
-            	await InfoTerms.create({
-                	term: term,
-                	description: descript
-            	}).catch(errHandler);
-
-            	//Add keywords to SearchWords Table
-            	for (const keyword of searchTerms) {
-                	await SearchWords.create({
-                    	term: term,
-                    	keyword: keyword
-                	}).catch(errHandler);
-            	}
-
-            	//Confirm Info Addition
+				await InfoTerms.create({
+					term: term,
+					description: descript
+				}).catch(errHandler);
+					
+				//Add keywords to SearchWords Table
+				for (const keyword of searchTerms) {
+					await SearchWords.create({
+						term: term,
+						keyword: keyword
+					}).catch(errHandler);
+				}
+					
+				//Confirm Info Addition
 				return await message.channel.send(`New term, ${term}, added!`);
-
+					
 			}
 			else {
 				//Inform if user doesn't have authority to edit info
@@ -90,12 +90,12 @@ module.exports.execute = async (client, message, args) => {
 					message.channel.send('You do not have the experience to complete this command');
 				}
 			}
-		
+				
 		}
 		else if (cmd === 'remove'){
 			if(message.channel.id === config.channels.commandcenter
-				&& (message.member.roles.has(config.roles.guardian) || message.member.roles.has(config.roles.helper))){
-				
+					&& (message.member.roles.has(config.roles.guardian) || message.member.roles.has(config.roles.helper))){
+						
 				//Remove entries
 				let cont = true;
 				await InfoTerms.destroy({
@@ -108,20 +108,20 @@ module.exports.execute = async (client, message, args) => {
 						cont = false;
 					}
 				});
-
+						
 				await SearchWords.destroy({
 					where: {
 						term: term
 					}
 				}).catch(errHandler);
-				
+						
 				if (!cont){
 					return;
 				}
-
+						
 				//Confirm removal
 				return await message.channel.send(term + ' has been removed from the database');
-
+						
 			}
 			else {
 				//Inform if user doesn't have authority to edit info
@@ -132,8 +132,8 @@ module.exports.execute = async (client, message, args) => {
 		}
 		else if (cmd === 'edit'){
 			if(message.channel.id === config.channels.commandcenter
-				&& (message.member.roles.has(config.roles.guardian) || message.member.roles.has(config.roles.helper))){
-				
+						&& (message.member.roles.has(config.roles.guardian) || message.member.roles.has(config.roles.helper))){
+							
 				//Update InfoTerms
 				let termToUpdate = await SearchWords.findAll({
 					attributes: ['term'],
@@ -142,7 +142,7 @@ module.exports.execute = async (client, message, args) => {
 					},
 					raw: true
 				}).catch(errHandler);
-
+							
 				await InfoTerms.update({
 					description: descript
 				}, {
@@ -150,7 +150,7 @@ module.exports.execute = async (client, message, args) => {
 						term: termToUpdate[0].term
 					}
 				}).catch(errHandler);
-
+							
 				//Confirm edit
 				return await message.channel.send(`The info term ${termToUpdate[0].term} has been updated!`);
 			}
@@ -173,7 +173,7 @@ module.exports.execute = async (client, message, args) => {
 			return await user.send(infoHelp);
 		}
 		else {
-
+						
 			let inputWord = await SearchWords.findAll({
 				attributes: ['term'],
 				where: {
@@ -181,7 +181,7 @@ module.exports.execute = async (client, message, args) => {
 				},
 				raw: true
 			}).catch(errHandler);
-			
+						
 			let result = await InfoTerms.findAll({
 				attributes: ['term', 'description'],
 				where: {
@@ -189,21 +189,21 @@ module.exports.execute = async (client, message, args) => {
 				},
 				raw: true
 			}).catch(errHandler);
-
+						
 			if (!result) {
 				return await message.channel.send(`I dont know about ${cmd} yet, can you teach me?`);
 			}
-
+						
 			const response = new Discord.RichEmbed()
 				.setTitle(result[0].term)
 				.setDescription(result[0].description);
 			return await message.channel.send(response);
 		}
-
-		
+					
+					
 	}
 };
-
+			
 module.exports.config = {
 	name: 'info',
 	aliases: ['info', 'about'],
