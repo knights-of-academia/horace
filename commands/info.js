@@ -4,16 +4,17 @@ const SearchWords = require('../databaseFiles/searchWordsTable.js');
 const Discord = require('discord.js');
 const config = require('../config.json');
 
-// Error handler
-const errHandler = err => {
-	client.channel.get("666758807363387404").send(err);
-};
+
 
 //Ensure the tables exist if not already
 InfoTerms.sync();
 SearchWords.sync();
 
 module.exports.execute = async (client, message, args) => {
+	// Error handler
+	const errHandler = err => {
+		client.channel.get('666758807363387404').send(err);
+	};
 	const cmd = args[0];
 	const term = args[1];
 	const entirePhrase = args.join(' ');
@@ -38,10 +39,10 @@ module.exports.execute = async (client, message, args) => {
 		const infoMessage = '___**List of available search terms:**__\n\n' + theInfoTerms.join(delimiter);
 		
 		await message.author.send(infoMessage).catch(err => {
-			client.channel.get("666758807363387404").send(err);
+			client.channel.get('666758807363387404').send(err);
 		});
 		return await message.channel.send('I have sent you a private message with the list of available search terms.').catch(err => {
-			client.channel.get("666758807363387404").send(err);
+			client.channel.get('666758807363387404').send(err);
 		});
 		
 	}
@@ -163,7 +164,7 @@ module.exports.execute = async (client, message, args) => {
 		}
 		else if (cmd === 'help'){
 			const infoHelp = new Discord.RichEmbed()
-				.setColor('#FFEC09')
+				.setColor('#FF000')
 				.setTitle(`${infoEmote} Knights of Academia Info Help ${infoEmote}`)
 				.setDescription('Here are some commands to help you out with info!')
 				.addField('Add info', '`!info add <term> <comma,seperated,keywords> -<description>`')
