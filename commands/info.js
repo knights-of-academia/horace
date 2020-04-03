@@ -6,7 +6,7 @@ const config = require('../config.json');
 
 // Error handler
 const errHandler = err => {
-	console.error('Info sequelize error: ', err);
+	client.channel.get("666758807363387404").send(err);
 };
 
 //Ensure the tables exist if not already
@@ -38,10 +38,10 @@ module.exports.execute = async (client, message, args) => {
 		const infoMessage = '___**List of available search terms:**__\n\n' + theInfoTerms.join(delimiter);
 		
 		await message.author.send(infoMessage).catch(err => {
-			console.error(err);
+			client.channel.get("666758807363387404").send(err);
 		});
 		return await message.channel.send('I have sent you a private message with the list of available search terms.').catch(err => {
-			console.error(err);
+			client.channel.get("666758807363387404").send(err);
 		});
 		
 	}
