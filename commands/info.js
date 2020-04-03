@@ -52,15 +52,17 @@ module.exports.execute = async (client, message, args) => {
 			&& (message.member.roles.has(config.roles.guardian) || message.member.roles.has(config.roles.helper))){
 				const searchTerms = args[2].split(',');
 
-				let result = InfoTerms.findAll({
-					attributes: ['term'],
+				let result = await InfoTerms.findAll({
+					attributes: ['term', 'description'],
 					where: {
 						term: term
 					},
 					raw: true
-				})
+				}).catch(errHandler);
 
-				if (result){
+				console.log(result);
+
+				if (result.length > 0){
 					return await message.channel.send(`${term} already exists. Did you mean to type !info edit?`);
 				}
 
@@ -79,12 +81,7 @@ module.exports.execute = async (client, message, args) => {
             	}
 
             	//Confirm Info Addition
-            	const infoHelp = new Discord.RichEmbed()
-                	.setColor('#FFEC09')
-                	.setTitle(`${infoEmote} Knights of Academia Info Addition ${infoEmote}`)
-                	.setDescription('I have added the folloing information as requested! I feel my brain expanding!')
-                	.addField('Recently added information', term);
-            	return await user.send(infoHelp);
+				return await message.channel.send(`New term, ${term}, added!`);
 
 			}
 			else {
@@ -123,12 +120,7 @@ module.exports.execute = async (client, message, args) => {
 				}
 
 				//Confirm removal
-				const infoHelp = new Discord.RichEmbed()
-					.setColor('#FFEC09')
-					.setTitle(`${infoEmote} Knights of Academia Info Removal ${infoEmote}`)
-					.setDescription('I have removed the following Info as requested!')
-					.addField('Recently removed info', args[1]);
-				return await user.send(infoHelp);
+				return await message.channel.send(term + ' has been removed from the database');
 
 			}
 			else {
@@ -149,7 +141,7 @@ module.exports.execute = async (client, message, args) => {
 						keyword: term
 					},
 					raw: true
-				}).catch(errHandler); 
+				}).catch(errHandler);
 
 				await InfoTerms.update({
 					description: descript
@@ -174,8 +166,9 @@ module.exports.execute = async (client, message, args) => {
 				.setColor('#FFEC09')
 				.setTitle(`${infoEmote} Knights of Academia Info Help ${infoEmote}`)
 				.setDescription('Here are some commands to help you out with info!')
-				.addField('Add info', '`!info add <term> <comma,seperate,keywords> -<description>`')
+				.addField('Add info', '`!info add <term> <comma,seperated,keywords> -<description>`')
 				.addField('Remove info', '`!info remove <keyword>`')
+				.addField('Edit info description', '`!info edit <keyword> -<new description>`')
 				.addField('List info terms', '`!info`');
 			return await user.send(infoHelp);
 		}
