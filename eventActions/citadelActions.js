@@ -3,10 +3,12 @@ const config = require('../config.json');
 class citadelActions {
 	static async greetMorningOrNight(client, message) {
 		// Handle good morning and goodnight
+		let reg_morning = new RegExp("mo*rning (koa\W*|knights\W*|friends\W*|everyone\W*)");
+		let reg_night = new RegExp("ni*ght (koa\W*|knights\W*|friends\W*|everyone\W*)");
 		if (message.channel.id === config.channels.citadel) {
-			if (/g+o{2,}d+\s*m+o+r+n+i+n+g+/mi.test(message.content)) {
+			if (reg_morning.test(message.content.toLowerCase())) {
 				return await message.react(config.emotes.goodmorning);
-			} else if (/g+o{2,}d+\s*n+i+g+h+t+/mi.test(message.content)) {
+			} else if (reg_night.test(message.content.toLowerCase())) {
 				return await message.react(config.emotes.goodnight);
 			}
 		}
