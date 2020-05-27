@@ -41,6 +41,7 @@ class afkMessageCheckAction {
 			.setColor('#FFEC09');
 		const user = message.author;
 
+		// Returns a single integer rounded down for the difference in minutes between two Date.now() timestamps
 		function timedifference(timestamp1, timestamp2) {
 			var timestamp1 = new Date(parseInt(timestamp1));
 			var timestamp2 = new Date(parseInt(timestamp2));
@@ -58,6 +59,7 @@ class afkMessageCheckAction {
 					user: user.id
 				}
 			}).then(result => {
+				// Test to see if the difference between the cooldown and the current time is more than or equal to 3 minutes
 				if (result.length == 1 && timedifference(result[0].cooldown, Date.now()) >= 3) {
 					message.author.send(noLongerAFKMessage).then(msg => {
 						msg.react('✅');
