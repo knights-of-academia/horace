@@ -10,6 +10,7 @@ module.exports.execute = async (client, message, args) => {
 
 		Afks.create({
 			message: afkMessage,
+			cooldown: Date.now(),
 			user: sender.id
 		}).then(() => {
 			sender.send('I have marked you as AFK. Safe travels!').then(msg => msg.delete(5000).catch());
