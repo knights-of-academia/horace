@@ -41,16 +41,31 @@ class afkMessageCheckAction {
 			.setColor('#FFEC09');
 		const user = message.author;
 
+		function timedifference(timestamp1, timestamp2) {
+			var timestamp1 = new Date(parseInt(timestamp1));
+			var timestamp2 = new Date(parseInt(timestamp2));
+
+			var difference = timestamp2.getTime() - timestamp1.getTime();
+
+			var difference = Math.floor(difference/1000/60);
+	
+			return difference;
+		}
+
 		await Afks.sync().then(() => {
 			Afks.findAll({
 				where: {
 					user: user.id
 				}
 			}).then(result => {
-				if (result.length == 1) {
+				if (result.length == 1 && timedifference(result[0].cooldown, Date.now()) >= 3) {
 					message.author.send(noLongerAFKMessage).then(msg => {
 						msg.react('✅');
 						msg.react('❌');
+						Afks.update(
+							{ cooldown: Date.now() },
+							{ where: {user: user.id} }
+						).catch(error => {"Update error: " + error});
 						// Use reaction filter to remove to remove the user from the database rather than an event
 						let collector = msg.createReactionCollector(reactionFilter, { time: 15000 });
 						collector.on('end', () => {
