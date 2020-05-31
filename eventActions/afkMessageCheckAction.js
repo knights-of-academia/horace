@@ -68,7 +68,9 @@ class afkMessageCheckAction {
 						Afks.update(
 							{ cooldown: Date.now() },
 							{ where: {user: user.id} }
-						).catch(error => {console.error('Update error: ', error)});
+						).catch(error => {
+							console.error('Update error: ', error);
+						});
 						// Use reaction filter to remove to remove the user from the database rather than an event
 						let collector = msg.createReactionCollector(reactionFilter, { time: 15000 });
 						collector.on('end', () => {
