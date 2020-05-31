@@ -43,13 +43,14 @@ class afkMessageCheckAction {
 
 		// Returns a single integer rounded down for the difference in minutes between two Date.now() timestamps
 		function timedifference(timestamp1, timestamp2) {
-			var timestamp1 = new Date(parseInt(timestamp1));
-			var timestamp2 = new Date(parseInt(timestamp2));
+			// redefine the variables to do math on
+			timestamp1 = new Date(parseInt(timestamp1));
+			timestamp2 = new Date(parseInt(timestamp2));
 
-			var difference = timestamp2.getTime() - timestamp1.getTime();
+			let difference = timestamp2.getTime() - timestamp1.getTime();
 
-			var difference = Math.floor(difference/1000/60);
-	
+			difference = Math.floor(difference/1000/60);
+			
 			return difference;
 		}
 
@@ -59,7 +60,7 @@ class afkMessageCheckAction {
 					user: user.id
 				}
 			}).then(result => {
-				// Test to see if the difference between the cooldown and the current time is more than or equal to 3 minutes
+				// Test to see if the difference between the cooldown and the current time is more than or equal to 3 minutes call function with variables timestamp1 and timestamp2 in call
 				if (result.length == 1 && timedifference(result[0].cooldown, Date.now()) >= 3) {
 					message.author.send(noLongerAFKMessage).then(msg => {
 						msg.react('✅');
@@ -67,7 +68,7 @@ class afkMessageCheckAction {
 						Afks.update(
 							{ cooldown: Date.now() },
 							{ where: {user: user.id} }
-						).catch(error => {"Update error: " + error});
+						).catch(error => {'Update error: ' + error});
 						// Use reaction filter to remove to remove the user from the database rather than an event
 						let collector = msg.createReactionCollector(reactionFilter, { time: 15000 });
 						collector.on('end', () => {
