@@ -1,13 +1,11 @@
 module.exports = [
 	{
 		formUrl: 'https://knightsofacademia.org/the-round-table/',
-		names: ['trt', 'theroundtable', 'the round table', 'hard mode'],
-		roleName: 'hard mode knights'
+		names: ['trt', 'theroundtable', 'the round table', 'hard mode']
 	},
 	{
 		formUrl: 'https://knightsofacademia.org/bards-of-academia/',
-		names: ['bards', 'the bards', 'music'],
-		roleName: 'bards member'
+		names: ['bards', 'the bards', 'music']
 	},
 	{
 		formUrl: 'https://knightsofacademia.org/fiction-faction/',
@@ -18,18 +16,15 @@ module.exports = [
 			'ff',
 			'tff',
 			'writing'
-		],
-		roleName: 'fiction faction'
+		]
 	},
 	{
 		formUrl: 'https://knightsofacademia.org/wolf-pack/',
-		names: ['thewolfpack', 'the wolf pack', 'wp', 'twp', 'stem'],
-		roleName: 'wolf pack member'
+		names: ['thewolfpack', 'the wolf pack', 'wp', 'twp', 'stem']
 	},
 	{
 		formUrl: 'https://knightsofacademia.org/the-gathering/',
-		names: ['thegathering', 'the gathering', 'gathering', 'accountability'],
-		roleName: 'the gathering'
+		names: ['thegathering', 'the gathering', 'gathering', 'accountability']
 	},
 	{
 		formUrl: 'https://knightsofacademia.org/the-clockwork-knights/',
@@ -39,8 +34,7 @@ module.exports = [
 			'clockworkknights',
 			'clockwork knights',
 			'systems'
-		],
-		roleName: 'clockwork knights member'
+		]
 	},
 	{
 		formUrl: 'https://knightsofacademia.org/the-silver-tongues/',
@@ -49,12 +43,10 @@ module.exports = [
 			'the silver tongues ',
 			'tongues',
 			'language'
-		],
-		roleName: 'silver tongued'
+		]
 	},
 	{
 		formUrl: 'https://knightsofacademia.org/the-students/',
-		names: ['thestudents', 'the students', 'students', 'study'],
-		roleName: 'students of koa'
+		names: ['thestudents', 'the students', 'students', 'study']
 	}
 ];
