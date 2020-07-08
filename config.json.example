@@ -21,7 +21,8 @@
     "sleepclub": "000",
     "hallofconquests": "000",
     "accountability": "000",
-    "chooseroles": "000"
+    "chooseroles": "000",
+    "gratitude": "000"
   },
   "modules": {
     "profanityArray": [
@@ -43,7 +44,8 @@
     "yes2": "562072692086276118",
     "congrats": "✔️",
     "highlights": "☀️",
-	"wave": "👋"
+	  "wave": "👋",
+    "gratitude": "☺️"
   },
   "pinLimit": 5,
   "reflectionCheckDepth": 5,
