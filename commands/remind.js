@@ -5,9 +5,6 @@
 // :white_small_square: $del - Choose what reminders to delete (It goes without saying please do not abuse this in ways such as deleting others' reminders)
 // :white_small_square: $info - Get bot info
 
-// Note: These commands are only usable in #command-center, #accountability-station and #early-to-sleep and should for the most part be kept to bot interaction. If you try to use them anywhere else they won't work. Have fun!
-
-
 // 1. I think the todo command was considered a replacement for accountability station, but we still don't appear to hit the pin limit so I would agree. I think the base feature of reminding things at certain times / repetitive intervals is the key idea. 
 // 2. I think having 3 types of reminders is what I see people being used; "remind to do X in 2 days",
 // "remind me to do X every 5 days", "remind me to do X on july 20th". That's in order of priority, I think.
@@ -82,25 +79,25 @@ function resetSecondsAndMilliseconds(date) {
 	return date;
 }
 
-function addToDate(date, whatToAdd, amountToAdd) {
+function addToDate(date, amountToAdd, whatToAdd) {
 	let result = new Date(resetSecondsAndMilliseconds(date));
 
 	switch (whatToAdd) {
-		case 'minutes':
-			result.setMinutes(result.getMinutes() + amountToAdd);
-			break;
-		case 'hours':
-			result.setHours(result.getHours() + amountToAdd);
-			break;
-		case 'days':
-			result.setDate(result.getDate() + amountToAdd);
-			break;
-		case 'months':
-			result.setMonth(result.getMonth() + amountToAdd);
-			break;
-		default:
-			console.error('I\'m in the default case of addToDate meaning that something went very, very wrong!');
-			return;
+	case 'minutes':
+		result.setMinutes(result.getMinutes() + amountToAdd);
+		break;
+	case 'hours':
+		result.setHours(result.getHours() + amountToAdd);
+		break;
+	case 'days':
+		result.setDate(result.getDate() + amountToAdd);
+		break;
+	case 'months':
+		result.setMonth(result.getMonth() + amountToAdd);
+		break;
+	default:
+		console.error('I\'m in the default case of addToDate meaning that something went very, very wrong!');
+		return;
 	}
 
 	return result;
@@ -112,15 +109,22 @@ function parseArgs(unparsedArgs, currentDate) {
 	// This might be significant later on when constructing Horace's reminding message.
 	const regMy = new RegExp('my', 'i');
 
-	// This RegExp matches reminders in the form of "remind [me to] do X in Y minutes/hours/days/months".
-	// The first group is the action to be reminded of, the second group is how many
+	// This RegExp matches reminders in the form of "!remind [me to] do X in Y minutes/hours/days/months".
+	// The first group is the action to be reminded about, the second group is how many
 	// minutes/hoursdays/months (determined by the third group) should pass before the reminder.
+	// TODO Handle singular stuff like "in a minute" or "in an hour".
 	const regOne = new RegExp('(?:me to)? *(.*) +in +(\\d+) +(minutes|hours|days|months)', 'i');
 
-	// TODO Explanatory comment.
-	// remind me to do laundry on july 20th
+	// This RegExp matches reminders in the form of "!remind [me to] do X on Y".
+	// The first group is the action to be reminded about, the second group is the month,
+	// and the third group is the day.
+	// TODO Restrict the third group to only accept values that aren't larger than given month's length.
 	const regTwo = new RegExp('(?:me to)? *(.*) +on +((?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)) +(\\d+) *(?:st|nd|rd|th)?', 'i');
-	const regThree = undefined;
+
+	// This RegExp matches reminders in the form of "!remind [me to] do [X] every [Y] minutes/hours/days/months".
+	// The first group is the action to be remided about, and the second and third group dictate how often
+	// to remind.
+	const regThree = new RegExp('(?:me to)? *(.*) +every +(\\d+) +(minutes|hours|days|months)', 'i');
 
 	let toPush = '';
 	let correctedInput = [];
@@ -145,14 +149,13 @@ function parseArgs(unparsedArgs, currentDate) {
 
 	let matchRegOne = stringInput.match(regOne);
 	let matchRegTwo = stringInput.match(regTwo);
-	// TODO Third regex.
-	let matchRegThree = undefined;
+	let matchRegThree = stringInput.match(regThree);
 
 	let whatToRemind, whenToRemind, recurring, howOftenToRemind;
 
 	if (matchRegOne) {
 		whatToRemind = matchRegOne[1];
-		whenToRemind = addToDate(currentDate, matchRegOne[3], parseInt(matchRegOne[2]));
+		whenToRemind = addToDate(currentDate, parseInt(matchRegOne[2]), matchRegOne[3]);
 		recurring = false;
 		howOftenToRemind = null;
 	} else if (matchRegTwo) {
@@ -164,7 +167,10 @@ function parseArgs(unparsedArgs, currentDate) {
 		recurring = false;
 		howOftenToRemind = null;
 	} else if (matchRegThree) {
-		return;
+		whatToRemind = matchRegThree[1];
+		whenToRemind = addToDate(currentDate, parseInt(matchRegThree[2]), matchRegThree[3]);
+		recurring = true;
+		howOftenToRemind = [parseInt(matchRegThree[2]), matchRegThree[3]].join(' ');
 	} else {
 		console.error('Why are we still here? Just to suffer?');
 	}
