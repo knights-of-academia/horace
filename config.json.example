@@ -22,7 +22,8 @@
     "hallofconquests": "000",
     "accountability": "000",
     "chooseroles": "000",
-    "gratitude": "000"
+    "gratitude": "000",
+    "commandcenter": "000"
   },
   "modules": {
     "profanityArray": [

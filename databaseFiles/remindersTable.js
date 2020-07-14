@@ -4,17 +4,24 @@ const connect = require('./connect.js');
 const sequelize = connect.sequelize;
 
 module.exports = sequelize.define('Reminder', {
-	user: {
+	whoToRemind: {
 		type: DataTypes.STRING,
 		allowNull: false
 	},
-	remind: {
+	whatToRemind: {
+		type: DataTypes.STRING,
+		allowNull: false
+	},
+	whenToRemind: {
 		type: DataTypes.DATE,
-		allowNull: false,
+		allowNull: false
 	},
 	recurring: {
 		type: DataTypes.BOOLEAN,
 		allowNull: false
+	},
+	howOftenToRemind: {
+		type: DataTypes.STRING
 	}
 }, {
 	timestamps: false
