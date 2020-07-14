@@ -75,44 +75,47 @@ module.exports.execute = async (client, message, args) => {
 	console.log(reminders);
 };
 
-function addToDate(date, whatToAdd, amountToAdd) {
-	var result = new Date(date);
+function resetSecondsAndMilliseconds(date) {
+	date.setMilliseconds(0);
+	date.setSeconds(0);
 
-	// TODO Reset the seconds and milliseconds in dates.
+	return date;
+}
+
+function addToDate(date, whatToAdd, amountToAdd) {
+	let result = new Date(resetSecondsAndMilliseconds(date));
+
 	switch (whatToAdd) {
-	case 'seconds':
-		result.setSeconds(result.getSeconds() + amountToAdd);
-		break;
-	case 'minutes':
-		result.setMinutes(result.getMinutes() + amountToAdd);
-		break;
-	case 'hours':
-		result.setHours(result.getHours() + amountToAdd);
-		break;
-	case 'days':
-		result.setDate(result.getDate() + amountToAdd);
-		break;
-	case 'months':
-		result.setMonth(result.getMonth() + amountToAdd);
-		break;
-	default:
-		console.error('I\'m in the default case of addToDate meaning that something went very, very wrong!');
-		return;
+		case 'minutes':
+			result.setMinutes(result.getMinutes() + amountToAdd);
+			break;
+		case 'hours':
+			result.setHours(result.getHours() + amountToAdd);
+			break;
+		case 'days':
+			result.setDate(result.getDate() + amountToAdd);
+			break;
+		case 'months':
+			result.setMonth(result.getMonth() + amountToAdd);
+			break;
+		default:
+			console.error('I\'m in the default case of addToDate meaning that something went very, very wrong!');
+			return;
 	}
 
 	return result;
 }
 
 function parseArgs(unparsedArgs, currentDate) {
+	// TODO Restrict the value on some of the regexes (July 32nd is wrong for example).
+
 	// This might be significant later on when constructing Horace's reminding message.
 	const regMy = new RegExp('my', 'i');
 
-	// This RegExp matches reminders in the form of "remind [me] to do X in Y seconds/minutes/days/months".
-	// The first group is useless, the second group is the action to be reminded of, the third group is how many
-	// seconds/minutes/days/months (determined by the fourth group) should pass before the reminder.
-	// TODO Get rid of the seconds and update the comment to match non-capturing groups.
-	// TODO Should "to" also be encased in a non-capturing group?
-	const regOne = new RegExp('(?:me to)? *(.*) +in +(\\d+) +(seconds|minutes|days|months)', 'i');
+	// This RegExp matches reminders in the form of "remind [me to] do X in Y minutes/hours/days/months".
+	// The first group is the action to be reminded of, the second group is how many
+	// minutes/hoursdays/months (determined by the third group) should pass before the reminder.
+	const regOne = new RegExp('(?:me to)? *(.*) +in +(\\d+) +(minutes|hours|days|months)', 'i');
 
 	// TODO Explanatory comment.
 	// remind me to do laundry on july 20th
@@ -156,7 +159,7 @@ function parseArgs(unparsedArgs, currentDate) {
 		whatToRemind = matchRegTwo[1];
 
 		let month = MONTHS[matchRegTwo[2].slice(0, 3).toLowerCase()];
-		whenToRemind = new Date(currentDate.getFullYear(), month, matchRegTwo[3], currentDate.getHours(), currentDate.getMinutes(), /*currentDate.getSeconds(), currentDate.getMilliseconds()*/);
+		whenToRemind = new Date(currentDate.getFullYear(), month, matchRegTwo[3], currentDate.getHours(), currentDate.getMinutes());
 
 		recurring = false;
 		howOftenToRemind = null;
