@@ -112,27 +112,28 @@ function parseArgs(unparsedArgs, currentDate) {
 	// This RegExp matches reminders in the form of "!remind [me to] do X in Y minutes/hours/days/months".
 	// The first group is the action to be reminded about, the second group is how many
 	// minutes/hoursdays/months (determined by the third group) should pass before the reminder.
-	// TODO Handle singular stuff like "in a minute" or "in an hour".
-	const regOne = new RegExp('(?:me to)? *(.*) +in +(\\d+) +(minutes|hours|days|months)', 'i');
+	const regOne = new RegExp('(?:me to)? *(.*) +in +((?:\\d+)|(?:a)|(?:an)) +(minutes?|hours?|days?|months?)', 'i');
 
 	// This RegExp matches reminders in the form of "!remind [me to] do X on Y".
 	// The first group is the action to be reminded about, the second group is the month,
 	// and the third group is the day.
 	// TODO Restrict the third group to only accept values that aren't larger than given month's length.
-	const regTwo = new RegExp('(?:me to)? *(.*) +on +((?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)) +(\\d+) *(?:st|nd|rd|th)?', 'i');
+	const regTwo = new RegExp('(?:me to)? *(.*) +on +((?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)) +(\\d+) *(?:st|nd|rd|th)?', 'i');
 
 	// This RegExp matches reminders in the form of "!remind [me to] do [X] every [Y] minutes/hours/days/months".
 	// The first group is the action to be remided about, and the second and third group dictate how often
 	// to remind.
-	const regThree = new RegExp('(?:me to)? *(.*) +every +(\\d+) +(minutes|hours|days|months)', 'i');
+	const regThree = new RegExp('(?:me to)? *(.*) +every +(\\d+ )?(minutes?|hours?|day?|months?)', 'i');
+
+	// TODO Maybe the 4th regex for reminding at an exact time?
 
 	let toPush = '';
 	let correctedInput = [];
 
 	unparsedArgs.forEach(word => {
 		// HACK Spellchecker corrects some of the month names' abbreviations (e.g. "feb" -> "fib").
-		// This works around that by checking if the word to be added is in fact a mmonth name
-		// abbreviation, and if so, the loop continues to the next iteration.
+		// This works around that by checking if the word to be added is in fact such abbreviation,
+		// and if so, the loop continues to the next iteration.
 		if (Object.keys(MONTHS).includes(word)) { correctedInput.push(word); return; }
 
 		// Ternary operator that corrects the word if there's a typo, but leaves it as is if there's not.
@@ -153,9 +154,13 @@ function parseArgs(unparsedArgs, currentDate) {
 
 	let whatToRemind, whenToRemind, recurring, howOftenToRemind;
 
+	// TODO Simplify these blocks.
 	if (matchRegOne) {
 		whatToRemind = matchRegOne[1];
-		whenToRemind = addToDate(currentDate, parseInt(matchRegOne[2]), matchRegOne[3]);
+
+		let amountToAdd = ["a", "an"].includes(matchRegOne[2].toLowerCase()) ? 1 : parseInt(matchRegOne[2]);
+		whenToRemind = addToDate(currentDate, amountToAdd, matchRegOne[3]);
+
 		recurring = false;
 		howOftenToRemind = null;
 	} else if (matchRegTwo) {
@@ -168,9 +173,12 @@ function parseArgs(unparsedArgs, currentDate) {
 		howOftenToRemind = null;
 	} else if (matchRegThree) {
 		whatToRemind = matchRegThree[1];
-		whenToRemind = addToDate(currentDate, parseInt(matchRegThree[2]), matchRegThree[3]);
+
+		let amountToAdd = matchRegThree[2] ? parseInt(matchRegThree[2]) : 1;
+		whenToRemind = addToDate(currentDate, amountToAdd, matchRegThree[3]);
+
 		recurring = true;
-		howOftenToRemind = [parseInt(matchRegThree[2]), matchRegThree[3]].join(' ');
+		howOftenToRemind = [amountToAdd, matchRegThree[3]].join(' ');
 	} else {
 		console.error('Why are we still here? Just to suffer?');
 	}
