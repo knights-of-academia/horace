@@ -3,6 +3,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const config = require('./config.json');
 const connect = require('./databaseFiles/connect.js');
+const remind = require('./commands/remind.js');
 
 const client = new Discord.Client();
 
@@ -43,3 +44,8 @@ fs.readdir('./commands/', (err, files) => {
 connect.instantiateConnection();
 
 client.login(config.token);
+
+// Set up an interval to scan the `Reminders` table and remind people as necessary.
+client.on('ready', () => {
+	setInterval(remind.scanForReminders, 30000, client);
+});

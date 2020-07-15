@@ -70,15 +70,19 @@ function addToDate(date, amountToAdd, whatToAdd) {
 	let result = new Date(resetSecondsAndMilliseconds(date));
 
 	switch (whatToAdd) {
+	case 'minute':
 	case 'minutes':
 		result.setMinutes(result.getMinutes() + amountToAdd);
 		break;
+	case 'hour':
 	case 'hours':
 		result.setHours(result.getHours() + amountToAdd);
 		break;
+	case 'day':
 	case 'days':
 		result.setDate(result.getDate() + amountToAdd);
 		break;
+	case 'month':
 	case 'months':
 		result.setMonth(result.getMonth() + amountToAdd);
 		break;
@@ -144,7 +148,7 @@ function parseArgs(unparsedArgs, currentDate) {
 	if (matchRegOne) {
 		whatToRemind = matchRegOne[1];
 
-		let amountToAdd = ["a", "an"].includes(matchRegOne[2].toLowerCase()) ? 1 : parseInt(matchRegOne[2]);
+		let amountToAdd = ['a', 'an'].includes(matchRegOne[2].toLowerCase()) ? 1 : parseInt(matchRegOne[2]);
 		let whatToAdd = matchRegOne[3];
 
 		whenToRemind = addToDate(currentDate, amountToAdd, whatToAdd);
@@ -177,6 +181,39 @@ function parseArgs(unparsedArgs, currentDate) {
 
 	return [whatToRemind, whenToRemind, recurring, howOftenToRemind];
 }
+
+async function scanForReminders(client) {
+	const currentDate = new Date();
+	const reminders = await Reminder.findAll();
+
+	let difference, userToRemind;
+	reminders.forEach(async reminder => {
+		difference = currentDate - reminder.dataValues.whenToRemind;
+		if (difference > -30000) {
+			userToRemind = await client.fetchUser(reminder.dataValues.whoToRemind);
+			userToRemind.send(`You asked me to remind you to ${reminder.dataValues.whatToRemind}.`);
+
+			if (!reminder.dataValues.recurring) {
+				await Reminder.destroy({
+					where: {
+						id: reminder.dataValues.id
+					}
+				});
+			} else {
+				let currentDueTime = reminder.dataValues.whenToRemind;
+				let [amountToAdd, whatToAdd] = reminder.dataValues.howOftenToRemind.split(' ');
+				amountToAdd = parseInt(amountToAdd);
+				await Reminder.update({ whenToRemind: addToDate(currentDueTime, amountToAdd, whatToAdd) }, {
+					where: {
+						id: reminder.dataValues.id
+					}
+				});
+			}
+		}
+	});
+}
+
+module.exports.scanForReminders = scanForReminders;
 
 module.exports.config = {
 	name: 'remind',
