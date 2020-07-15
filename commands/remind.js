@@ -22,21 +22,8 @@ const config = require('../config.json');
 const Reminder = require('../databaseFiles/remindersTable.js');
 const SpellChecker = require('spellchecker'); // Used to fix the typos.
 
-// Needed when parsing the reminder.
-const MONTHS = {
-	'jan': 0,
-	'feb': 1,
-	'mar': 2,
-	'apr': 3,
-	'may': 4,
-	'jun': 5,
-	'jul': 6,
-	'aug': 7,
-	'sep': 8,
-	'oct': 9,
-	'nov': 10,
-	'dec': 11
-};
+// Needed when parsing the reminder in one of the cases.
+const MONTHS = ['jan', 'fib', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 
 module.exports.execute = async (client, message, args) => {
 	// TODO Handle non-matching input.
@@ -166,7 +153,8 @@ function parseArgs(unparsedArgs, currentDate) {
 	} else if (matchRegTwo) {
 		whatToRemind = matchRegTwo[1];
 
-		let month = MONTHS[matchRegTwo[2].slice(0, 3).toLowerCase()];
+		let monthAbbreviation = matchRegTwo[2].slice(0, 3).toLowerCase();
+		let month = MONTHS.indexOf(monthAbbreviation);
 		whenToRemind = new Date(currentDate.getFullYear(), month, matchRegTwo[3], currentDate.getHours(), currentDate.getMinutes());
 
 		recurring = false;
