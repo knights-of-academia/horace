@@ -141,12 +141,13 @@ function parseArgs(unparsedArgs, currentDate) {
 
 	let whatToRemind, whenToRemind, recurring, howOftenToRemind;
 
-	// TODO Simplify these blocks.
 	if (matchRegOne) {
 		whatToRemind = matchRegOne[1];
 
 		let amountToAdd = ["a", "an"].includes(matchRegOne[2].toLowerCase()) ? 1 : parseInt(matchRegOne[2]);
-		whenToRemind = addToDate(currentDate, amountToAdd, matchRegOne[3]);
+		let whatToAdd = matchRegOne[3];
+
+		whenToRemind = addToDate(currentDate, amountToAdd, whatToAdd);
 
 		recurring = false;
 		howOftenToRemind = null;
@@ -155,7 +156,9 @@ function parseArgs(unparsedArgs, currentDate) {
 
 		let monthAbbreviation = matchRegTwo[2].slice(0, 3).toLowerCase();
 		let month = MONTHS.indexOf(monthAbbreviation);
-		whenToRemind = new Date(currentDate.getFullYear(), month, matchRegTwo[3], currentDate.getHours(), currentDate.getMinutes());
+		let day = matchRegTwo[3];
+
+		whenToRemind = new Date(currentDate.getFullYear(), month, day, currentDate.getHours(), currentDate.getMinutes());
 
 		recurring = false;
 		howOftenToRemind = null;
@@ -163,10 +166,11 @@ function parseArgs(unparsedArgs, currentDate) {
 		whatToRemind = matchRegThree[1];
 
 		let amountToAdd = matchRegThree[2] ? parseInt(matchRegThree[2]) : 1;
-		whenToRemind = addToDate(currentDate, amountToAdd, matchRegThree[3]);
+		let whatToAdd = matchRegThree[3];
+		whenToRemind = addToDate(currentDate, amountToAdd, whatToAdd);
 
 		recurring = true;
-		howOftenToRemind = [amountToAdd, matchRegThree[3]].join(' ');
+		howOftenToRemind = [amountToAdd, whatToAdd].join(' ');
 	} else {
 		console.error('Why are we still here? Just to suffer?');
 	}
