@@ -45,7 +45,9 @@ connect.instantiateConnection();
 
 client.login(config.token);
 
+// Catch up on the belated reminders in case the bot was down at a given time.
 // Set up an interval to scan the `Reminders` table and remind people as necessary.
 client.on('ready', () => {
+	remind.catchUp(client);
 	setInterval(remind.scanForReminders, 30000, client);
 });

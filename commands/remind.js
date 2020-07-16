@@ -16,6 +16,7 @@
 // TODO Better names for variables.
 // TODO Design and handle what happens when the bot was down while he was supposed to remind a person about something.
 // TODO "del/delete" argument.
+const Discord = require('discord.js');
 
 const config = require('../config.json');
 
@@ -182,38 +183,74 @@ function parseArgs(unparsedArgs, currentDate) {
 	return [whatToRemind, whenToRemind, recurring, howOftenToRemind];
 }
 
+async function remind(client, date, reminder, catchUp = false) {
+	let userToRemind = await client.fetchUser(reminder.dataValues.whoToRemind);
+	let color, description;
+
+	if (catchUp) {
+		color = '#FF4500';
+		description = `Whoops! Sorry for being late, I was probably down for maintenance. 😅
+		Anyway, you asked me to remind you to **${reminder.dataValues.whatToRemind}**. I hope it's not too late. 🤐`;
+	} else {
+		color = '#FFCC00';
+		description = `Hello! I'm sorry to barge in like that. 🤐
+		I just wanted to remind you to **${reminder.dataValues.whatToRemind}**. Off I go. 😄`;
+	}
+
+	const remindMessage = new Discord.RichEmbed()
+		.setColor(color)
+		.setTitle('Reminder')
+		.setDescription(description);
+
+	userToRemind.send(remindMessage);
+
+	if (!reminder.dataValues.recurring) {
+		await Reminder.destroy({
+			where: {
+				id: reminder.dataValues.id
+			}
+		});
+	} else {
+		let [amountToAdd, whatToAdd] = reminder.dataValues.howOftenToRemind.split(' ');
+		amountToAdd = parseInt(amountToAdd);
+		await Reminder.update({ whenToRemind: addToDate(date, amountToAdd, whatToAdd) }, {
+			where: {
+				id: reminder.dataValues.id
+			}
+		});
+	}
+
+	console.log(reminder);
+}
+
 async function scanForReminders(client) {
 	const currentDate = new Date();
 	const reminders = await Reminder.findAll();
 
-	let difference, userToRemind;
+	let difference;
 	reminders.forEach(async reminder => {
 		difference = currentDate - reminder.dataValues.whenToRemind;
 		if (difference > -30000) {
-			userToRemind = await client.fetchUser(reminder.dataValues.whoToRemind);
-			userToRemind.send(`You asked me to remind you to ${reminder.dataValues.whatToRemind}.`);
+			remind(client, currentDate, reminder);
+		}
+	});
+}
 
-			if (!reminder.dataValues.recurring) {
-				await Reminder.destroy({
-					where: {
-						id: reminder.dataValues.id
-					}
-				});
-			} else {
-				let currentDueTime = reminder.dataValues.whenToRemind;
-				let [amountToAdd, whatToAdd] = reminder.dataValues.howOftenToRemind.split(' ');
-				amountToAdd = parseInt(amountToAdd);
-				await Reminder.update({ whenToRemind: addToDate(currentDueTime, amountToAdd, whatToAdd) }, {
-					where: {
-						id: reminder.dataValues.id
-					}
-				});
-			}
+async function catchUp(client) {
+	const currentDate = new Date();
+	const reminders = await Reminder.findAll();
+
+	let difference;
+	reminders.forEach(async reminder => {
+		difference = currentDate - reminder.dataValues.whenToRemind;
+		if (difference > 0) {
+			remind(client, currentDate, reminder, true);
 		}
 	});
 }
 
 module.exports.scanForReminders = scanForReminders;
+module.exports.catchUp = catchUp;
 
 module.exports.config = {
 	name: 'remind',
