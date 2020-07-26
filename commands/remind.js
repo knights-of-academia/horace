@@ -14,7 +14,6 @@
 // Speaking of format, yea just ReminderBot's format seems fine. I'd also recommend limiting it to maybe a specific channel in config, like #accountability-station or something, since that's where that main purpose would arise.Thank you for taking this one on! :conquer:
 
 // TODO Better names for variables.
-// TODO Design and handle what happens when the bot was down while he was supposed to remind a person about something.
 // TODO "del/delete" argument.
 const Discord = require('discord.js');
 
