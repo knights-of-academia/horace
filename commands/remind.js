@@ -137,12 +137,12 @@ function parseReminder(unparsedArgs, currentDate) {
 	let correctedInput = [];
 
 	unparsedArgs.forEach(word => {
-		// HACK Spellchecker corrects some of the month names' abbreviations (e.g. "feb" -> "fib").
+		// HACK SpellChecker corrects some of the month names' abbreviations (e.g. "feb" -> "fib").
 		// This works around that by checking if the word to be added is in fact such abbreviation,
-		// and if so, the loop continues to the next iteration.
+		// and if so, the loop continues with the next iteration.
 		if (Object.keys(MONTHS_DATA).includes(word)) { correctedInput.push(word); return; }
 
-		// Ternary operator that corrects the word if there's a typo, but leaves it as is if there's not.
+		// Ternary operation that corrects the word if there's a typo, but leaves it as is if there's not.
 		toPush = SpellChecker.isMisspelled(word) ? SpellChecker.getCorrectionsForMisspelling(word)[0] : word;
 
 		// This might be significant later on when constructing Horace's reminding message.
