@@ -26,7 +26,6 @@ const SpellChecker = require('spellchecker'); // Used to fix the typos.
 const MONTHS = ['jan', 'fib', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 
 module.exports.execute = async (client, message, args) => {
-	// TODO Handle non-matching input.
 
 	// Restrict command usage to accountability-station and command-center channels.
 	if (!(message.channel.id === config.channels.accountability || message.channel.id === config.channels.commandcenter)) {
@@ -35,12 +34,18 @@ module.exports.execute = async (client, message, args) => {
 		);
 	}
 
-
 	const currentDate = new Date();
 	const whoToRemind = message.author.id;
 
 	let whatToRemind, whenToRemind, recurring, howOftenToRemind;
-	[whatToRemind, whenToRemind, recurring, howOftenToRemind] = parseArgs(args, currentDate);
+	try {
+		[whatToRemind, whenToRemind, recurring, howOftenToRemind] = parseReminder(args, currentDate);
+	} catch (err) {
+		console.error(err);
+		return await message.channel.send(
+			'I\'m sorry, but the command you\'ve used is invalid. Please use `!remind help` for guidance on how to structure it correctly!'
+		);
+	}
 
 	// TODO Think about the table design. Unique: true?
 	await Reminder.sync({ force: true }).then(() => {
@@ -94,7 +99,7 @@ function addToDate(date, amountToAdd, whatToAdd) {
 	return result;
 }
 
-function parseArgs(unparsedArgs, currentDate) {
+function parseReminder(unparsedArgs, currentDate) {
 	// TODO Restrict the value on some of the regexes (July 32nd is wrong for example).
 
 	// This might be significant later on when constructing Horace's reminding message.
@@ -176,7 +181,7 @@ function parseArgs(unparsedArgs, currentDate) {
 		recurring = true;
 		howOftenToRemind = [amountToAdd, whatToAdd].join(' ');
 	} else {
-		console.error('Why are we still here? Just to suffer?');
+		throw new Error('The command is invalid.');
 	}
 
 	return [whatToRemind, whenToRemind, recurring, howOftenToRemind];
