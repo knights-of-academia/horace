@@ -61,7 +61,6 @@ module.exports.execute = async (client, message, args) => {
 		}
 	}
 
-	// TODO Think about the table design. Unique: true?
 	await Reminder.sync({ force: true }).then(() => {
 		return Reminder.create({
 			whoToRemind: whoToRemind,
