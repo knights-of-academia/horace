@@ -15,6 +15,7 @@
 
 // TODO Better names for variables.
 // TODO "del/delete" argument.
+// TODO Maybe move error classes to a separate file?
 const Discord = require('discord.js');
 
 const config = require('../config.json');
@@ -22,10 +23,37 @@ const config = require('../config.json');
 const Reminder = require('../databaseFiles/remindersTable.js');
 const SpellChecker = require('spellchecker'); // Used to fix the typos.
 
-// Needed when parsing the reminder in one of the cases.
-const MONTHS = ['jan', 'fib', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+// Needed when parsing the reminder.
+const MONTHS_DATA = require('../data/months_data.js');
+
+// Account for the leap years.
+MONTHS_DATA['feb']['length'] = new Date(new Date().getFullYear(), 2, 0).getDate();
+
+class ValidationError extends Error {
+	constructor(message) {
+		super(message);
+		this.name = 'ValidationError';
+	}
+}
+
+class MonthLengthValidationError extends ValidationError {
+	constructor(message, month, days) {
+		super(message);
+		this.name = 'MonthLengthValidationError';
+		this.month = month;
+		this.days = days;
+	}
+}
+
+class NonmatchingInputValidationError extends Error {
+	constructor(message) {
+		super(message);
+		this.name = 'NonmatchingInputValidationError';
+	}
+}
 
 module.exports.execute = async (client, message, args) => {
+	// TODO Handle what happens when the reminder date is in the past.
 
 	// Restrict command usage to accountability-station and command-center channels.
 	if (!(message.channel.id === config.channels.accountability || message.channel.id === config.channels.commandcenter)) {
@@ -42,9 +70,16 @@ module.exports.execute = async (client, message, args) => {
 		[whatToRemind, whenToRemind, recurring, howOftenToRemind] = parseReminder(args, currentDate);
 	} catch (err) {
 		console.error(err);
-		return await message.channel.send(
-			'I\'m sorry, but the command you\'ve used is invalid. Please use `!remind help` for guidance on how to structure it correctly!'
-		);
+
+		if (err instanceof MonthLengthValidationError) {
+			return await message.channel.send(
+				`Whoops! ${err.month} doesn't have ${err.days} days! Please correct the command or see \`!remind help\` for guidance!`
+			);
+		} else if (err instanceof NonmatchingInputValidationError) {
+			return await message.channel.send(
+				'I\'m sorry, but the command you\'ve used is invalid. Please use `!remind help` for guidance on how to structure it correctly!'
+			);
+		}
 	}
 
 	// TODO Think about the table design. Unique: true?
@@ -100,8 +135,6 @@ function addToDate(date, amountToAdd, whatToAdd) {
 }
 
 function parseReminder(unparsedArgs, currentDate) {
-	// TODO Restrict the value on some of the regexes (July 32nd is wrong for example).
-
 	// This might be significant later on when constructing Horace's reminding message.
 	const regMy = new RegExp('my', 'i');
 
@@ -113,7 +146,6 @@ function parseReminder(unparsedArgs, currentDate) {
 	// This RegExp matches reminders in the form of "!remind [me to] do X on Y".
 	// The first group is the action to be reminded about, the second group is the month,
 	// and the third group is the day.
-	// TODO Restrict the third group to only accept values that aren't larger than given month's length.
 	const regTwo = new RegExp('(?:me to)? *(.*) +on +((?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)) +(\\d+) *(?:st|nd|rd|th)?', 'i');
 
 	// This RegExp matches reminders in the form of "!remind [me to] do [X] every [Y] minutes/hours/days/months".
@@ -130,7 +162,7 @@ function parseReminder(unparsedArgs, currentDate) {
 		// HACK Spellchecker corrects some of the month names' abbreviations (e.g. "feb" -> "fib").
 		// This works around that by checking if the word to be added is in fact such abbreviation,
 		// and if so, the loop continues to the next iteration.
-		if (Object.keys(MONTHS).includes(word)) { correctedInput.push(word); return; }
+		if (Object.keys(MONTHS_DATA).includes(word)) { correctedInput.push(word); return; }
 
 		// Ternary operator that corrects the word if there's a typo, but leaves it as is if there's not.
 		toPush = SpellChecker.isMisspelled(word) ? SpellChecker.getCorrectionsForMisspelling(word)[0] : word;
@@ -164,8 +196,12 @@ function parseReminder(unparsedArgs, currentDate) {
 		whatToRemind = matchRegTwo[1];
 
 		let monthAbbreviation = matchRegTwo[2].slice(0, 3).toLowerCase();
-		let month = MONTHS.indexOf(monthAbbreviation);
+		let month = MONTHS_DATA[monthAbbreviation]['number'];
 		let day = matchRegTwo[3];
+
+		if (day > MONTHS_DATA[monthAbbreviation]['length']) {
+			throw new MonthLengthValidationError(`${MONTHS_DATA[monthAbbreviation]['fullname']} doesn't have ${day} days.`, MONTHS_DATA[monthAbbreviation]['fullname'], day);
+		}
 
 		whenToRemind = new Date(currentDate.getFullYear(), month, day, currentDate.getHours(), currentDate.getMinutes());
 
@@ -181,7 +217,7 @@ function parseReminder(unparsedArgs, currentDate) {
 		recurring = true;
 		howOftenToRemind = [amountToAdd, whatToAdd].join(' ');
 	} else {
-		throw new Error('The command is invalid.');
+		throw new NonmatchingInputValidationError('The command format doesn\'t match any of the regexes.');
 	}
 
 	return [whatToRemind, whenToRemind, recurring, howOftenToRemind];
