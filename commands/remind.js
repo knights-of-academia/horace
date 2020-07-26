@@ -15,42 +15,19 @@
 
 // TODO Better names for variables.
 // TODO "del/delete" argument.
-// TODO Maybe move error classes to a separate file?
 const Discord = require('discord.js');
 
 const config = require('../config.json');
+const errors = require('../helpers/errors.js');
 
 const Reminder = require('../databaseFiles/remindersTable.js');
 const SpellChecker = require('spellchecker'); // Used to fix the typos.
 
 // Needed when parsing the reminder.
 const MONTHS_DATA = require('../data/months_data.js');
-
 // Account for the leap years.
 MONTHS_DATA['feb']['length'] = new Date(new Date().getFullYear(), 2, 0).getDate();
 
-class ValidationError extends Error {
-	constructor(message) {
-		super(message);
-		this.name = 'ValidationError';
-	}
-}
-
-class MonthLengthValidationError extends ValidationError {
-	constructor(message, month, days) {
-		super(message);
-		this.name = 'MonthLengthValidationError';
-		this.month = month;
-		this.days = days;
-	}
-}
-
-class NonmatchingInputValidationError extends Error {
-	constructor(message) {
-		super(message);
-		this.name = 'NonmatchingInputValidationError';
-	}
-}
 
 module.exports.execute = async (client, message, args) => {
 	// TODO Handle what happens when the reminder date is in the past.
@@ -71,11 +48,11 @@ module.exports.execute = async (client, message, args) => {
 	} catch (err) {
 		console.error(err);
 
-		if (err instanceof MonthLengthValidationError) {
+		if (err instanceof errors.MonthLengthValidationError) {
 			return await message.channel.send(
 				`Whoops! ${err.month} doesn't have ${err.days} days! Please correct the command or see \`!remind help\` for guidance!`
 			);
-		} else if (err instanceof NonmatchingInputValidationError) {
+		} else if (err instanceof errors.NonmatchingInputValidationError) {
 			return await message.channel.send(
 				'I\'m sorry, but the command you\'ve used is invalid. Please use `!remind help` for guidance on how to structure it correctly!'
 			);
@@ -200,7 +177,7 @@ function parseReminder(unparsedArgs, currentDate) {
 		let day = matchRegTwo[3];
 
 		if (day > MONTHS_DATA[monthAbbreviation]['length']) {
-			throw new MonthLengthValidationError(`${MONTHS_DATA[monthAbbreviation]['fullname']} doesn't have ${day} days.`, MONTHS_DATA[monthAbbreviation]['fullname'], day);
+			throw new errors.MonthLengthValidationError(`${MONTHS_DATA[monthAbbreviation]['fullname']} doesn't have ${day} days.`, MONTHS_DATA[monthAbbreviation]['fullname'], day);
 		}
 
 		whenToRemind = new Date(currentDate.getFullYear(), month, day, currentDate.getHours(), currentDate.getMinutes());
@@ -217,7 +194,7 @@ function parseReminder(unparsedArgs, currentDate) {
 		recurring = true;
 		howOftenToRemind = [amountToAdd, whatToAdd].join(' ');
 	} else {
-		throw new NonmatchingInputValidationError('The command format doesn\'t match any of the regexes.');
+		throw new errors.NonmatchingInputValidationError('The command format doesn\'t match any of the regexes.');
 	}
 
 	return [whatToRemind, whenToRemind, recurring, howOftenToRemind];
