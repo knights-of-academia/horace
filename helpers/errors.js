@@ -14,6 +14,13 @@ class MonthLengthValidationError extends ValidationError {
 	}
 }
 
+class DateInThePastValidationError extends Error {
+	constructor(message) {
+		super(message);
+		this.name = 'DateInThePastValidationError';
+	}
+}
+
 class NonmatchingInputValidationError extends Error {
 	constructor(message) {
 		super(message);
@@ -23,4 +30,5 @@ class NonmatchingInputValidationError extends Error {
 
 module.exports.ValidationError = ValidationError;
 module.exports.MonthLengthValidationError = MonthLengthValidationError;
+module.exports.DateInThePastValidationError = DateInThePastValidationError;
 module.exports.NonmatchingInputValidationError = NonmatchingInputValidationError;

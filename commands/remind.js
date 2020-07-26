@@ -30,8 +30,6 @@ MONTHS_DATA['feb']['length'] = new Date(new Date().getFullYear(), 2, 0).getDate(
 
 
 module.exports.execute = async (client, message, args) => {
-	// TODO Handle what happens when the reminder date is in the past.
-
 	// Restrict command usage to accountability-station and command-center channels.
 	if (!(message.channel.id === config.channels.accountability || message.channel.id === config.channels.commandcenter)) {
 		return await message.channel.send(
@@ -51,6 +49,10 @@ module.exports.execute = async (client, message, args) => {
 		if (err instanceof errors.MonthLengthValidationError) {
 			return await message.channel.send(
 				`Whoops! ${err.month} doesn't have ${err.days} days! Please correct the command or see \`!remind help\` for guidance!`
+			);
+		} else if (err instanceof errors.DateInThePastValidationError) {
+			return await message.channel.send(
+				'Whoops! The date you specified is in the past. Please correct the command or see `!remind help` for guidance!'
 			);
 		} else if (err instanceof errors.NonmatchingInputValidationError) {
 			return await message.channel.send(
@@ -177,10 +179,15 @@ function parseReminder(unparsedArgs, currentDate) {
 		let day = matchRegTwo[3];
 
 		if (day > MONTHS_DATA[monthAbbreviation]['length']) {
-			throw new errors.MonthLengthValidationError(`${MONTHS_DATA[monthAbbreviation]['fullname']} doesn't have ${day} days.`, MONTHS_DATA[monthAbbreviation]['fullname'], day);
+			let errorMessage = `${MONTHS_DATA[monthAbbreviation]['fullname']} doesn't have ${day} days.`;
+			throw new errors.MonthLengthValidationError(errorMessage, MONTHS_DATA[monthAbbreviation]['fullname'], day);
 		}
 
 		whenToRemind = new Date(currentDate.getFullYear(), month, day, currentDate.getHours(), currentDate.getMinutes());
+
+		if (whenToRemind - currentDate < 0) {
+			throw new errors.DateInThePastValidationError('The specified date is in the past.');
+		}
 
 		recurring = false;
 		howOftenToRemind = null;
