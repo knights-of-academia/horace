@@ -9,6 +9,7 @@ const accountabilityActions = require('../eventActions/accountabilityActions');
 const chainMessageAction = require('../eventActions/checkChainMessage');
 const highlightActions = require ('../eventActions/highlightActions');
 const afkAction = require('../eventActions/afkMessageCheckAction');
+const gratitudeActions =  require('../eventActions/gratitudeActions');
 
 module.exports = async (client, message) => {
 
@@ -52,6 +53,8 @@ module.exports = async (client, message) => {
 	// Check afk status and mentions
 	afkAction.checkIfUserIsAFK(message);
 	afkAction.checkForMention(message);
+	// Handle reacting to gratitude messages
+	gratitudeActions.reactToGratitude(client, message);
 
 
 };
