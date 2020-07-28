@@ -6,8 +6,10 @@ class deleteMessageActions {
 		const isHoraceBot = message.author.id === client.user.id;
 
 		const isCommand = message.content.startsWith(config.prefix);
+
+		const isStaffAccountability = message.channel.id == config.channels.staffaccountability;
 	
-		if(!(isHoraceBot || isCommand)){
+		if(!(isHoraceBot || isCommand || isStaffAccountability)){
 			
 			let embed = new Discord.RichEmbed()
 				.setTitle('🟡 Warning: Message deleted 🟡')
