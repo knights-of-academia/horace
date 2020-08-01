@@ -105,9 +105,7 @@ function addToDate(date, amountToAdd, whatToAdd) {
 		result.setMonth(result.getMonth() + amountToAdd);
 		break;
 	default:
-		// TODO Actual error here.
-		console.error('I\'m in the default case of addToDate meaning that something went very, very wrong!');
-		return;
+		throw new errors.NonmatchingInputValidationError('The unit (minutes, hours, ...) could\'nt be parsed correctly.');
 	}
 
 	return result;
