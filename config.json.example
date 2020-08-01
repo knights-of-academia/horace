@@ -46,7 +46,9 @@
     "congrats": "✔️",
     "highlights": "☀️",
     "wave": "👋",
-    "gratitude": "☺️"
+    "gratitude": "☺️",
+    "confirm": "👍",
+    "deny": "👎"
   },
   "pinLimit": 5,
   "reflectionCheckDepth": 5,

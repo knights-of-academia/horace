@@ -42,7 +42,7 @@ module.exports.execute = async (client, message, args) => {
 
 	let whatToRemind, whenToRemind, recurring, howOftenToRemind;
 	try {
-		[whatToRemind, whenToRemind, recurring, howOftenToRemind] = parseReminder(args, currentDate);
+		[whatToRemind, whenToRemind, recurring, howOftenToRemind] = parseReminder(args, currentDate, message);
 	} catch (err) {
 		console.error(err);
 
@@ -105,6 +105,7 @@ function addToDate(date, amountToAdd, whatToAdd) {
 		result.setMonth(result.getMonth() + amountToAdd);
 		break;
 	default:
+		// TODO Actual error here.
 		console.error('I\'m in the default case of addToDate meaning that something went very, very wrong!');
 		return;
 	}
@@ -112,7 +113,52 @@ function addToDate(date, amountToAdd, whatToAdd) {
 	return result;
 }
 
-function parseReminder(unparsedArgs, currentDate) {
+async function confirmReminder(whatToRemind, whenToRemind, message) {
+	let confirmation_message = await message.channel.send(`
+Hey ${message.author.username}! I'm not perfect, so please confirm if that is correct.
+Do you want me to remind you to ${whatToRemind} ${whenToRemind}? React with thumbs up or thumbs down!
+
+**Please note that this message will disappear in 20 seconds.**`
+	);
+
+	let confirm, deny;
+	[confirm, deny] = [config.emotes.confirm, config.emotes.deny];
+
+	confirmation_message.react(confirm).then(() => confirmation_message.react(deny));
+
+	const filter = (reaction, user) => {
+		return [confirm, deny].includes(reaction.emoji.name) && user.id === message.author.id;
+	};
+
+	confirmation_message.awaitReactions(filter, { max: 1, time: 20000, errors: ['time'] })
+		.then(collected => {
+			const reaction = collected.first();
+
+			confirmation_message.delete();
+
+			if (reaction.emoji.name === confirm) {
+				message.reply('I added your reminder to the database!');
+			} else if (reaction.emoji.name === deny) {
+				let errorMessage = 'User decided that the parsed reminder is invalid.';
+				let toSend = 'yikes! Please consider trying again or use `!remind help` for guidance!';
+
+				throw new errors.ReminderDeniedValidationError(errorMessage, toSend);
+			}
+		})
+		.catch(err => {
+			confirmation_message.delete();
+
+			if (err instanceof errors.ReminderDeniedValidationError) {
+				console.error(err);
+				return message.reply(err.toSend);
+			} else {
+				return message.reply('you didn\'t confirm nor deny. Please try again or use `!remind help` for guidance!');
+			}
+		});
+}
+
+
+function parseReminder(unparsedArgs, currentDate, message) {
 	// This might be significant later on when constructing Horace's reminding message.
 	const regMy = new RegExp('my', 'i');
 
@@ -129,7 +175,7 @@ function parseReminder(unparsedArgs, currentDate) {
 	// This RegExp matches reminders in the form of "!remind [me to] do [X] every [Y] minutes/hours/days/months".
 	// The first group is the action to be remided about, and the second and third group dictate how often
 	// to remind.
-	const regThree = new RegExp('(?:me to)? *(.*) +every +(\\d+ )?(minutes?|hours?|day?|months?)', 'i');
+	const regThree = new RegExp('(?:me to)? *(.*) +every +(\\d+ )?(minutes?|hours?|days?|months?)', 'i');
 
 	// TODO Maybe the 4th regex for reminding at an exact time?
 
@@ -170,6 +216,10 @@ function parseReminder(unparsedArgs, currentDate) {
 
 		recurring = false;
 		howOftenToRemind = null;
+
+		// We need to build the confirmation message differently than in the database.
+		let whenToRemindForConfirmation = 'in ' + amountToAdd + ' ' + whatToAdd;
+		confirmReminder(whatToRemind, whenToRemindForConfirmation, message);
 	} else if (matchRegTwo) {
 		whatToRemind = matchRegTwo[1];
 
@@ -190,6 +240,10 @@ function parseReminder(unparsedArgs, currentDate) {
 
 		recurring = false;
 		howOftenToRemind = null;
+
+		// We need to build the confirmation message differently than in the database.
+		let whenToRemindForConfirmation = 'on ' + MONTHS_DATA[monthAbbreviation]['fullname'] + ' ' + day;
+		confirmReminder(whatToRemind, whenToRemindForConfirmation, message);
 	} else if (matchRegThree) {
 		whatToRemind = matchRegThree[1];
 
@@ -199,9 +253,15 @@ function parseReminder(unparsedArgs, currentDate) {
 
 		recurring = true;
 		howOftenToRemind = [amountToAdd, whatToAdd].join(' ');
+
+		// We need to build the confirmation message differently than in the database.
+		let plural = howOftenToRemind.charAt(howOftenToRemind.length - 1) === 's' ? '' : 's';
+		let whenToRemindForConfirmation = 'every ' + howOftenToRemind + plural;
+		confirmReminder(whatToRemind, whenToRemindForConfirmation, message);
 	} else {
 		throw new errors.NonmatchingInputValidationError('The command format doesn\'t match any of the regexes.');
 	}
+
 
 	return [whatToRemind, whenToRemind, recurring, howOftenToRemind];
 }
