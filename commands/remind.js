@@ -38,15 +38,13 @@ module.exports.execute = async (client, message, args) => {
 		);
 	}
 
-	const remindersEmote = config.emotes.reminders;
-
 	const currentDate = new Date();
 	const whoToRemind = message.author.id;
 
 	if (args.length === 0 || args.length === 1 && (args[0] === 'help' || args[0] === 'info')) {
 		const reminderHelp = new Discord.RichEmbed()
 			.setColor('#FFEC09')
-			.setTitle(`${remindersEmote} Knights of Academia Remind Help ${remindersEmote}`)
+			.setTitle(`${config.emotes.reminders} Knights of Academia Remind Help ${config.emotes.reminders}`)
 			.setDescription('Here are some commands to help you out with reminders!')
 			.addField('Add a reminder',
 				`\`!remind [me to] <task> in <how many> minutes/hours/days/months\`
@@ -309,7 +307,7 @@ async function remind(client, date, reminder, catchUp = false) {
 
 	const remindMessage = new Discord.RichEmbed()
 		.setColor(color)
-		.setTitle('Reminder')
+		.setTitle(`${config.emotes.reminders} Reminder ${config.emotes.reminders}`)
 		.setDescription(description);
 
 	userToRemind.send(remindMessage);
