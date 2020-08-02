@@ -15,6 +15,7 @@
 
 // TODO Better names for variables.
 // TODO "del/delete" argument.
+// TODO Modularize?
 const Discord = require('discord.js');
 
 const config = require('../config.json');
@@ -37,41 +38,71 @@ module.exports.execute = async (client, message, args) => {
 		);
 	}
 
+	const remindersEmote = config.emotes.reminders;
+
 	const currentDate = new Date();
 	const whoToRemind = message.author.id;
 
-	let whatToRemind, whenToRemind, recurring, howOftenToRemind;
-	try {
-		[whatToRemind, whenToRemind, recurring, howOftenToRemind] = parseReminder(args, currentDate, message);
-	} catch (err) {
-		console.error(err);
+	if (args.length === 0 || args.length === 1 && (args[0] === 'help' || args[0] === 'info')) {
+		const reminderHelp = new Discord.RichEmbed()
+			.setColor('#FFEC09')
+			.setTitle(`${remindersEmote} Knights of Academia Remind Help ${remindersEmote}`)
+			.setDescription('Here are some commands to help you out with reminders!')
+			.addField('Add a reminder',
+				`\`!remind [me to] <task> in <how many> minutes/hours/days/months\`
+				Example: \`!remind me to do laundry in 2 hours\`
+				
+				=================================================
+				
+				\`!remind [me to] <task> on <date>\`
+				Example: \`!remind me to do laundry on July 21st\`
+				
+				=================================================
+				
+				\`!remind [me to] <task> every <how many> minute[s]/hour[s]/day[s]/month[s]\`
+				Example: \`!remind me to do laundry every day\`
+				
+				=================================================
+				
+				*Note: the parts in the square brackets are optional.*`)
+			.addField('List your reminders', '`!remind list`')
+			.addField('Remove a reminder',
+				`\`!remind (remove/delete) <reminder ID to remove>\`
+			You can find out the ID of the reminder by using \`!remind list\``);
+		return await message.author.send(reminderHelp);
+	} else {
+		let whatToRemind, whenToRemind, recurring, howOftenToRemind;
+		try {
+			[whatToRemind, whenToRemind, recurring, howOftenToRemind] = parseReminder(args, currentDate, message);
+		} catch (err) {
+			console.error(err);
 
-		if (err instanceof errors.MonthLengthValidationError) {
-			return await message.channel.send(
-				`Whoops! ${err.month} doesn't have ${err.days} days! Please correct the command or see \`!remind help\` for guidance!`
-			);
-		} else if (err instanceof errors.DateInThePastValidationError) {
-			return await message.channel.send(
-				'Whoops! The date you specified is in the past. Please correct the command or see `!remind help` for guidance!'
-			);
-		} else if (err instanceof errors.NonmatchingInputValidationError) {
-			return await message.channel.send(
-				'I\'m sorry, but the command you\'ve used is invalid. Please use `!remind help` for guidance on how to structure it correctly!'
-			);
+			if (err instanceof errors.MonthLengthValidationError) {
+				return await message.channel.send(
+					`Whoops! ${err.month} doesn't have ${err.days} days! Please correct the command or see \`!remind help\` for guidance!`
+				);
+			} else if (err instanceof errors.DateInThePastValidationError) {
+				return await message.channel.send(
+					'Whoops! The date you specified is in the past. Please correct the command or see `!remind help` for guidance!'
+				);
+			} else if (err instanceof errors.NonmatchingInputValidationError) {
+				return await message.channel.send(
+					'I\'m sorry, but the command you\'ve used is invalid. Please use `!remind help` for guidance on how to structure it correctly!'
+				);
+			}
 		}
-	}
-
-	await Reminder.sync({ force: true }).then(() => {
-		return Reminder.create({
-			whoToRemind: whoToRemind,
-			whatToRemind: whatToRemind,
-			whenToRemind: whenToRemind,
-			recurring: recurring,
-			howOftenToRemind: howOftenToRemind
-		}).catch(err => {
-			console.error('Reminder Sequelize error: ', err);
+		await Reminder.sync({ force: true }).then(() => {
+			return Reminder.create({
+				whoToRemind: whoToRemind,
+				whatToRemind: whatToRemind,
+				whenToRemind: whenToRemind,
+				recurring: recurring,
+				howOftenToRemind: howOftenToRemind
+			}).catch(err => {
+				console.error('Reminder Sequelize error: ', err);
+			});
 		});
-	});
+	}
 
 	let reminders = await Reminder.findAll();
 	console.log(reminders);
@@ -160,22 +191,20 @@ function parseReminder(unparsedArgs, currentDate, message) {
 	// This might be significant later on when constructing Horace's reminding message.
 	const regMy = new RegExp('my', 'i');
 
-	// This RegExp matches reminders in the form of "!remind [me to] do X in Y minutes/hours/days/months".
+	// This RegExp matches reminders in the form of "!remind [me to] <task> in <how many> minutes/hours/days/months".
 	// The first group is the action to be reminded about, the second group is how many
 	// minutes/hoursdays/months (determined by the third group) should pass before the reminder.
 	const regOne = new RegExp('(?:me to)? *(.*) +in +((?:\\d+)|(?:a)|(?:an)) +(minutes?|hours?|days?|months?)', 'i');
 
-	// This RegExp matches reminders in the form of "!remind [me to] do X on Y".
+	// This RegExp matches reminders in the form of "!remind [me to] <task> on <date>".
 	// The first group is the action to be reminded about, the second group is the month,
 	// and the third group is the day.
 	const regTwo = new RegExp('(?:me to)? *(.*) +on +((?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)) +(\\d+) *(?:st|nd|rd|th)?', 'i');
 
-	// This RegExp matches reminders in the form of "!remind [me to] do [X] every [Y] minutes/hours/days/months".
+	// This RegExp matches reminders in the form of "!remind [me to] <task> every <how many> minutes/hours/days/months".
 	// The first group is the action to be remided about, and the second and third group dictate how often
 	// to remind.
 	const regThree = new RegExp('(?:me to)? *(.*) +every +(\\d+ )?(minutes?|hours?|days?|months?)', 'i');
-
-	// TODO Maybe the 4th regex for reminding at an exact time?
 
 	let toPush = '';
 	let correctedInput = [];
