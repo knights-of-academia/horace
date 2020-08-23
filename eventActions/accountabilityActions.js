@@ -58,6 +58,7 @@ class accountabilityActions {
 
 					// Pin the message
 					sentMessage.clearReactions();
+					sentMessage.react(config.emotes.pinMessage);
 					sentMessage.pin();
 
 					// If they have other pinned messages, give them a good 'ol reminder.
@@ -69,7 +70,6 @@ class accountabilityActions {
 					sentMessage.unpin();
 					currentChannel.send('Hey, ' + user.username + ', I\'ve unpinned your selected message as requested!');
 				}
-				sentMessage.react(config.emotes.pinMessage);
 
 			});
 		}
@@ -97,15 +97,42 @@ class accountabilityActions {
 						break;
 					}
 				}
-			});
 
-			if(hasPinnedMessage){
-				currentChannel.send('Hey, ' + user.username + ', I\'ve unpinned your most recent message as requested!');
-			} else {
-				currentChannel.send('Sorry, ' + user.username + '! I couldn\'t seem to find any pinned messages from you.');
-			}
+				if(hasPinnedMessage){
+					currentChannel.send('Hey, ' + user.username + ', I\'ve unpinned your most recent message as requested!');
+				} else {
+					currentChannel.send('Sorry, ' + user.username + '! I couldn\'t seem to find any pinned messages from you.');
+				}
+			});
 		}
 	}
+
+	// Removes all pinned messages by a user
+	static async userUnpinsAllMessages(message, user){
+		if(message.channel.id === config.channels.accountability) {
+			await message.channel.fetchPinnedMessages().then(fetchedPins => {
+
+				// We're essentially doing the same thing as unpin message, but we don't stop upon finding their most recent pin.
+				const pinMsgIterator = fetchedPins.values();
+				let hasMessages = false;
+
+				for (let i = 0; i < fetchedPins.size; i++){
+					const msgVal = pinMsgIterator.next();
+					if(msgVal.value.author.id == user.id){
+						hasMessages = true;
+						msgVal.value.unpin();
+					}
+				}
+
+				if(hasMessages){
+					message.channel.send('Hey, ' + user.username + ', I\'ve unpinned **_ALL_** of your messages as requested!');
+				} else {
+					message.channel.send('Sorry, ' + user.username + '! I couldn\'t seem to find any pinned messages from you.');
+				}
+			});
+		}
+	}
+
 	// Add a random reaction to a message sent
 	static async addReaction(client, message){
 		if(message.channel.id != config.channels.accountability) return;
@@ -132,7 +159,7 @@ class accountabilityActions {
 		});
 
 		// Check for emotes
-		if(message.content.toLowerCase().includes(':yes:') || message.content.toLowerCase().includes(':yes2:') || message.content.toLowerCase().includes(':white_check_mark:')){
+		if(message.content.toLowerCase().includes(':yes:') || message.content.toLowerCase().includes(':v_:') || message.content.toLowerCase().includes(':white_check_mark:')){
 			// Pull a random reaction from the common emotes for and add to post (personally I like the separation of variables, let me know if that's not preferred style)
 			const rand = Math.floor(Math.random() * length);
 			const selectedEmote = random_emotes[rand];
