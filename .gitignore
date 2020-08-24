@@ -113,3 +113,6 @@ public
 
 # COTW information file
 /data/cotw.json
+
+# Database
+*.sqlite

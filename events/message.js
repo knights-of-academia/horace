@@ -1,6 +1,5 @@
 const config = require('../config.json');
 const db = require('quick.db');
-const Discord = require('discord.js');
 const cotwActions = require('../eventActions/cotwActions');
 const hocActions = require('../eventActions/hocActions');
 const snapshotActions = require('../eventActions/snapshotActions');
@@ -14,7 +13,6 @@ const afkAction = require('../eventActions/afkMessageCheckAction');
 const gratitudeActions = require('../eventActions/gratitudeActions');
 module.exports = async (client, message) => {
 	if (!message.guild || message.author.bot) return;
-	const bannedWords = await db.get(`bannedWords-${message.guild.id}`);
 	if (db.get(`bannedWords-${message.guild.id}`) == null) {
 		db.set(`bannedWords-${message.guild.id}`, ['pussy']);
 	}
@@ -32,39 +30,8 @@ module.exports = async (client, message) => {
 				message.delete(1500);
 			}); // Execute found command
 		}
-		if (!commandfile) {
-			if (bannedWords.some((word) => message.content.includes(word))) {
-				const embedMessage = new Discord.RichEmbed()
-					.setColor('#ff0000')
-					.setTitle('🚩 Warning: Profanity detected 🚩')
-					.setDescription(`Profanity detected in ${message.channel}`)
-					.addField('User', message.author, true)
-					.addField('Link', `[Go to message](${message.url})`, true)
-					.setFooter(
-						message.author.username + '#' + message.author.discriminator,
-						message.author.avatarURL
-					);
-				return client.channels
-					.get(config.channels.moderation)
-					.send(embedMessage);
-			}
-		}
 	}
-	if (!command) {
-		if (bannedWords.some((word) => message.content.includes(word))) {
-			const embedMessage = new Discord.RichEmbed()
-				.setColor('#ff0000')
-				.setTitle('🚩 Warning: Profanity detected 🚩')
-				.setDescription(`Profanity detected in ${message.channel}`)
-				.addField('User', message.author, true)
-				.addField('Link', `[Go to message](${message.url})`, true)
-				.setFooter(
-					message.author.username + '#' + message.author.discriminator,
-					message.author.avatarURL
-				);
-			client.channels.get(config.channels.moderation).send(embedMessage);
-		}
-	}
+
 	// Check the message for profanity
 	profanityActions.checkForProfanity(client, message);
 	// Handle greetings
