@@ -1,5 +1,4 @@
 const config = require('../config.json');
-const db = require('quick.db');
 const cotwActions = require('../eventActions/cotwActions');
 const hocActions = require('../eventActions/hocActions');
 const snapshotActions = require('../eventActions/snapshotActions');
@@ -8,23 +7,24 @@ const profanityActions = require('../eventActions/profanityActions');
 const citadelActions = require('../eventActions/citadelActions');
 const accountabilityActions = require('../eventActions/accountabilityActions');
 const chainMessageAction = require('../eventActions/checkChainMessage');
-const highlightActions = require('../eventActions/highlightActions');
+const highlightActions = require ('../eventActions/highlightActions');
 const afkAction = require('../eventActions/afkMessageCheckAction');
-const gratitudeActions = require('../eventActions/gratitudeActions');
+const gratitudeActions =  require('../eventActions/gratitudeActions');
+const staffAccountabilityActions = require('../eventActions/staffAcountabilityActions');
+
 module.exports = async (client, message) => {
+
 	if (!message.guild || message.author.bot) return;
-	if (db.get(`bannedWords-${message.guild.id}`) == null) {
-		db.set(`bannedWords-${message.guild.id}`, ['pussy']);
-	}
 	const args = message.content.split(/\s+/g); // Return the message content and split the prefix.
 	const command =
-    message.content.startsWith(config.prefix) &&
-    args.shift().slice(config.prefix.length).toLowerCase();
+		message.content.startsWith(config.prefix) &&
+		args.shift().slice(config.prefix.length).toLowerCase();
 
 	if (command) {
 		const commandfile =
-      client.commands.get(command) ||
-      client.commands.get(client.aliases.get(command));
+			client.commands.get(command) ||
+			client.commands.get(client.aliases.get(command));
+
 		if (commandfile) {
 			commandfile.execute(client, message, args).then(() => {
 				message.delete(1500);
@@ -56,4 +56,7 @@ module.exports = async (client, message) => {
 	afkAction.checkForMention(message);
 	// Handle reacting to gratitude messages
 	gratitudeActions.reactToGratitude(client, message);
+	// Staff accountability messages
+	staffAccountabilityActions.checkForMessages(client,message);
+
 };

@@ -22,7 +22,8 @@
     "hallofconquests": "000",
     "accountability": "000",
     "chooseroles": "000",
-    "gratitude": "000"
+    "gratitude": "000",
+    "staffaccountability": "000"
   },
   "emotes": {
     "acceptTOS": "✅",
@@ -37,11 +38,13 @@
     "goodnight": "🌜",
     "accountability_emotes_array": ["💯", "529488404103299074", "👍", "🔥", "🙌", "👏", "👌", "💪", "587455770283737110", "531663637694382089"],
     "pom": "🍅",
-    "yes2": "562072692086276118",
+    "yes2": "<:yes:562072692086276118>",
+    "no": "<:no:692804572602957896>",
     "congrats": "✔️",
     "highlights": "☀️",
     "wave": "👋",
-    "gratitude": "☺️"
+    "gratitude": "☺️",
+    "conquer": "<:conquer:658774929478647808>"
   },
   "pinLimit": 5,
   "reflectionCheckDepth": 5,
