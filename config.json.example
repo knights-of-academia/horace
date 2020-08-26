@@ -10,7 +10,9 @@
     "cotwChampion": "000",
     "cotwManager": "000",
     "initiate": "000",
-    "focusedraider": "000"
+    "focusedraider": "000",
+    "guardian": "000",
+    "helper": "000"
   },
   "channels": {
     "citadel": "000",
