@@ -15,7 +15,8 @@
 
 // TODO Better names for variables.
 // TODO "del/delete" argument.
-// TODO Modularize?
+// TODO Move the functions around, so they make more sense.
+// TODO Refactor ID so that it starts from 1 for each user.
 const Discord = require('discord.js');
 
 const config = require('../config.json');
@@ -38,11 +39,8 @@ module.exports.execute = async (client, message, args) => {
 		);
 	}
 
-	const currentDate = new Date();
-	const whoToRemind = message.author.id;
-
 	if (args.length === 0 || args.length === 1 && (args[0] === 'help' || args[0] === 'info')) {
-		const reminderHelp = new Discord.RichEmbed()
+		const remindHelp = new Discord.RichEmbed()
 			.setColor('#FFEC09')
 			.setTitle(`${config.emotes.reminders} Knights of Academia Remind Help ${config.emotes.reminders}`)
 			.setDescription('Here are some commands to help you out with reminders!')
@@ -67,8 +65,58 @@ module.exports.execute = async (client, message, args) => {
 			.addField('Remove a reminder',
 				`\`!remind (remove/delete) <reminder ID to remove>\`
 			You can find out the ID of the reminder by using \`!remind list\``);
-		return await message.author.send(reminderHelp);
+		return await message.author.send(remindHelp);
+	} else if (args.length === 1 && args[0] === 'list') {
+		// FIXME This is very messy, need to clean up.
+
+		const userReminders = await Reminder.findAll({
+			where: {
+				whoToRemind: message.author.id
+			}
+		});
+
+		let remindersString = '';
+
+		userReminders.forEach(reminder => {
+			if (reminder.dataValues.recurring) {
+				let howOftenToRemind = reminder.dataValues.howOftenToRemind;
+				let is_singular = howOftenToRemind.charAt(0) === '1';
+				let plural = howOftenToRemind.charAt(howOftenToRemind.length - 1) === 's' && !is_singular ? '' : 's';
+
+				let toConcat = `${reminder.dataValues.id}: ${reminder.dataValues.whatToRemind} every ${reminder.dataValues.howOftenToRemind + plural}\n`;
+				remindersString = remindersString.concat(toConcat);
+			} else {
+				let whenToRemind = reminder.dataValues.whenToRemind;
+
+				let which_month = '';
+				for (let month in MONTHS_DATA) {
+					if (MONTHS_DATA[month]['number'] === whenToRemind.getMonth()) {
+						which_month = MONTHS_DATA[month]['fullname'];
+					}
+				}
+
+				let minutes = whenToRemind.getMinutes().toString();
+				if (minutes.length === 1) {
+					minutes = '0' + minutes;
+				}
+
+				let date = `at ${whenToRemind.getHours()}:${minutes} on ${which_month} ${whenToRemind.getDate()}`;
+
+				let toConcat = `${reminder.dataValues.id}: ${reminder.dataValues.whatToRemind} ${date}\n`;
+				remindersString = remindersString.concat(toConcat);
+			}
+		});
+
+		const remindList = new Discord.RichEmbed()
+			.setColor('#FFEC09')
+			.setTitle(`${config.emotes.reminders} Your Reminders ${config.emotes.reminders}`)
+			.setDescription('Each entry is in the form of <id>: <reminder>.')
+			.addField('Reminders', remindersString);
+
+		return await message.author.send(remindList);
 	} else {
+		const currentDate = new Date();
+		const whoToRemind = message.author.id;
 		let whatToRemind, whenToRemind, recurring, howOftenToRemind;
 		try {
 			[whatToRemind, whenToRemind, recurring, howOftenToRemind] = parseReminder(args, currentDate, message);
@@ -360,6 +408,7 @@ async function catchUp(client) {
 module.exports.scanForReminders = scanForReminders;
 module.exports.catchUp = catchUp;
 
+// TODO Don't forget about the config data.
 module.exports.config = {
 	name: 'remind',
 	aliases: ['todo'],
