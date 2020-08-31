@@ -26,9 +26,9 @@ const Reminder = require('../databaseFiles/remindersTable.js');
 const SpellChecker = require('spellchecker'); // Used to fix the typos.
 
 // Needed when parsing the reminder.
-const MONTHS_DATA = require('../data/months_data.js');
+const monthsData = require('../data/monthsData.js');
 // Account for the leap years.
-MONTHS_DATA['feb']['length'] = new Date(new Date().getFullYear(), 2, 0).getDate();
+monthsData['feb']['length'] = new Date(new Date().getFullYear(), 2, 0).getDate();
 
 
 module.exports.execute = async (client, message, args) => {
@@ -67,43 +67,42 @@ module.exports.execute = async (client, message, args) => {
 			You can find out the ID of the reminder by using \`!remind list\``);
 		return await message.author.send(remindHelp);
 	} else if (args.length === 1 && args[0] === 'list') {
-		// FIXME This is very messy, need to clean up.
-
 		const userReminders = await Reminder.findAll({
 			where: {
 				whoToRemind: message.author.id
 			}
 		});
 
-		let remindersString = '';
+		let remindersStringForEmbed = '';
 
 		userReminders.forEach(reminder => {
-			if (reminder.dataValues.recurring) {
-				let howOftenToRemind = reminder.dataValues.howOftenToRemind;
-				let is_singular = howOftenToRemind.charAt(0) === '1';
-				let plural = howOftenToRemind.charAt(howOftenToRemind.length - 1) === 's' && !is_singular ? '' : 's';
+			let id = reminder.dataValues.id;
+			let whatToRemind = reminder.dataValues.whatToRemind;
+			let whenToRemind = reminder.dataValues.whenToRemind;
+			let recurring = reminder.dataValues.recurring;
+			let howOftenToRemind = reminder.dataValues.howOftenToRemind;
 
-				let toConcat = `${reminder.dataValues.id}: ${reminder.dataValues.whatToRemind} every ${reminder.dataValues.howOftenToRemind + plural}\n`;
-				remindersString = remindersString.concat(toConcat);
-			} else {
-				let whenToRemind = reminder.dataValues.whenToRemind;
+			whenToRemind = parseDateForListing(whenToRemind);
 
-				let which_month = '';
-				for (let month in MONTHS_DATA) {
-					if (MONTHS_DATA[month]['number'] === whenToRemind.getMonth()) {
-						which_month = MONTHS_DATA[month]['fullname'];
+			if (recurring) {
+				// Need to check if the reminder is in the singular form, e.g. "every [1] hour."
+				// This determines how it is parsed later on, same with `lastChar`.
+				const isSingular = howOftenToRemind.charAt(0) === '1';
+				const lastChar = howOftenToRemind.charAt(howOftenToRemind.length - 1);
+
+				if (isSingular) {
+					if (lastChar === 's') {
+						howOftenToRemind = howOftenToRemind.substring(0, howOftenToRemind.length - 1);
 					}
+				} else if (lastChar !== 's') {
+					howOftenToRemind = howOftenToRemind + 's';
 				}
 
-				let minutes = whenToRemind.getMinutes().toString();
-				if (minutes.length === 1) {
-					minutes = '0' + minutes;
-				}
-
-				let date = `at ${whenToRemind.getHours()}:${minutes} on ${which_month} ${whenToRemind.getDate()}`;
-
-				let toConcat = `${reminder.dataValues.id}: ${reminder.dataValues.whatToRemind} ${date}\n`;
-				remindersString = remindersString.concat(toConcat);
+				const reminderToConcat = `${id}: **${whatToRemind}** every ${howOftenToRemind} (next occurence at ${whenToRemind})\n`;
+				remindersStringForEmbed = remindersStringForEmbed.concat(reminderToConcat);
+			} else {
+				const reminderToConcat = `${id}: **${whatToRemind}** at ${whenToRemind}\n`;
+				remindersStringForEmbed = remindersStringForEmbed.concat(reminderToConcat);
 			}
 		});
 
@@ -111,7 +110,7 @@ module.exports.execute = async (client, message, args) => {
 			.setColor('#FFEC09')
 			.setTitle(`${config.emotes.reminders} Your Reminders ${config.emotes.reminders}`)
 			.setDescription('Each entry is in the form of <id>: <reminder>.')
-			.addField('Reminders', remindersString);
+			.addField('Reminders', remindersStringForEmbed);
 
 		return await message.author.send(remindList);
 	} else {
@@ -153,6 +152,36 @@ module.exports.execute = async (client, message, args) => {
 	let reminders = await Reminder.findAll();
 	console.log(reminders);
 };
+
+function parseDateForListing(date) {
+	let whichDay = date.getDate();
+
+	let whichMonth = '';
+	for (let month in monthsData) {
+		if (monthsData[month]['number'] === date.getMonth()) {
+			whichMonth = monthsData[month]['fullname'];
+		}
+	}
+
+	let whichHour = date.getHours();
+	let amOrPm;
+	if (whichHour === 0) {
+		whichHour = 12;
+		amOrPm = 'AM';
+	} else if (whichHour <= 12) {
+		amOrPm = 'AM';
+	} else {
+		whichHour -= 12;
+		amOrPm = 'PM';
+	}
+
+	let whichMinute = date.getMinutes().toString();
+	if (whichMinute.length === 1) {
+		whichMinute = '0' + whichMinute;
+	}
+
+	return `${whichHour}:${whichMinute} ${amOrPm} on ${whichMonth} ${whichDay}`;
+}
 
 function resetSecondsAndMilliseconds(date) {
 	date.setMilliseconds(0);
@@ -259,7 +288,7 @@ function parseReminder(unparsedArgs, currentDate, message) {
 		// HACK SpellChecker corrects some of the month names' abbreviations (e.g. "feb" -> "fib").
 		// This works around that by checking if the word to be added is in fact such abbreviation,
 		// and if so, the loop continues with the next iteration.
-		if (Object.keys(MONTHS_DATA).includes(word)) { correctedInput.push(word); return; }
+		if (Object.keys(monthsData).includes(word)) { correctedInput.push(word); return; }
 
 		// Ternary operation that corrects the word if there's a typo, but leaves it as is if there's not.
 		toPush = SpellChecker.isMisspelled(word) ? SpellChecker.getCorrectionsForMisspelling(word)[0] : word;
@@ -297,14 +326,15 @@ function parseReminder(unparsedArgs, currentDate, message) {
 		whatToRemind = matchRegTwo[1];
 
 		let monthAbbreviation = matchRegTwo[2].slice(0, 3).toLowerCase();
-		let month = MONTHS_DATA[monthAbbreviation]['number'];
+		let month = monthsData[monthAbbreviation]['number'];
 		let day = matchRegTwo[3];
 
-		if (day > MONTHS_DATA[monthAbbreviation]['length']) {
-			let errorMessage = `${MONTHS_DATA[monthAbbreviation]['fullname']} doesn't have ${day} days.`;
-			throw new errors.MonthLengthValidationError(errorMessage, MONTHS_DATA[monthAbbreviation]['fullname'], day);
+		if (day > monthsData[monthAbbreviation]['length']) {
+			let errorMessage = `${monthsData[monthAbbreviation]['fullname']} doesn't have ${day} days.`;
+			throw new errors.MonthLengthValidationError(errorMessage, monthsData[monthAbbreviation]['fullname'], day);
 		}
 
+		// TODO Months in the next year don't work.
 		whenToRemind = new Date(currentDate.getFullYear(), month, day, currentDate.getHours(), currentDate.getMinutes());
 
 		if (whenToRemind - currentDate < 0) {
@@ -315,7 +345,7 @@ function parseReminder(unparsedArgs, currentDate, message) {
 		howOftenToRemind = null;
 
 		// We need to build the confirmation message differently than in the database.
-		let whenToRemindForConfirmation = 'on ' + MONTHS_DATA[monthAbbreviation]['fullname'] + ' ' + day;
+		let whenToRemindForConfirmation = 'on ' + monthsData[monthAbbreviation]['fullname'] + ' ' + day;
 		confirmReminder(whatToRemind, whenToRemindForConfirmation, message);
 	} else if (matchRegThree) {
 		whatToRemind = matchRegThree[1];
