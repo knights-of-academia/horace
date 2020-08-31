@@ -210,6 +210,10 @@ function addToDate(date, amountToAdd, whatToAdd) {
 	case 'months':
 		result.setMonth(result.getMonth() + amountToAdd);
 		break;
+	case 'year':
+	case 'years':
+		result.setFullYear(result.getFullYear() + amountToAdd);
+		break;
 	default:
 		throw new errors.NonmatchingInputValidationError('The unit (minutes, hours, ...) could\'nt be parsed correctly.');
 	}
@@ -334,11 +338,10 @@ function parseReminder(unparsedArgs, currentDate, message) {
 			throw new errors.MonthLengthValidationError(errorMessage, monthsData[monthAbbreviation]['fullname'], day);
 		}
 
-		// TODO Months in the next year don't work.
 		whenToRemind = new Date(currentDate.getFullYear(), month, day, currentDate.getHours(), currentDate.getMinutes());
 
 		if (whenToRemind - currentDate < 0) {
-			throw new errors.DateInThePastValidationError('The specified date is in the past.');
+			whenToRemind = addToDate(whenToRemind, 1, 'year');
 		}
 
 		recurring = false;
