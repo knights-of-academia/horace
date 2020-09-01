@@ -16,7 +16,6 @@
 // TODO Better names for variables.
 // TODO "del/delete" argument.
 // TODO Move the functions around, so they make more sense.
-// TODO Refactor ID so that it starts from 1 for each user.
 const Discord = require('discord.js');
 
 const config = require('../config.json');
@@ -362,8 +361,21 @@ function parseReminder(unparsedArgs, currentDate, message) {
 		howOftenToRemind = [amountToAdd, whatToAdd].join(' ');
 
 		// We need to build the confirmation message differently than in the database.
-		let plural = howOftenToRemind.charAt(howOftenToRemind.length - 1) === 's' ? '' : 's';
-		let whenToRemindForConfirmation = 'every ' + howOftenToRemind + plural;
+		const isSingular = howOftenToRemind.charAt(0) === '1';
+		const lastChar = howOftenToRemind.charAt(howOftenToRemind.length - 1);
+		let parsedHowOftenToRemind;
+
+		if (isSingular) {
+			parsedHowOftenToRemind = howOftenToRemind.substring(2);
+			if (lastChar === 's') {
+				parsedHowOftenToRemind = parsedHowOftenToRemind.substring(0, this.length - 1);
+			}
+		} else if (lastChar !== 's') {
+			parsedHowOftenToRemind = parsedHowOftenToRemind + 's';
+		}
+
+		// let plural = howOftenToRemind.charAt(howOftenToRemind.length - 1) === 's' ? '' : 's';
+		let whenToRemindForConfirmation = 'every ' + parsedHowOftenToRemind;
 		confirmReminder(whatToRemind, whenToRemindForConfirmation, message);
 	} else {
 		throw new errors.NonmatchingInputValidationError('The command format doesn\'t match any of the regexes.');
