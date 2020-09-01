@@ -91,6 +91,7 @@ module.exports.execute = async (client, message, args) => {
 				const lastChar = howOftenToRemind.charAt(howOftenToRemind.length - 1);
 
 				if (isSingular) {
+					howOftenToRemind = howOftenToRemind.substring(2);
 					if (lastChar === 's') {
 						howOftenToRemind = howOftenToRemind.substring(0, howOftenToRemind.length - 1);
 					}
