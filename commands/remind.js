@@ -126,10 +126,6 @@ module.exports.execute = async (client, message, args) => {
 				return await message.channel.send(
 					`Whoops! ${err.month} doesn't have ${err.days} days! Please correct the command or see \`!remind help\` for guidance!`
 				);
-			} else if (err instanceof errors.DateInThePastValidationError) {
-				return await message.channel.send(
-					'Whoops! The date you specified is in the past. Please correct the command or see `!remind help` for guidance!'
-				);
 			} else if (err instanceof errors.NonmatchingInputValidationError) {
 				return await message.channel.send(
 					'I\'m sorry, but the command you\'ve used is invalid. Please use `!remind help` for guidance on how to structure it correctly!'
