@@ -1,9 +1,8 @@
 // TODO Documentation.
 
-const monthsData = require('../data/monthsData.js');
-monthsData['feb']['length'] = new Date(new Date().getFullYear(), 2, 0).getDate();
-
 const errors = require('../helpers/remindErrors.js')
+
+const monthsData = require('../data/monthsData.js');
 
 function resetSecondsAndMilliseconds(date) {
     date.setMilliseconds(0);

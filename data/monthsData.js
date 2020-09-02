@@ -7,7 +7,7 @@ module.exports = {
 	'feb': {
 		'fullname': 'February',
 		'number': 1,
-		'length': null
+		'length': new Date(new Date().getFullYear(), 2, 0).getDate()
 	},
 	'mar': {
 		'fullname': 'March',

@@ -11,10 +11,7 @@ const remindUtils = require('../utils/remindUtils.js')
 const Reminder = require('../databaseFiles/remindersTable.js');
 const SpellChecker = require('spellchecker'); // Used to automatically fix the typos.
 
-// Needed when parsing the reminder.
 const monthsData = require('../data/monthsData.js');
-// Account for the leap years.
-monthsData['feb']['length'] = new Date(new Date().getFullYear(), 2, 0).getDate();
 
 
 module.exports.execute = async (client, message, args) => {
