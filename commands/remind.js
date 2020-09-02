@@ -1,18 +1,3 @@
-// Reminder Bot Command List
-
-// :white_small_square: $remind [#channel] [time until reminder e.g. 10m for 10 minutes or 10h for 10 hours] [@user] [message] - Sets up a reminder to be sent to a given channel. You can exclude the channel parameter to make it send a reminder to the same channel you set the reminder on. Example: $remind #accountability-club 10h @Austin#0008 did you get everything done today?
-// :white_small_square: $natural - A swifter remind command. Use this command for more info.
-// :white_small_square: $del - Choose what reminders to delete (It goes without saying please do not abuse this in ways such as deleting others' reminders)
-// :white_small_square: $info - Get bot info
-
-// 1. I think the todo command was considered a replacement for accountability station, but we still don't appear to hit the pin limit so I would agree. I think the base feature of reminding things at certain times / repetitive intervals is the key idea. 
-// 2. I think having 3 types of reminders is what I see people being used; "remind to do X in 2 days",
-// "remind me to do X every 5 days", "remind me to do X on july 20th". That's in order of priority, I think.
-// Maybe even having a specific format for the command so you don't have to try and parse the exact language...
-// but however you do it is fine haha. I think storing things in the same format in the SQLite database is definitely key,
-// since Horace could be restarted 5 minutes from setting a reminder to 2 months after.
-// Speaking of format, yea just ReminderBot's format seems fine. I'd also recommend limiting it to maybe a specific channel in config, like #accountability-station or something, since that's where that main purpose would arise.Thank you for taking this one on! :conquer:
-
 // TODO Better names for variables.
 // TODO "del/delete" argument.
 // TODO Move the functions around, so they make more sense.
@@ -24,7 +9,7 @@ const errors = require('../helpers/remindErrors.js');
 const remindUtils = require('../utils/remindUtils.js')
 
 const Reminder = require('../databaseFiles/remindersTable.js');
-const SpellChecker = require('spellchecker'); // Used to fix the typos.
+const SpellChecker = require('spellchecker'); // Used to automatically fix the typos.
 
 // Needed when parsing the reminder.
 const monthsData = require('../data/monthsData.js');
@@ -86,21 +71,9 @@ module.exports.execute = async (client, message, args) => {
 			whenToRemind = remindUtils.parseDateForListing(whenToRemind);
 
 			if (recurring) {
-				// Need to check if the reminder is in the singular form, e.g. "every [1] hour."
-				// This determines how it is parsed later on, same with `lastChar`.
-				const isSingular = howOftenToRemind.charAt(0) === '1';
-				const lastChar = howOftenToRemind.charAt(howOftenToRemind.length - 1);
+				let parsedHowOftenToRemind = remindUtils.parseSingularOrPlural(howOftenToRemind);
 
-				if (isSingular) {
-					howOftenToRemind = howOftenToRemind.substring(2);
-					if (lastChar === 's') {
-						howOftenToRemind = howOftenToRemind.substring(0, howOftenToRemind.length - 1);
-					}
-				} else if (lastChar !== 's') {
-					howOftenToRemind = howOftenToRemind + 's';
-				}
-
-				const reminderToConcat = `${id}: **${whatToRemind}** every ${howOftenToRemind} (next occurence at ${whenToRemind})\n`;
+				const reminderToConcat = `${id}: **${whatToRemind}** every ${parsedHowOftenToRemind} (next occurence at ${whenToRemind})\n`;
 				remindersStringForEmbed = remindersStringForEmbed.concat(reminderToConcat);
 			} else {
 				const reminderToConcat = `${id}: **${whatToRemind}** at ${whenToRemind}\n`;
@@ -255,6 +228,7 @@ function parseReminder(unparsedArgs, currentDate, message) {
 
 		// We need to build the confirmation message differently than in the database.
 		let whenToRemindForConfirmation = 'in ' + amountToAdd + ' ' + whatToAdd;
+
 		confirmReminder(whatToRemind, whenToRemindForConfirmation, message);
 	} else if (matchRegTwo) {
 		whatToRemind = matchRegTwo[1];
@@ -290,22 +264,11 @@ function parseReminder(unparsedArgs, currentDate, message) {
 		recurring = true;
 		howOftenToRemind = [amountToAdd, whatToAdd].join(' ');
 
+		let parsedHowOftenToRemind = remindUtils.parseSingularOrPlural(howOftenToRemind);
+
 		// We need to build the confirmation message differently than in the database.
-		const isSingular = howOftenToRemind.charAt(0) === '1';
-		const lastChar = howOftenToRemind.charAt(howOftenToRemind.length - 1);
-		let parsedHowOftenToRemind;
-
-		if (isSingular) {
-			parsedHowOftenToRemind = howOftenToRemind.substring(2);
-			if (lastChar === 's') {
-				parsedHowOftenToRemind = parsedHowOftenToRemind.substring(0, this.length - 1);
-			}
-		} else if (lastChar !== 's') {
-			parsedHowOftenToRemind = parsedHowOftenToRemind + 's';
-		}
-
-		// let plural = howOftenToRemind.charAt(howOftenToRemind.length - 1) === 's' ? '' : 's';
 		let whenToRemindForConfirmation = 'every ' + parsedHowOftenToRemind;
+
 		confirmReminder(whatToRemind, whenToRemindForConfirmation, message);
 	} else {
 		throw new errors.NonmatchingInputValidationError('The command format doesn\'t match any of the regexes.');

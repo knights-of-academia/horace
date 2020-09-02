@@ -1,6 +1,8 @@
 // TODO Documentation.
 
 const monthsData = require('../data/monthsData.js');
+monthsData['feb']['length'] = new Date(new Date().getFullYear(), 2, 0).getDate();
+
 const errors = require('../helpers/remindErrors.js')
 
 function resetSecondsAndMilliseconds(date) {
@@ -71,6 +73,24 @@ function parseDateForListing(date) {
     return `${whichHour}:${whichMinute} ${amOrPm} on ${whichMonth} ${whichDay}`;
 }
 
+function parseSingularOrPlural(rawHowOftenToRemind) {
+    const isSingular = rawHowOftenToRemind.charAt(0) === '1';
+    const lastChar = rawHowOftenToRemind.charAt(this.length - 1);
+
+    let parsedHowOftenToRemind;
+    if (isSingular) {
+        parsedHowOftenToRemind = rawHowOftenToRemind.substring(2);
+        if (lastChar === 's') {
+            parsedHowOftenToRemind = rawHowOftenToRemind.substring(0, this.length - 1);
+        }
+    } else if (lastChar !== 's') {
+        parsedHowOftenToRemind = howOftenToRemind + 's';
+    }
+
+    return parsedHowOftenToRemind;
+}
+
 module.exports.resetSecondsAndMilliseconds = resetSecondsAndMilliseconds;
 module.exports.addToDate = addToDate;
 module.exports.parseDateForListing = parseDateForListing;
+module.exports.parseSingularOrPlural = parseSingularOrPlural;
