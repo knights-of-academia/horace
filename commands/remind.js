@@ -19,7 +19,9 @@
 const Discord = require('discord.js');
 
 const config = require('../config.json');
-const errors = require('../helpers/errors.js');
+
+const errors = require('../helpers/remindErrors.js');
+const remindUtils = require('../utils/remindUtils.js')
 
 const Reminder = require('../databaseFiles/remindersTable.js');
 const SpellChecker = require('spellchecker'); // Used to fix the typos.
@@ -81,7 +83,7 @@ module.exports.execute = async (client, message, args) => {
 			let recurring = reminder.dataValues.recurring;
 			let howOftenToRemind = reminder.dataValues.howOftenToRemind;
 
-			whenToRemind = parseDateForListing(whenToRemind);
+			whenToRemind = remindUtils.parseDateForListing(whenToRemind);
 
 			if (recurring) {
 				// Need to check if the reminder is in the singular form, e.g. "every [1] hour."
@@ -148,74 +150,6 @@ module.exports.execute = async (client, message, args) => {
 	let reminders = await Reminder.findAll();
 	console.log(reminders);
 };
-
-function parseDateForListing(date) {
-	let whichDay = date.getDate();
-
-	let whichMonth = '';
-	for (let month in monthsData) {
-		if (monthsData[month]['number'] === date.getMonth()) {
-			whichMonth = monthsData[month]['fullname'];
-		}
-	}
-
-	let whichHour = date.getHours();
-	let amOrPm;
-	if (whichHour === 0) {
-		whichHour = 12;
-		amOrPm = 'AM';
-	} else if (whichHour <= 12) {
-		amOrPm = 'AM';
-	} else {
-		whichHour -= 12;
-		amOrPm = 'PM';
-	}
-
-	let whichMinute = date.getMinutes().toString();
-	if (whichMinute.length === 1) {
-		whichMinute = '0' + whichMinute;
-	}
-
-	return `${whichHour}:${whichMinute} ${amOrPm} on ${whichMonth} ${whichDay}`;
-}
-
-function resetSecondsAndMilliseconds(date) {
-	date.setMilliseconds(0);
-	date.setSeconds(0);
-
-	return date;
-}
-
-function addToDate(date, amountToAdd, whatToAdd) {
-	let result = new Date(resetSecondsAndMilliseconds(date));
-
-	switch (whatToAdd) {
-	case 'minute':
-	case 'minutes':
-		result.setMinutes(result.getMinutes() + amountToAdd);
-		break;
-	case 'hour':
-	case 'hours':
-		result.setHours(result.getHours() + amountToAdd);
-		break;
-	case 'day':
-	case 'days':
-		result.setDate(result.getDate() + amountToAdd);
-		break;
-	case 'month':
-	case 'months':
-		result.setMonth(result.getMonth() + amountToAdd);
-		break;
-	case 'year':
-	case 'years':
-		result.setFullYear(result.getFullYear() + amountToAdd);
-		break;
-	default:
-		throw new errors.NonmatchingInputValidationError('The unit (minutes, hours, ...) could\'nt be parsed correctly.');
-	}
-
-	return result;
-}
 
 async function confirmReminder(whatToRemind, whenToRemind, message) {
 	let confirmation_message = await message.channel.send(`
@@ -314,7 +248,7 @@ function parseReminder(unparsedArgs, currentDate, message) {
 		let amountToAdd = ['a', 'an'].includes(matchRegOne[2].toLowerCase()) ? 1 : parseInt(matchRegOne[2]);
 		let whatToAdd = matchRegOne[3];
 
-		whenToRemind = addToDate(currentDate, amountToAdd, whatToAdd);
+		whenToRemind = remindUtils.addToDate(currentDate, amountToAdd, whatToAdd);
 
 		recurring = false;
 		howOftenToRemind = null;
@@ -337,7 +271,7 @@ function parseReminder(unparsedArgs, currentDate, message) {
 		whenToRemind = new Date(currentDate.getFullYear(), month, day, currentDate.getHours(), currentDate.getMinutes());
 
 		if (whenToRemind - currentDate < 0) {
-			whenToRemind = addToDate(whenToRemind, 1, 'year');
+			whenToRemind = remindUtils.addToDate(whenToRemind, 1, 'year');
 		}
 
 		recurring = false;
@@ -351,7 +285,7 @@ function parseReminder(unparsedArgs, currentDate, message) {
 
 		let amountToAdd = matchRegThree[2] ? parseInt(matchRegThree[2]) : 1;
 		let whatToAdd = matchRegThree[3];
-		whenToRemind = addToDate(currentDate, amountToAdd, whatToAdd);
+		whenToRemind = remindUtils.addToDate(currentDate, amountToAdd, whatToAdd);
 
 		recurring = true;
 		howOftenToRemind = [amountToAdd, whatToAdd].join(' ');
@@ -411,7 +345,7 @@ async function remind(client, date, reminder, catchUp = false) {
 	} else {
 		let [amountToAdd, whatToAdd] = reminder.dataValues.howOftenToRemind.split(' ');
 		amountToAdd = parseInt(amountToAdd);
-		await Reminder.update({ whenToRemind: addToDate(date, amountToAdd, whatToAdd) }, {
+		await Reminder.update({ whenToRemind: remindUtils.addToDate(date, amountToAdd, whatToAdd) }, {
 			where: {
 				id: reminder.dataValues.id
 			}
