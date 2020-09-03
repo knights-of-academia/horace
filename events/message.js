@@ -7,9 +7,10 @@ const profanityActions = require('../eventActions/profanityActions');
 const citadelActions = require('../eventActions/citadelActions');
 const accountabilityActions = require('../eventActions/accountabilityActions');
 const chainMessageAction = require('../eventActions/checkChainMessage');
-const highlightActions = require ('../eventActions/highlightActions');
+const highlightActions = require('../eventActions/highlightActions');
 const afkAction = require('../eventActions/afkMessageCheckAction');
-const gratitudeActions =  require('../eventActions/gratitudeActions');
+const gratitudeActions = require('../eventActions/gratitudeActions');
+const staffAccountabilityActions = require('../eventActions/staffAcountabilityActions');
 
 module.exports = async (client, message) => {
 
@@ -55,6 +56,7 @@ module.exports = async (client, message) => {
 	afkAction.checkForMention(message);
 	// Handle reacting to gratitude messages
 	gratitudeActions.reactToGratitude(client, message);
-
+	// Staff accountability messages
+	staffAccountabilityActions.checkForMessages(client, message);
 
 };

@@ -10,7 +10,9 @@
     "cotwChampion": "000",
     "cotwManager": "000",
     "initiate": "000",
-    "focusedraider": "000"
+    "focusedraider": "000",
+    "guardian": "000",
+    "helper": "000"
   },
   "channels": {
     "citadel": "000",
@@ -22,11 +24,8 @@
     "hallofconquests": "000",
     "accountability": "000",
     "chooseroles": "000",
-    "gratitude": "000"
-  },
-  "modules": {
-    "profanityArray": [
-      "bitch", "cock", "dick", "fag", "fuck", "idiot", "piss", "pussy", "porn", "retard", "shit", "tranny"]
+    "gratitude": "000",
+    "staffaccountability": "000"
   },
   "emotes": {
     "acceptTOS": "✅",
@@ -41,15 +40,22 @@
     "goodnight": "🌜",
     "accountability_emotes_array": ["💯", "529488404103299074", "👍", "🔥", "🙌", "👏", "👌", "💪", "587455770283737110", "531663637694382089"],
     "pom": "🍅",
-    "yes2": "562072692086276118",
+    "yes2": "<:yes:562072692086276118>",
+    "no": "<:no:692804572602957896>",
     "congrats": "✔️",
     "highlights": "☀️",
     "wave": "👋",
-    "gratitude": "☺️"
+    "gratitude": "☺️",
+    "conquer": "<:conquer:658774929478647808>"
   },
   "pinLimit": 5,
   "reflectionCheckDepth": 5,
   "focusedRaiderMessageId": "000",
   "chainMessageCharLimit": "40",
-  "forbiddenHighlightChannels": ["0000", "0000"]
+  "forbiddenHighlightChannels": ["0000", "0000"],
+  "forceStrictGreetings": false,
+  "strict_morning_regex": "mo*rning (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$",
+  "strict_night_regex": "ni*ght (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$",
+  "normal_morning_regex": "g+o{2,}d+\s*m+o+r+n+i+n+g+",
+  "normal_night_regex: "g+o{2,}d+\s*n+i+g+h+t+"
 }
