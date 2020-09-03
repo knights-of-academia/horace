@@ -46,7 +46,7 @@ module.exports.execute = async (client, message, args) => {
 				*Note: the parts in the square brackets are optional.*`)
 			.addField('List your reminders', '`!remind list`')
 			.addField('Remove a reminder',
-				`\`!remind (remove/delete) <reminder ID to remove>\`
+				`\`!remind (remove/delete) <reminder ID to remove>/(all)\`
 			You can find out the ID of the reminder by using \`!remind list\``);
 		return await message.author.send(remindHelp);
 	} else if (args.length === 1 && args[0] === 'list') {
@@ -78,25 +78,43 @@ module.exports.execute = async (client, message, args) => {
 			}
 		});
 
-		const remindList = new Discord.RichEmbed()
-			.setColor('#FFEC09')
-			.setTitle(`${config.emotes.reminders} Your Reminders ${config.emotes.reminders}`)
-			.setDescription('Each entry is in the form of <id>: <reminder>.')
-			.addField('Reminders', remindersStringForEmbed);
+		if (remindersStringForEmbed) {
+			const remindList = new Discord.RichEmbed()
+				.setColor('#FFEC09')
+				.setTitle(`${config.emotes.reminders} Your Reminders ${config.emotes.reminders}`)
+				.setDescription('Each entry is in the form of <id>: <reminder>.')
+				.addField('Reminders', remindersStringForEmbed);
 
-		return await message.author.send(remindList);
+			return await message.author.send(remindList);
+		} else {
+			return await message.reply('you don\'t have any saved reminders!');
+		}
 	} else if (args.length === 2 && (args[0] === 'remove' || args[0] === 'delete')) {
 		// TODO `!remind delete all`.
-		let destroyed = await Reminder.destroy({
-			where: {
-				id: parseInt(args[1]),
-				whoToRemind: message.author.id
-			}
-		}).catch(err => {
-			console.error('Reminder Sequelize error: ', err);
-		});
+		if (args[1] === "all") {
+			var destroyed = await Reminder.destroy({
+				where: {
+					whoToRemind: message.author.id
+				}
+			}).catch(err => {
+				console.error('Reminder Sequelize error: ', err);
+			});
+		} else if (Number.isInteger(parseInt(args[1]))) {
+			var destroyed = await Reminder.destroy({
+				where: {
+					id: parseInt(args[1]),
+					whoToRemind: message.author.id
+				}
+			}).catch(err => {
+				console.error('Reminder Sequelize error: ', err);
+			});
+		} else {
+			return await message.reply('your command usage is invalid! See `!remind help` for guidance.')
+		}
+
 		if (!destroyed) return await message.reply('there isn\'t a reminder with such ID assigned to you! Check `!remind list` for a list of your reminders.');
-		else return await message.reply('the reminder has been removed succesfully!');
+		else if (destroyed === 1) return await message.reply('the reminder has been removed successfully!');
+		else return await message.reply('all your reminders have been removed successfully!')
 	} else {
 		const currentDate = new Date();
 		const whoToRemind = message.author.id;
@@ -116,7 +134,7 @@ module.exports.execute = async (client, message, args) => {
 				);
 			}
 		}
-		await Reminder.sync({ force: true }).then(() => {
+		await Reminder.sync(/*{ force: true }*/).then(() => {
 			return Reminder.create({
 				whoToRemind: whoToRemind,
 				whatToRemind: whatToRemind,
