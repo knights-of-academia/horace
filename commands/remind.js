@@ -87,7 +87,6 @@ module.exports.execute = async (client, message, args) => {
 			return await message.reply('you don\'t have any saved reminders!');
 		}
 	} else if (args.length === 2 && (args[0] === 'remove' || args[0] === 'delete')) {
-		// TODO `!remind delete all`.
 		if (args[1] === "all") {
 			var destroyed = await Reminder.destroy({
 				where: {
@@ -381,10 +380,9 @@ async function catchUp(client) {
 module.exports.scanForReminders = scanForReminders;
 module.exports.catchUp = catchUp;
 
-// TODO Don't forget about the config data.
 module.exports.config = {
 	name: 'remind',
-	aliases: ['todo'],
-	description: 'todo',
-	usage: ['todo']
+	aliases: ['remind'],
+	description: 'Set up a reminder!',
+	usage: [`\`!remind [me to] <task> in <how many> minutes/hours/days/months\``, `\`!remind [me to] <task> on <date>\``, `\`!remind [me to] <task> every <how many> minute[s]/hour[s]/day[s]/month[s]\``]
 };
