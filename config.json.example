@@ -26,6 +26,8 @@
     "chooseroles": "000",
     "gratitude": "000",
     "staffaccountability": "000"
+    "commandcenter": "000"
+  },
   },
   "emotes": {
     "acceptTOS": "✅",
@@ -46,7 +48,13 @@
     "highlights": "☀️",
     "wave": "👋",
     "gratitude": "☺️",
+<<<<<<< HEAD
     "conquer": "<:conquer:658774929478647808>"
+=======
+    "reminders": "❗",
+    "confirm": "👍",
+    "deny": "👎"
+>>>>>>> iss30
   },
   "pinLimit": 5,
   "reflectionCheckDepth": 5,
