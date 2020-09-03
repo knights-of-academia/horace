@@ -1,6 +1,3 @@
-// TODO "del/delete" argument.
-// TODO Move the functions around, so they make more sense.
-// TODO IDs start at 1 for each user.
 const Discord = require('discord.js');
 
 const config = require('../config.json');
@@ -151,50 +148,6 @@ module.exports.execute = async (client, message, args) => {
 	console.log(reminders);
 };
 
-async function confirmReminder(whatToRemind, whenToRemind, message) {
-	let confirmation_message = await message.channel.send(`
-Hey ${message.author.username}! I'm not perfect, so please confirm if that is correct.
-Do you want me to remind you to ${whatToRemind} ${whenToRemind}? React with thumbs up or thumbs down!
-
-**Please note that this message will disappear in 20 seconds.**`
-	);
-
-	let confirm, deny;
-	[confirm, deny] = [config.emotes.confirm, config.emotes.deny];
-
-	confirmation_message.react(confirm).then(() => confirmation_message.react(deny));
-
-	const filter = (reaction, user) => {
-		return [confirm, deny].includes(reaction.emoji.name) && user.id === message.author.id;
-	};
-
-	confirmation_message.awaitReactions(filter, { max: 1, time: 20000, errors: ['time'] })
-		.then(collected => {
-			const reaction = collected.first();
-
-			confirmation_message.delete();
-
-			if (reaction.emoji.name === confirm) {
-				message.reply('I added your reminder to the database!');
-			} else if (reaction.emoji.name === deny) {
-				let errorMessage = 'User decided that the parsed reminder is invalid.';
-				let toSend = 'yikes! Please consider trying again or use `!remind help` for guidance!';
-
-				throw new errors.ReminderDeniedValidationError(errorMessage, toSend);
-			}
-		})
-		.catch(err => {
-			confirmation_message.delete();
-
-			if (err instanceof errors.ReminderDeniedValidationError) {
-				console.error(err);
-				return message.reply(err.toSend);
-			} else {
-				return message.reply('you didn\'t confirm nor deny. Please try again or use `!remind help` for guidance!');
-			}
-		});
-}
-
 
 function parseReminder(unparsedArgs, currentDate, message) {
 	// This might be significant later on when constructing Horace's reminding message.
@@ -303,6 +256,50 @@ function parseReminder(unparsedArgs, currentDate, message) {
 
 
 	return [whatToRemind, whenToRemind, recurring, howOftenToRemind];
+}
+
+async function confirmReminder(whatToRemind, whenToRemind, message) {
+	let confirmation_message = await message.channel.send(`
+Hey ${message.author.username}! I'm not perfect, so please confirm if that is correct.
+Do you want me to remind you to ${whatToRemind} ${whenToRemind}? React with thumbs up or thumbs down!
+
+**Please note that this message will disappear in 20 seconds.**`
+	);
+
+	let confirm, deny;
+	[confirm, deny] = [config.emotes.confirm, config.emotes.deny];
+
+	confirmation_message.react(confirm).then(() => confirmation_message.react(deny));
+
+	const filter = (reaction, user) => {
+		return [confirm, deny].includes(reaction.emoji.name) && user.id === message.author.id;
+	};
+
+	confirmation_message.awaitReactions(filter, { max: 1, time: 20000, errors: ['time'] })
+		.then(collected => {
+			const reaction = collected.first();
+
+			confirmation_message.delete();
+
+			if (reaction.emoji.name === confirm) {
+				message.reply('I added your reminder to the database!');
+			} else if (reaction.emoji.name === deny) {
+				let errorMessage = 'User decided that the parsed reminder is invalid.';
+				let toSend = 'yikes! Please consider trying again or use `!remind help` for guidance!';
+
+				throw new errors.ReminderDeniedValidationError(errorMessage, toSend);
+			}
+		})
+		.catch(err => {
+			confirmation_message.delete();
+
+			if (err instanceof errors.ReminderDeniedValidationError) {
+				console.error(err);
+				return message.reply(err.toSend);
+			} else {
+				return message.reply('you didn\'t confirm nor deny. Please try again or use `!remind help` for guidance!');
+			}
+		});
 }
 
 async function remind(client, date, reminder, catchUp = false) {
