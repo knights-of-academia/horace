@@ -1,12 +1,12 @@
-// TODO Better names for variables.
 // TODO "del/delete" argument.
 // TODO Move the functions around, so they make more sense.
+// TODO IDs start at 1 for each user.
 const Discord = require('discord.js');
 
 const config = require('../config.json');
 
 const errors = require('../helpers/remindErrors.js');
-const remindUtils = require('../utils/remindUtils.js')
+const remindUtils = require('../utils/remindUtils.js');
 
 const Reminder = require('../databaseFiles/remindersTable.js');
 const SpellChecker = require('spellchecker'); // Used to automatically fix the typos.
@@ -85,6 +85,18 @@ module.exports.execute = async (client, message, args) => {
 			.addField('Reminders', remindersStringForEmbed);
 
 		return await message.author.send(remindList);
+	} else if (args.length === 2 && (args[0] === 'remove' || args[0] === 'delete')) {
+		// TODO `!remind delete all`.
+		let destroyed = await Reminder.destroy({
+			where: {
+				id: parseInt(args[1]),
+				whoToRemind: message.author.id
+			}
+		}).catch(err => {
+			console.error('Reminder Sequelize error: ', err);
+		});
+		if (!destroyed) return await message.reply('there isn\'t a reminder with such ID assigned to you! Check `!remind list` for a list of your reminders.');
+		else return await message.reply('the reminder has been removed succesfully!');
 	} else {
 		const currentDate = new Date();
 		const whoToRemind = message.author.id;
@@ -301,6 +313,8 @@ async function remind(client, date, reminder, catchUp = false) {
 			where: {
 				id: reminder.dataValues.id
 			}
+		}).catch(err => {
+			console.error('Reminder Sequelize error: ', err);
 		});
 	} else {
 		let [amountToAdd, whatToAdd] = reminder.dataValues.howOftenToRemind.split(' ');
@@ -309,36 +323,44 @@ async function remind(client, date, reminder, catchUp = false) {
 			where: {
 				id: reminder.dataValues.id
 			}
+		}).catch(err => {
+			console.error('Reminder Sequelize error: ', err);
 		});
 	}
-
-	console.log(reminder);
 }
 
 async function scanForReminders(client) {
 	const currentDate = new Date();
-	const reminders = await Reminder.findAll();
-
-	let difference;
-	reminders.forEach(async reminder => {
-		difference = currentDate - reminder.dataValues.whenToRemind;
-		if (difference > -30000) {
-			remind(client, currentDate, reminder);
-		}
+	const reminders = await Reminder.findAll().catch(err => {
+		console.error('Reminder Sequelize error: ', err);
 	});
+
+	if (reminders) {
+		let difference;
+		reminders.forEach(async reminder => {
+			difference = currentDate - reminder.dataValues.whenToRemind;
+			if (difference > -30000) {
+				remind(client, currentDate, reminder);
+			}
+		});
+	}
 }
 
 async function catchUp(client) {
 	const currentDate = new Date();
-	const reminders = await Reminder.findAll();
-
-	let difference;
-	reminders.forEach(async reminder => {
-		difference = currentDate - reminder.dataValues.whenToRemind;
-		if (difference > 0) {
-			remind(client, currentDate, reminder, true);
-		}
+	const reminders = await Reminder.findAll().catch(err => {
+		console.error('Reminder Sequelize error: ', err);
 	});
+
+	if (reminders) {
+		let difference;
+		reminders.forEach(async reminder => {
+			difference = currentDate - reminder.dataValues.whenToRemind;
+			if (difference > 0) {
+				remind(client, currentDate, reminder, true);
+			}
+		});
+	}
 }
 
 module.exports.scanForReminders = scanForReminders;
