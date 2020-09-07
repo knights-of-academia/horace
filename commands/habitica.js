@@ -223,10 +223,7 @@ async function renderProfile(habiticaID){
 
     try { 
         // calculate values for the party
-        let str = 0;// TODO: calculate stats
-        let con = 0;
-        let intel = 0;
-        let pre = 0;
+        let stats = calculateStats(profile);
         let checkInDate = profile.auth.timestamps.updated.slice(0,10);
         let party = profile.party._id;// TODO: check what would be the case of no party: assumed undefined at the moment
         let profileMessage = new Discord.RichEmbed()
@@ -235,7 +232,7 @@ async function renderProfile(habiticaID){
             .setDescription(`@${profile.auth.local.username} • Level ${profile.stats.lvl} ${profile.stats.class}`) // habitica username, level and class
             .addField(`**Latest Check In:**`, `${checkInDate}`)
             .addField(`**Party?**`,party?`In a party`:`Not in any party`)
-            .addField(`**Stats**`,`Str: ${str} | Con: ${con} | Int: ${intel} | Pre: ${pre}`);
+            .addField(`**Stats**`,`Str: ${stats.str} | Con: ${stats.con} | Int: ${stats.int} | Per: ${stats.per}`);
         // TODO: check if it is a KOA clan: if so return the name of clan, if not just say it is a random party.
         return profileMessage; 
     } catch (err) {
@@ -243,4 +240,20 @@ async function renderProfile(habiticaID){
         return;
     }
 
+}
+
+function calculateStats(profile) {
+    const keys = ['str','con','int','per'];
+    let stats =Object.create( {} );
+
+    let val;
+
+    keys.forEach(k=>{
+        // calculate the stats without equipments
+        val = profile.stats.buffs[k]+profile.stats.training[k]+profile.stats[k]+Math.floor(profile.stats.lvl/2);
+
+        // TODO: add the value from equipments
+        stats[k] = val;
+    })
+    return stats;
 }
