@@ -2,7 +2,6 @@ const fs = require('fs');
 const Habiticas = require('../databaseFiles/habiticaTable.js');
 const Discord = require('discord.js');
 const config = require('../config.json');
-const memberAPI = 'https://habitica.com/api/v3/members/'; // url used to fetch habitica user profile
 const Habitica = require('habitica');
 const api = new Habitica({
     id: config.habitica.id,
@@ -18,6 +17,7 @@ if (fs.existsSync('../config.json')) {
 }
 
 module.exports.execute = async (client, message,args) => {
+    let id = '';
     if (!args || args.length === 0 || args[0] == 'help') {// default case: send a help messsage 
         sendHabitacaHelp(message.author);
         message.channel.send(`I have send you a private message of what you can do with ${prefix}habitica`).catch(err => {
@@ -43,14 +43,31 @@ module.exports.execute = async (client, message,args) => {
                     return message.channel.send(`I need either an habitica ID or habitica user name to find the corresponding user.`);
                 }
             case 'me':
-                return sendProfile(message.author,message);
+                id = message.author.id;
             default:
-                let id = getIDFromMention(args[0]);
-
+                id = id? id: getIDFromMention(args[0]);
                 if (id) {
-                    client.fetchUser(id).then(user=>sendProfile(user,message))
-                        .catch(err=> console.log(err)); 
-                    return;
+                    let habiticaID = await findHabiticaID(id);
+                    try {
+                        if (habiticaID) {
+                            return renderProfile(habiticaID)
+                                .then(msg=> {message.channel.send(msg)})
+                                .catch(err=>{console.log(err)});
+
+                        } else {
+                            let queriedUser = await client.fetchUser(id);
+                            try {
+                                profileMessage = `Sorry, I do not know ${id==message.author.id ? 'your': `${queriedUser.username}'s`} habitca account.`;
+                                message.channel.send(profileMessage)
+                            } catch (err) {
+                                console.log(err);
+                            }
+                        }
+
+                    } catch (err) {
+                        console.log(`Error in finding habitica ID from database:`+err);
+                    }
+
                 } else {
                     return message.channel.send(`I didn't get what you want to do. Send ${prefix}habitica to get help.`);
                 }
@@ -70,7 +87,7 @@ module.exports.config = {
 
 function sendHabitacaHelp(recipient) {
     let helpMessage = new Discord.RichEmbed()
-			.setColor('#ff0000')
+			.setColor('#442477')
 			.setTitle(`Available ${prefix}habitica commands`)
 		// commands.forEach(command => {
 		// 	helpMessage.addField(`**${prefix}${command.config.name}**`, `${command.config.description}`);
@@ -91,7 +108,6 @@ function setHabiticaProfile(user, habiticaID, message) {
     // TODO: check if the users already has an record in the database: if so, ask them if they want to update
     api.get(`/members/${habiticaID}`)
     .then(res => {
-        console.log(res);
         let habiticaUsername = res.data.auth.local.username;
         Habiticas.sync().then(()=> 
             Habiticas.create({// add record to database
@@ -182,25 +198,49 @@ function getIDFromMention(mention) {
     return matches[1];
 }
 
-// send a message about someone's habitica profile
-async function sendProfile(user, message) {
-
-    Habiticas.sync().then(() => {
-        Habiticas.findAll({
+// fidn someone's habitica ID in database, if not exist, return an empty string
+async function findHabiticaID(userID) {
+    return await Habiticas.sync().then(() => {
+        return Habiticas.findAll({
             where: {
-                user: user.id
+                user: userID
             }
-        }).then(result=>{
+        }).then(result => {
             if (result.length == 1) {
-                return message.channel.send(result[0].habiticaID)
-
-            } else {
-                return message.channel.send(`Sorry, I do not know ${user.id==message.author.id ? 'your': `${user.username}'s`} habitca account.`);
-
+                return result[0].habiticaID;
             }
-
-        }).catch(err=>console.log(err));
+            else {
+                return;
+            }
+        });
     });
 
+}
+
+async function renderProfile(habiticaID){
+    let profile = await api.get(`/members/${habiticaID}`)
+    .then(res => {return res.data});
+
+    try { 
+        // calculate values for the party
+        let str = 0;// TODO: calculate stats
+        let con = 0;
+        let intel = 0;
+        let pre = 0;
+        let checkInDate = profile.auth.timestamps.updated.slice(0,10);
+        let party = profile.party._id;// TODO: check what would be the case of no party: assumed undefined at the moment
+        let profileMessage = new Discord.RichEmbed()
+			.setColor('#442477')
+            .setTitle(profile.profile.name) // habitica display name
+            .setDescription(`@${profile.auth.local.username} • Level ${profile.stats.lvl} ${profile.stats.class}`) // habitica username, level and class
+            .addField(`**Latest Check In:**`, `${checkInDate}`)
+            .addField(`**Party?**`,party?`In a party`:`Not in any party`)
+            .addField(`**Stats**`,`Str: ${str} | Con: ${con} | Int: ${intel} | Pre: ${pre}`);
+        // TODO: check if it is a KOA clan: if so return the name of clan, if not just say it is a random party.
+        return profileMessage; 
+    } catch (err) {
+        console.log(`There has been a problem in rendering profile: ${err}`);
+        return;
+    }
 
 }
