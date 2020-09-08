@@ -238,16 +238,16 @@ async function renderProfile(habiticaID, user){
 
     try { 
         // calculate values for the party
-        let stats = calculateStats(profile);
+        let stats = await calculateStats(profile);
         let checkInDate = profile.auth.timestamps.updated.slice(0,10);
         let party = profile.party._id;// TODO: check what would be the case of no party: assumed undefined at the moment
         let profileMessage = new Discord.RichEmbed()
 			.setColor('#442477')
             .setTitle(`${user.nickname ? user.nickname : user.username}'s Habitica Profile`)
             .setDescription(`**${profile.profile.name}**\n@${profile.auth.local.username} • Level ${profile.stats.lvl} ${profile.stats.class}`) // habitica display name, username, level and class
-            .addField(`**Latest Check In:**`, `${checkInDate}`)
+            .addField(`**Stats**`,`Str: ${stats.str} | Con: ${stats.con} | Int: ${stats.int} | Per: ${stats.per}`)
             .addField(`**Party:**`,party?`A mysterious party`:`Not in any party`)
-            .addField(`**Stats**`,`Str: ${stats.str} | Con: ${stats.con} | Int: ${stats.int} | Per: ${stats.per}`);
+            .addField(`**Latest Check In:**`, `${checkInDate}`);
         // TODO: check if it is a KOA clan: if so return the name of clan, if not just say it is a random party.
         return profileMessage; 
     } catch (err) {
@@ -257,25 +257,39 @@ async function renderProfile(habiticaID, user){
 
 }
 
-function calculateStats(profile) {
+// calculate strength, constitution, intellegence and preception for a given habitica profile
+// profile is the res.data for the response res from https://habitica.com/api/v3/members/:memberId
+async function calculateStats(profile) {
     const keys = ['str','con','int','per'];
-    let stats =Object.create( {} );
-
+    let stats = Object.create( {} );
+    let equipments = await api.get('/content').then(res => {return res.data.gear.flat} );
     let val;
-
+    let userEquipment = profile.items.gear.equipped;
+    
+    // calculate the stats without equipments
     keys.forEach(k=>{
-        // calculate the stats without equipments
         val = profile.stats.buffs[k]+profile.stats.training[k]+profile.stats[k]+Math.floor(profile.stats.lvl/2);
-
-        // TODO: add the value from equipments
         stats[k] = val;
-    })
+    });
+
+    // add contribution for each equipment to stats
+    Object.keys(userEquipment).forEach(equ=>{
+        equObj = equipments[userEquipment[equ]]; // find the record for the equipment
+        keys.forEach(k=>{
+            stats[k] += equObj[k];
+        });
+
+    });
+
     return stats;
 }
 
-// TODO: validate str is a valid uuid: hex in the form 8-4-4-4-12 [0-9a-f]
+// check if str is a valid uuid: hex in the form 8-4-4-4-12
 function isUuid(str) {
     let uuidReg = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
     return uuidReg.test(str);
     
 }
+
+// TODO: a generic function for confimraiton embed (for the check if need update feature for !habitica set)
+
