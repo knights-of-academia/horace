@@ -3,6 +3,7 @@ const Habiticas = require('../databaseFiles/habiticaTable.js');
 const Discord = require('discord.js');
 const config = require('../config.json');
 const Habitica = require('habitica');
+const { isNullOrUndefined } = require('util');
 const api = new Habitica({
     id: config.habitica.id,
     apiToken: config.habitica.token
@@ -29,9 +30,14 @@ module.exports.execute = async (client, message,args) => {
             case 'set':
             case 'link':
                 if (args.length === 2) {
-                    return setHabiticaProfile(message.author.id, args[1],message);
+                    // TODO: validate the input: uuid should be hex in the form 8-4-4-4-12 [0-9a-f]
+                    // check if the second argument provided is a valid uuid
+                    if (!isUuid(args[1])){
+                        return await message.channel.send('I could find any habitica user by the id you provided. Check this id is correct or try again later.');
+                    }
+                    return await setHabiticaProfile(message.author, args[1], message);
                 } else {
-                    return message.channel.send(`I need your habitica ID to link your discord id to your habitica account.`);
+                    return await message.channel.send(`I need your habitica ID to link your discord id to your habitica account.`);
                 }
             case 'remove':
                 return removeHabiticaProfile(message);
@@ -40,7 +46,7 @@ module.exports.execute = async (client, message,args) => {
                     message.channel.send(`find function is still under construction!`)
                     return findUser(args[1]);
                 }else {
-                    return message.channel.send(`I need either an habitica ID or habitica user name to find the corresponding user.`);
+                    return await message.channel.send(`I need either an habitica ID or habitica user name to find the corresponding user.`);
                 }
             case 'me':
                 id = message.author.id;
@@ -48,20 +54,17 @@ module.exports.execute = async (client, message,args) => {
                 id = id? id: getIDFromMention(args[0]);
                 if (id) {
                     let habiticaID = await findHabiticaID(id);
+                    let queriedUser = await client.fetchUser(id);
                     try {
                         if (habiticaID) {
-                            return renderProfile(habiticaID)
+                            return renderProfile(habiticaID,queriedUser)
                                 .then(msg=> {message.channel.send(msg)})
                                 .catch(err=>{console.log(err)});
 
                         } else {
-                            let queriedUser = await client.fetchUser(id);
-                            try {
-                                profileMessage = `Sorry, I do not know ${id==message.author.id ? 'your': `${queriedUser.username}'s`} habitca account.`;
-                                message.channel.send(profileMessage)
-                            } catch (err) {
-                                console.log(err);
-                            }
+                            profileMessage = `Sorry, I do not know ${id==message.author.id ? 'your': `${queriedUser.username}'s`} habitca account.`;
+                            return await message.channel.send(profileMessage);
+
                         }
 
                     } catch (err) {
@@ -69,7 +72,7 @@ module.exports.execute = async (client, message,args) => {
                     }
 
                 } else {
-                    return message.channel.send(`I didn't get what you want to do. Send ${prefix}habitica to get help.`);
+                    return await message.channel.send(`I didn't get what you want to do. Send ${prefix}habitica to get help.`);
                 }
                 break;
         }
@@ -103,9 +106,21 @@ function sendHabitacaHelp(recipient) {
 
 }
 
+async function setHabiticaProfile(user, habiticaID, message) {
+    // check if the user already has habitica id in database.    
+    existingRecord = await Habiticas.sync().then(()=>{
+        return Habiticas.findAll({
+            where: {
+                user: user.id
+            }
+        })
+    });
+    
+    if (existingRecord.length == 1) {
+        return await message.channel.send('Seems that I already know your habitica account!');
+        // TODO: ask the user if he/she want to update the record
+    }
 
-function setHabiticaProfile(user, habiticaID, message) {
-    // TODO: check if the users already has an record in the database: if so, ask them if they want to update
     api.get(`/members/${habiticaID}`)
     .then(res => {
         let habiticaUsername = res.data.auth.local.username;
@@ -122,7 +137,7 @@ function setHabiticaProfile(user, habiticaID, message) {
         );
     }).catch(err => {
         console.log(`There has been a problem in finding habitica ID: ${err}`);
-        message.channel.send('I could find any habitica user by the id you provided. Check the your id or try again later.')
+        message.channel.send('I could not find any habitica user by the id you provided. Check this id is correct or try again later.')
       });
     
 }
@@ -153,21 +168,21 @@ async function removeHabiticaProfile(message) {
             }
         }
     };
-    const removeHabiticaMessage = new Discord.RichEmbed()
+    const confirmRemoveMessage = new Discord.RichEmbed()
         .setTitle(`Do you want me to remove your habitica ID in my record, ${sender.nickname ? sender.nickname : sender.username}?`)
         .addField('Yes', 'React with ✅',true)
         .addField('No', 'React with ❌',true)
         .setFooter('This message will delete itself after 15 seconds')
         .setColor('#FFEC09');
 
-    await Habiticas.sync().then(() => {
+    Habiticas.sync().then(() => {
         Habiticas.findAll({
             where: {
                 user: sender.id
             }
         }).then(result => {
             if (result.length == 1) {
-                sender.send(removeHabiticaMessage).then(msg => {
+                sender.send(confirmRemoveMessage).then(msg => {
                     msg.react('✅');
                     msg.react('❌');
                     // Use reaction filter to remove to remove the user from the database rather than an event
@@ -217,7 +232,7 @@ async function findHabiticaID(userID) {
 
 }
 
-async function renderProfile(habiticaID){
+async function renderProfile(habiticaID, user){
     let profile = await api.get(`/members/${habiticaID}`)
     .then(res => {return res.data});
 
@@ -228,10 +243,10 @@ async function renderProfile(habiticaID){
         let party = profile.party._id;// TODO: check what would be the case of no party: assumed undefined at the moment
         let profileMessage = new Discord.RichEmbed()
 			.setColor('#442477')
-            .setTitle(profile.profile.name) // habitica display name
-            .setDescription(`@${profile.auth.local.username} • Level ${profile.stats.lvl} ${profile.stats.class}`) // habitica username, level and class
+            .setTitle(`${user.nickname ? user.nickname : user.username}'s Habitica Profile`)
+            .setDescription(`**${profile.profile.name}**\n@${profile.auth.local.username} • Level ${profile.stats.lvl} ${profile.stats.class}`) // habitica display name, username, level and class
             .addField(`**Latest Check In:**`, `${checkInDate}`)
-            .addField(`**Party?**`,party?`In a party`:`Not in any party`)
+            .addField(`**Party:**`,party?`A mysterious party`:`Not in any party`)
             .addField(`**Stats**`,`Str: ${stats.str} | Con: ${stats.con} | Int: ${stats.int} | Per: ${stats.per}`);
         // TODO: check if it is a KOA clan: if so return the name of clan, if not just say it is a random party.
         return profileMessage; 
@@ -256,4 +271,11 @@ function calculateStats(profile) {
         stats[k] = val;
     })
     return stats;
+}
+
+// TODO: validate str is a valid uuid: hex in the form 8-4-4-4-12 [0-9a-f]
+function isUuid(str) {
+    let uuidReg = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
+    return uuidReg.test(str);
+    
 }
