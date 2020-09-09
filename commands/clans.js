@@ -1,19 +1,36 @@
-module.exports.execute = async (client, message) => {
-	return await message.channel.send(`⚔ Here is our list of KOA Clans! ⚔
+// TODO: move the information to a db
+const clans = require('../data/clan-data');
+const Discord = require('discord.js');
+const Habitica = require('habitica');
 
-🔸 **The Round Table**: All things Hard Mode by **Alex**#8758
-🔸 **Bards of Academia**: All things music by **alivia_trivia**#9195
-🔸 **The Fiction Faction**: Creative Writing & Story Telling by **varrictethras**#5383
-🔸 **The Gathering**: Accountability by **anhero**#3771
-🔸 **The Clockwork Knights**: Productivity & Efficiency through the use of Systems by **stoneybaby**#3398
-🔸 **The Silver Tongues**: Language & Culture by **Dotty**#6792
-🔸 **The Students**: Academics & all things Education by **erschmid**#2994
-🔸 **The Wolf Pack**: On the move for Health by **QueenWolf**#5509`);
+const config = require('../config.json');
+let api;
+
+module.exports.execute = async (client, message) => {
+	let response = `⚔ Here is our list of KOA Clans! ⚔\n\n` // Header pf response message
+	await Promise.all(clans.map(async clan => {
+	//await clans.reduce(async (memo, clan) => { // ensure they return in the order of clan-data
+		//await memo;
+		api = new Habitica({
+			id: clan.id,
+			apiToken: clan.apiToken
+		});
+		clanInfo = await api.get(`/groups/party`).then(res => {return res.data;})
+			.catch(err => {console.log(`There has been a problem in fetching clan ${clan.fullName}: ${err}`);});
+		// TODO: read in leader's discord id using database, if not exist then use habitica userName
+		clanLeader = clanInfo.leader.profile.name;//id;
+		clanLeaderDescriptor = '0000';
+		memberCount = clanInfo.memberCount;
+		response += `🔸 **${clanInfo.name}**: ${clan.description} by **${clanLeader}**#${clanLeaderDescriptor}\n`
+		response += `        Current members: ${memberCount}/30\n`
+	}));
+	//}, undefined);
+	return await message.channel.send(response);
 };
 
 module.exports.config = {
 	name: 'clans',
 	aliases: ['clanlist', 'clans'],
-	description: 'I will list all the clans for you.',
+	description: 'I will (dynamically) list all the clans for you.',
 	usage: ['clans']
 };
