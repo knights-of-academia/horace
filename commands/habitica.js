@@ -2,13 +2,16 @@ const fs = require('fs');
 const Habiticas = require('../databaseFiles/habiticaTable.js');
 const Discord = require('discord.js');
 const config = require('../config.json');
+const habHelper = require('../utils/habiticaHelper')
 const Habitica = require('habitica');
-const { isNullOrUndefined } = require('util');
 const api = new Habitica({
     id: config.habitica.id,
     apiToken: config.habitica.token
 });
-
+// description of habitica user ID
+const userIDinfo = `The User ID (UID) or Universally Unique IDentifier (UUID) is a complex hexadecimal number that Habitica automatically generates when you joins. To find your User ID:
+• For the website: User Icon > Settings > API
+• For iOS/Android App: Menu > Settings > API > User ID (tap on it to copy it to your clipboard). `
 // create habitica table
 let prefix;
 if (fs.existsSync('../config.json')) {
@@ -32,8 +35,8 @@ module.exports.execute = async (client, message,args) => {
                 if (args.length === 2) {
                     // TODO: validate the input: uuid should be hex in the form 8-4-4-4-12 [0-9a-f]
                     // check if the second argument provided is a valid uuid
-                    if (!isUuid(args[1])){
-                        return await message.channel.send('I could find any habitica user by the id you provided. Check this id is correct or try again later.');
+                    if (!habHelper.isUuid(args[1])){
+                        return await message.channel.send(`I couldn't find any habitica user by the id you provided. Check this id is correct or try again later.`);
                     }
                     return await setHabiticaProfile(message.author, args[1], message);
                 } else {
@@ -41,10 +44,18 @@ module.exports.execute = async (client, message,args) => {
                 }
             case 'remove':
                 return removeHabiticaProfile(message);
+            case 'userid':
+                return await message.channel.send(userIDinfo);
             case 'find':
                 if (args.length === 2) {
-                    message.channel.send(`find function is still under construction!`)
-                    return findUser(args[1]);
+                    let discorUsers = await habHelper.findDiscordUser(client, args[1]);
+                    if (discorUsers.length>0){
+                        let messageContent = `This ID corresponds to user${(discorUsers.length>1)?'s':''} `;
+                        discorUsers.forEach(user=>messageContent+=user.username);
+                        return await message.channel.send(messageContent); 
+                    }else{
+                        return await message.channel.send(`I cannot find any user by the habitica ID you provided.`); 
+                    }
                 }else {
                     return await message.channel.send(`I need either an habitica ID or habitica user name to find the corresponding user.`);
                 }
@@ -53,7 +64,7 @@ module.exports.execute = async (client, message,args) => {
             default:
                 id = id? id: getIDFromMention(args[0]);
                 if (id) {
-                    let habiticaID = await findHabiticaID(id);
+                    let habiticaID = await habHelper.findHabiticaID(id);
                     let queriedUser = await client.fetchUser(id);
                     try {
                         if (habiticaID) {
@@ -83,11 +94,11 @@ module.exports.execute = async (client, message,args) => {
 module.exports.config = {
 	name: 'habitica',
 	aliases: ['habitica'],
-	description: 'I will send you the sleep logs you made in the sleep club.',
+	description: 'I will tell you what I can do with habitica if you send this command.',
 	usage: ['habitica', 'habitica set :uuid', 'habitica remove', 'habitica me', 'habitica @user', 'habitica find'],
 };
 
-
+// send a private help message to the user for !habitica
 function sendHabitacaHelp(recipient) {
     let helpMessage = new Discord.RichEmbed()
 			.setColor('#442477')
@@ -136,8 +147,8 @@ async function setHabiticaProfile(user, habiticaID, message) {
             })
         );
     }).catch(err => {
-        console.log(`There has been a problem in finding habitica ID: ${err}`);
-        message.channel.send('I could not find any habitica user by the id you provided. Check this id is correct or try again later.')
+        console.log(`There has been a problem in fetching habitica ID: ${err}`);
+        message.channel.send('I could not find any habitica user by the user id you provided. Check this id is correct or try again later.')
       });
     
 }
@@ -197,41 +208,6 @@ async function removeHabiticaProfile(message) {
         });
     });
 }
-
-// given habitica ID or nickname, find the corresponding discord user
-function findUser(searchTerm) {
-    return;
-}
-
-// extract user id from the string of metion
-function getIDFromMention(mention) {
-    // The id is the first and only match found by the RegEx.
-    const matches = mention.match(/^<@!?(\d+)>$/);
-    // If supplied variable was not a mention, matches will be null instead of an array.
-    if (!matches) return;
-    // The first element in the matches array will be the entire mention, not just the ID, so use index 1.
-    return matches[1];
-}
-
-// fidn someone's habitica ID in database, if not exist, return an empty string
-async function findHabiticaID(userID) {
-    return await Habiticas.sync().then(() => {
-        return Habiticas.findAll({
-            where: {
-                user: userID
-            }
-        }).then(result => {
-            if (result.length == 1) {
-                return result[0].habiticaID;
-            }
-            else {
-                return;
-            }
-        });
-    });
-
-}
-
 async function renderProfile(habiticaID, user){
     let profile = await api.get(`/members/${habiticaID}`)
     .then(res => {return res.data});
@@ -284,12 +260,53 @@ async function calculateStats(profile) {
     return stats;
 }
 
-// check if str is a valid uuid: hex in the form 8-4-4-4-12
-function isUuid(str) {
-    let uuidReg = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
-    return uuidReg.test(str);
-    
+
+// extract user id from the string of mention
+function getIDFromMention(mention) {
+    // The id is the first and only match found by the RegEx.
+    const matches = mention.match(/^<@!?(\d+)>$/);
+    // If supplied variable was not a mention, matches will be null instead of an array.
+    if (!matches) return;
+    // The first element in the matches array will be the entire mention, not just the ID, so use index 1.
+    return matches[1];
 }
 
 // TODO: a generic function for confimraiton embed (for the check if need update feature for !habitica set)
 
+let habiticaCommands = {
+	'set':{
+        aliases: ['set', 'link'],
+        description: 'I will find and take a note of your habitica account usint the user id you provide.',
+        usage: ['habitica set :uuid','habitica link :uuid'],
+    },
+    'help':{
+        aliases: ['', 'help'],
+        description: 'I will send you a help message about what I can do with habitica.',
+        usage: ['habitica','habitica help'],
+    },
+    'remove':{
+        aliases: ['remove'],
+        description: 'I will remove your habitica information from my record.',
+        usage: ['habitica remove'],
+    },
+    'me':{
+        aliases: ['me'],
+        description: 'I will send your habitica profile to where this command is used.',
+        usage: ['habitica me'],
+    },
+    'userid':{
+        aliases: ['userid'],
+        description: 'I will tell you what habitica user ID is and how to find it.',
+        usage: ['habitica userid'],
+    },
+    // 'find':{
+    //     aliases: ['find'],
+    //     description: 'I will send you the sleep logs you made in the sleep club.',
+    //     usage: ['habitica find'],
+    // },
+    '@user':{
+        aliases: ['@user'],
+        description: `I will send the mentioned user's habitica profile to where this command is used`,
+        usage: ['habitica @user'],
+    }
+};
