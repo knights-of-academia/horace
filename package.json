@@ -24,7 +24,8 @@
     "quick.db": "^7.1.1",
     "rss-parser": "^3.7.2",
     "sequelize": "^5.21.3",
-    "sqlite3": "^4.2.0"
+    "sqlite3": "^4.2.0",
+    "spellchecker": "^3.7.0"
   },
   "engines": {
     "node": "8.10.0"
