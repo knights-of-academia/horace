@@ -24,7 +24,7 @@ module.exports.execute = async (client, message,args) => {
     let id = '';
     if (!args || args.length === 0 || args[0] == 'help') {// default case: send a help messsage 
         sendHabitacaHelp(message.author);
-        message.channel.send(`I have send you a private message of what you can do with ${prefix}habitica`).catch(err => {
+        return await message.channel.send(`I have send you a private message of what you can do with ${prefix}habitica`).catch(err => {
             console.error(err);
         }); 
     
@@ -33,8 +33,6 @@ module.exports.execute = async (client, message,args) => {
             case 'set':
             case 'link':
                 if (args.length === 2) {
-                    // TODO: validate the input: uuid should be hex in the form 8-4-4-4-12 [0-9a-f]
-                    // check if the second argument provided is a valid uuid
                     if (!habHelper.isUuid(args[1])){
                         return await message.channel.send(`I couldn't find any habitica user by the id you provided. Check this id is correct or try again later.`);
                     }
@@ -106,7 +104,11 @@ function sendHabitacaHelp(recipient) {
 		// commands.forEach(command => {
 		// 	helpMessage.addField(`**${prefix}${command.config.name}**`, `${command.config.description}`);
         // });
-    helpMessage.addField(`**${prefix}habitica**`, `Under construction!`);
+    for (const [commandName, commandProperty] of Object.entries(habiticaCommands)) {
+        helpMessage.addField(`**${prefix} habitica ${commandName}**`, `${commandProperty.description}`);
+
+    }
+
     try {
         return recipient.send(helpMessage);
     }
@@ -216,13 +218,18 @@ async function renderProfile(habiticaID, user){
         // calculate values for the party
         let stats = await calculateStats(profile);
         let checkInDate = profile.auth.timestamps.updated.slice(0,10);
-        let party = profile.party._id;// TODO: check what would be the case of no party: assumed undefined at the moment
+        let partyID = profile.party._id;// TODO: check what would be the case of no party: assumed undefined at the moment
+        if (partyID) {
+            partyName = habHelper.clanName(partyID);            
+        } else {
+            partyName = `Not in any party`;
+        }
         let profileMessage = new Discord.RichEmbed()
 			.setColor('#442477')
             .setTitle(`${user.nickname ? user.nickname : user.username}'s Habitica Profile`)
             .setDescription(`**${profile.profile.name}**\n@${profile.auth.local.username} • Level ${profile.stats.lvl} ${profile.stats.class}`) // habitica display name, username, level and class
             .addField(`**Stats**`,`Str: ${stats.str} | Con: ${stats.con} | Int: ${stats.int} | Per: ${stats.per}`)
-            .addField(`**Party:**`,party?`A mysterious party`:`Not in any party`)
+            .addField(`**Party:**`,partyName)
             .addField(`**Latest Check In:**`, `${checkInDate}`);
         // TODO: check if it is a KOA clan: if so return the name of clan, if not just say it is a random party.
         return profileMessage; 
