@@ -2,18 +2,18 @@
 const clans = require('../data/clan-data');
 const Discord = require('discord.js');
 const Habitica = require('habitica');
-const Habiticas = require('../databaseFiles/habiticaTable.js');
+//const Habiticas = require('../databaseFiles/habiticaTable.js');
 const habHelper = require('../utils/habiticaHelper')
 const config = require('../config.json');
 let api;
 
 module.exports.execute = async (client, message) => {
 	let response = `⚔ Here is our list of KOA Clans! ⚔\n\n` // Header pf response message
-	await Promise.all(clans.map(async clan => {
-	//await clans.reduce(async (memo, clan) => { // ensure they return in the order of clan-data
-		//await memo;
+	//await Promise.all(clans.map(async clan => {
+	await clans.reduce(async (memo, clan) => { // ensure they return in the order of clan-data
+		await memo;
 		let api = new Habitica({
-			id: clan.id,
+			id: clan.authId,
 			apiToken: clan.apiToken
 		});
 		let clanInfo = await api.get(`/groups/party`).then(res => {return res.data;})
@@ -24,8 +24,9 @@ module.exports.execute = async (client, message) => {
 		let memberCount = clanInfo.memberCount;
 		response += `🔸 **${clanInfo.name}**: ${clan.description} by ${leaderInfo}\n`
 		response += `             Current members: ${memberCount}/30\n`
-	}));
-	//}, undefined);
+		console.log(clan.fullName+': ' +clanInfo.id)
+	//}));
+	}, undefined);
 	return await message.channel.send(response);
 };
 

@@ -1,4 +1,5 @@
 const Habiticas = require('../databaseFiles/habiticaTable.js');
+const clans = require('../data/clan-data');
 module.exports = {
     // given habitica ID (a valid uuid), return an array of the corresponding discord user(s). If no user is present, return an empty array
     findDiscordUser: async function(client, searchID) {
@@ -34,6 +35,15 @@ module.exports = {
             });
         });
 
+    },
+    // return the name of the clan if the input is the id for a clan in clan-data.js, if not return an empty string
+    clanName: function(partyID) {
+        let clan = clans.find(clan=>clan.id==partyID);
+        if (clan){
+            return clan.fullName;
+        }else{
+            return 'A mysterious party';
+        }
     },
 
     // check if str is a valid uuid: hex in the form 8-4-4-4-12

@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 const config = require('../config.json');
 const habHelper = require('../utils/habiticaHelper')
 const Habitica = require('habitica');
+const { isUuid } = require('../utils/habiticaHelper');
 const api = new Habitica({
     id: config.habitica.id,
     apiToken: config.habitica.token
@@ -32,14 +33,27 @@ module.exports.execute = async (client, message,args) => {
         switch (args[0]) {
             case 'set':
             case 'link':
+                let user;
+                let habiticaID;
                 if (args.length === 2) {
                     if (!habHelper.isUuid(args[1])){
                         return await message.channel.send(`I couldn't find any habitica user by the id you provided. Check this id is correct or try again later.`);
                     }
-                    return await setHabiticaProfile(message.author, args[1], message);
-                } else {
+                    user = message.author;
+                    habiticaID = args[1];
+                } else if ((message.member.roles.has(config.roles.habiticaManager) || message.member.roles.has(config.roles.guardian)) && message.mentions.members.size === 1){
+                    // case for !habitica @user habiticaID
+                    user = message.mentions.members.first().user;
+                    habiticaID = args.filter(arg=>isUuid(arg));
+                    if (habiticaID.length == 1) {
+                        habiticaID = habiticaID[0];
+                    } else {
+                        return await message.channel.send(`To tell me someone else's habitica ID, use ${prefix}habitica @user *habiticaID*`);
+                    }
+                }else {
                     return await message.channel.send(`I need your habitica ID to link your discord id to your habitica account.`);
                 }
+                return await setHabiticaProfile(user, habiticaID , message);
             case 'remove':
                 return removeHabiticaProfile(message);
             case 'userid':
@@ -121,16 +135,18 @@ function sendHabitacaHelp(recipient) {
 
 async function setHabiticaProfile(user, habiticaID, message) {
     // check if the user already has habitica id in database.    
-    existingRecord = await Habiticas.sync().then(()=>{
+    let existingRecord = await Habiticas.sync().then(()=>{
         return Habiticas.findAll({
             where: {
                 user: user.id
             }
         })
     });
+
+    let queryName = message.author.id==user.id?'your':user.username+"'s";
     
     if (existingRecord.length == 1) {
-        return await message.channel.send('Seems that I already know your habitica account!');
+        return await message.channel.send(`Seems that I already know ${queryName} habitica account!`);
         // TODO: ask the user if he/she want to update the record
     }
 
@@ -139,10 +155,10 @@ async function setHabiticaProfile(user, habiticaID, message) {
         let habiticaUsername = res.data.auth.local.username;
         Habiticas.sync().then(()=> 
             Habiticas.create({// add record to database
-                user: message.author.id,
+                user: user.id,
                 habiticaID: habiticaID
             }).then(() => {// tell the user that the record has been added
-                message.channel.send(`Hey ${message.author.username}, I have linked habitica user ${habiticaUsername} to your profile.`);//.then(message => message.delete(5000).catch());
+                message.channel.send(`Hey ${message.author.username}, I have linked habitica user ${habiticaUsername} to ${queryName} profile.`);//.then(message => message.delete(5000).catch());
             }).catch(err => {
                 if (err.name == 'SequelizeUniqueConstraintError') return;
                 console.error('Habitica set sequelize error: ', err);
