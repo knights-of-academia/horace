@@ -19,7 +19,7 @@ module.exports.execute = async (client, message, args) => {
 	}
 	
 	api = new Habitica({
-		id: clan.id,
+		id: clan.authId,
 		apiToken: clan.apiToken
 	});
 	let memberCount = await api.get(`/groups/party`).then(res => {return res.data.memberCount;})

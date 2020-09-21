@@ -4,7 +4,6 @@ const Discord = require('discord.js');
 const config = require('../config.json');
 const habHelper = require('../utils/habiticaHelper')
 const Habitica = require('habitica');
-const { isUuid } = require('../utils/habiticaHelper');
 const api = new Habitica({
     id: config.habitica.id,
     apiToken: config.habitica.token
@@ -22,27 +21,27 @@ if (fs.existsSync('../config.json')) {
 }
 
 module.exports.execute = async (client, message,args) => {
+    let queriedUser;
     let id = '';
     if (!args || args.length === 0 || args[0] == 'help') {// default case: send a help messsage 
         sendHabitacaHelp(message.author);
-        return await message.channel.send(`I have send you a private message of what you can do with ${prefix}habitica`).catch(err => {
-            console.error(err);
-        }); 
+        return await message.channel.send(`I have send you a private message of what you can do with ${prefix}habitica`)
+            .catch(err => console.error(err) ); 
     
     } else {
         switch (args[0]) {
             case 'set':
-            case 'link':
+            case 'link': // link the habitica ID to a discord user
                 let user;
                 let habiticaID;
-                if (args.length === 2) {
+                if (args.length === 2) {// !habitica habiticaID
                     if (!habHelper.isUuid(args[1])){
-                        return await message.channel.send(`I couldn't find any habitica user by the id you provided. Check this id is correct or try again later.`);
+                        return await message.channel.send(`I need a valid uuid to find your habitica account. Check this id is correct or try again later.`);
                     }
                     user = message.author;
                     habiticaID = args[1];
                 } else if ((message.member.roles.has(config.roles.habiticaManager) || message.member.roles.has(config.roles.guardian)) && message.mentions.members.size === 1){
-                    // case for !habitica @user habiticaID
+                    // !habitica @user habiticaID
                     user = message.mentions.members.first().user;
                     habiticaID = args.filter(arg=>isUuid(arg));
                     if (habiticaID.length == 1) {
@@ -57,10 +56,11 @@ module.exports.execute = async (client, message,args) => {
             case 'remove':
                 return removeHabiticaProfile(message);
             case 'userid':
+            case 'uuid':
                 return await message.channel.send(userIDinfo);
             case 'find':
                 if (args.length === 2) {
-                    let discorUsers = await habHelper.findDiscordUser(client, args[1]);
+                    let discorUsers = await habHelper.findDiscordUser(args[1], client);
                     if (discorUsers.length>0){
                         let messageContent = `This ID corresponds to user${(discorUsers.length>1)?'s':''} `;
                         discorUsers.forEach(user=>messageContent+=user.username);
@@ -72,23 +72,21 @@ module.exports.execute = async (client, message,args) => {
                     return await message.channel.send(`I need either an habitica ID or habitica user name to find the corresponding user.`);
                 }
             case 'me':
-                id = message.author.id;
+                queriedUser = message.author;
             default:
-                id = id? id: getIDFromMention(args[0]);
-                if (id) {
-                    let habiticaID = await habHelper.findHabiticaID(id);
-                    let queriedUser = await client.fetchUser(id);
+
+                queriedUser = queriedUser? queriedUser: message.mentions.members.first()? message.mentions.members.first().user: '';
+                if (queriedUser) {
+                    let habiticaID = await habHelper.findHabiticaID(queriedUser.id);
                     try {
                         if (habiticaID) {
-                            return renderProfile(habiticaID,queriedUser)
-                                .then(msg=> {message.channel.send(msg)})
-                                .catch(err=>{console.log(err)});
+                            profileMessage = await renderProfile(habiticaID,queriedUser);
 
                         } else {
-                            profileMessage = `Sorry, I do not know ${id==message.author.id ? 'your': `${queriedUser.username}'s`} habitca account.`;
-                            return await message.channel.send(profileMessage);
+                            profileMessage = `Sorry, I do not know ${queriedUser.id==message.author.id ? 'your': `${queriedUser.username}'s`} habitca account.`;
 
                         }
+                        return await message.channel.send(profileMessage).catch(err=>{console.log(err)});
 
                     } catch (err) {
                         console.log(`Error in finding habitica ID from database:`+err);
@@ -158,7 +156,7 @@ async function setHabiticaProfile(user, habiticaID, message) {
                 user: user.id,
                 habiticaID: habiticaID
             }).then(() => {// tell the user that the record has been added
-                message.channel.send(`Hey ${message.author.username}, I have linked habitica user ${habiticaUsername} to ${queryName} profile.`);//.then(message => message.delete(5000).catch());
+                message.channel.send(`Hey ${message.author.username}, I have linked habitica user ${habiticaUsername} to ${queryName} profile.`);
             }).catch(err => {
                 if (err.name == 'SequelizeUniqueConstraintError') return;
                 console.error('Habitica set sequelize error: ', err);
@@ -174,6 +172,14 @@ async function setHabiticaProfile(user, habiticaID, message) {
 // remove habitica ID from database
 async function removeHabiticaProfile(message) {
     const sender = message.author;
+
+    const confirmRemoveMessage = new Discord.RichEmbed()
+        .setTitle(`Do you want me to remove your habitica ID in my record, ${sender.nickname ? sender.nickname : sender.username}?`)
+        .addField('Yes', 'React with ✅',true)
+        .addField('No', 'React with ❌',true)
+        .setFooter('This message will delete itself after 15 seconds')
+        .setColor('#FFEC09');
+
     const reactionFilter = (reaction, user) => {
         if (user.id == sender.id && (reaction.emoji.name === '✅' || reaction.emoji.name === '❌')) {
             if (reaction.emoji.name === '✅') {
@@ -184,7 +190,7 @@ async function removeHabiticaProfile(message) {
                 }).then(result => {
                     // User successfully removed from table
                     if (result == 1) {
-                        sender.send('I have removed your habitica ID in my record!');//.then(message => message.delete(5000));
+                        sender.send('I have removed your habitica ID in my record!');
                         reaction.message.delete().catch(() => console.log('Tried deleting message that was already deleted'));
                         return;
                     }
@@ -197,12 +203,6 @@ async function removeHabiticaProfile(message) {
             }
         }
     };
-    const confirmRemoveMessage = new Discord.RichEmbed()
-        .setTitle(`Do you want me to remove your habitica ID in my record, ${sender.nickname ? sender.nickname : sender.username}?`)
-        .addField('Yes', 'React with ✅',true)
-        .addField('No', 'React with ❌',true)
-        .setFooter('This message will delete itself after 15 seconds')
-        .setColor('#FFEC09');
 
     Habiticas.sync().then(() => {
         Habiticas.findAll({
@@ -220,7 +220,7 @@ async function removeHabiticaProfile(message) {
                         msg.delete().catch(() => console.log('Tried deleting message that was already deleted'));
                     });
                 });
-            } else {
+            } else { // record does not exist
                 message.channel.send(`Oops ${message.author.nickname ? message.author.nickname : message.author.username}, I don't know your Habitica ID!`)
             }
         });
@@ -231,15 +231,11 @@ async function renderProfile(habiticaID, user){
     .then(res => {return res.data});
 
     try { 
-        // calculate values for the party
+        // get name for the party for the party
         let stats = await calculateStats(profile);
         let checkInDate = profile.auth.timestamps.updated.slice(0,10);
-        let partyID = profile.party._id;// TODO: check what would be the case of no party: assumed undefined at the moment
-        if (partyID) {
-            partyName = habHelper.clanName(partyID);            
-        } else {
-            partyName = `Not in any party`;
-        }
+        let partyName = habHelper.clanName(profile.party._id);
+
         let profileMessage = new Discord.RichEmbed()
 			.setColor('#442477')
             .setTitle(`${user.nickname ? user.nickname : user.username}'s Habitica Profile`)
@@ -247,7 +243,6 @@ async function renderProfile(habiticaID, user){
             .addField(`**Stats**`,`Str: ${stats.str} | Con: ${stats.con} | Int: ${stats.int} | Per: ${stats.per}`)
             .addField(`**Party:**`,partyName)
             .addField(`**Latest Check In:**`, `${checkInDate}`);
-        // TODO: check if it is a KOA clan: if so return the name of clan, if not just say it is a random party.
         return profileMessage; 
     } catch (err) {
         console.log(`There has been a problem in rendering profile: ${err}`);
@@ -261,14 +256,13 @@ async function renderProfile(habiticaID, user){
 async function calculateStats(profile) {
     const keys = ['str','con','int','per'];
     let stats = Object.create( {} );
+
     let equipments = await api.get('/content').then(res => {return res.data.gear.flat} );
-    let val;
     let userEquipment = profile.items.gear.equipped;
     
     // calculate the stats without equipments
     keys.forEach(k=>{
-        val = profile.stats.buffs[k]+profile.stats.training[k]+profile.stats[k]+Math.floor(profile.stats.lvl/2);
-        stats[k] = val;
+        stats[k] = profile.stats.buffs[k]+profile.stats.training[k]+profile.stats[k]+Math.floor(profile.stats.lvl/2); 
     });
 
     // add contribution for each equipment to stats
@@ -281,17 +275,6 @@ async function calculateStats(profile) {
     });
 
     return stats;
-}
-
-
-// extract user id from the string of mention
-function getIDFromMention(mention) {
-    // The id is the first and only match found by the RegEx.
-    const matches = mention.match(/^<@!?(\d+)>$/);
-    // If supplied variable was not a mention, matches will be null instead of an array.
-    if (!matches) return;
-    // The first element in the matches array will be the entire mention, not just the ID, so use index 1.
-    return matches[1];
 }
 
 // TODO: a generic function for confimraiton embed (for the check if need update feature for !habitica set)
@@ -324,7 +307,7 @@ let habiticaCommands = {
     },
     // 'find':{
     //     aliases: ['find'],
-    //     description: 'I will send you the sleep logs you made in the sleep club.',
+    //     description: 'I will find the corresponding discord user for a given habitica id.',
     //     usage: ['habitica find'],
     // },
     '@user':{
