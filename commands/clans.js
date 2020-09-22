@@ -1,7 +1,7 @@
 //const clans = require('../data/clan-data');
 const Habitica = require('habitica');
-const habHelper = require('../utils/habiticaHelper');
-const clanHelper = require('../utils/clanHelper');
+const habHelper = require('../helper/habiticaHelper');
+const clanHelper = require('../helper/clanHelper');
 const Clans = require('../databaseFiles/clanTable.js');
 
 module.exports.execute = async (client, message, args) => {

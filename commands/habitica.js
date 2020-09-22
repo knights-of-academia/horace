@@ -2,7 +2,7 @@ const fs = require('fs');
 const Habiticas = require('../databaseFiles/habiticaTable.js');
 const Discord = require('discord.js');
 const config = require('../config.json');
-const habHelper = require('../utils/habiticaHelper')
+const habHelper = require('../helper/habiticaHelper')
 const Habitica = require('habitica');
 const api = new Habitica({
     id: config.habitica.id,
