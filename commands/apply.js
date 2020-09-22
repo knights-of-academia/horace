@@ -23,19 +23,23 @@ module.exports.execute = async (client, message, args) => {
 		apiToken: clan.apiToken
 	});
 	let memberCount = await api.get(`/groups/party`).then(res => {return res.data.memberCount;})
-		.catch(err => {console.log(`There has been a problem in fetching clan ${clan.fullName}: ${err}`);});
+		.catch(err => {
+			console.log(`There has been a problem in fetching clan ${clan.fullName}: ${err}`);
+			return -1; // signify api not working
+		});
 
-	const response = `✔ **Fill out your user ID to receive an invite!**
+	let response = `✔ **Fill out your user ID to receive an invite!**
 *Average Response Time: 24 hours or less*
 ${clan.formUrl}`;
 
 	if (memberCount == 30) {
-		return await message.channel.send(`This clan is currently full! Please try again later.`);
+		response = `This clan is currently full! Please try again later.`;
 	} else if (memberCount > 25) {
-		return await message.channel.send(response+'\n 🔶Limited Spot Left!🔶');
-	} else {
-		return await message.channel.send(response);
+		response += '\n 🔶Limited Spot Left!🔶';
+	} else if (memberCount == -1) {
+		response += `\n 🌫️A wizard's spell hit this party! I cannot tell whether the party is full but you can try your luck...🌫️`;
 	}
+		return await message.channel.send(response);
 
 };
 
