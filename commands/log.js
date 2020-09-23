@@ -1,17 +1,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const config = require('../config.json');
-
-const Participants = require('../databaseFiles/cowtParticipantTable.js');
-
 const helper = require('../helper/logHelper');
-const habHelper = require('../helper/habiticaHelper');
-
-const Habitica = require('habitica');
-const api = new Habitica({
-	id: config.habitica.id,
-	apiToken: config.habitica.token
-});
 
 let prefix;
 if (fs.existsSync('../config.json')) {
@@ -29,13 +19,6 @@ module.exports.execute = async (client, message, args) => {
 
 	if (!args || args.length === 0) {// default case: no args: return the author's record
 		logs = await helper.fetchMessageWith(checker, message, message.author.id, config.channels.cotw);
-		// Participants.sync().then(()=>{
-		//     Participants.findAll({
-		//         where: {
-		//             challengeID: 'd9815892-2bbc-4bdf-9499-b0a6e25b1835'
-		//         }
-		//     }).then(res=>console.log(res.length));
-		// }).catch(err=>console.log(err));
 		return await message.channel.send(`Hey, ${message.author.username}, you have vowed in ${logs.length} challenge of the week.
     If you want the details of your vows, send ${prefix}log details`);
 
