@@ -9,8 +9,8 @@ const habHelper = require('../helper/habiticaHelper');
 
 const Habitica = require('habitica');
 const api = new Habitica({
-    id: config.habitica.id,
-    apiToken: config.habitica.token
+	id: config.habitica.id,
+	apiToken: config.habitica.token
 });
 
 let prefix;
@@ -21,59 +21,65 @@ if (fs.existsSync('../config.json')) {
 }
 
 module.exports.execute = async (client, message, args) => {
-    if (message.channel.id === config.channels.cotw) {
-        checker = str => str.toLowerCase().includes('i vow to');
-    } else{
-        return await message.channel.send(`${prefix}log is only avaliable in <#${config.channels.cotw}>`);
-    }
+	if (message.channel.id === config.channels.cotw) {
+		checker = str => str.toLowerCase().includes('i vow to');
+	} else{
+		return await message.channel.send(`${prefix}log is only avaliable in <#${config.channels.cotw}>`);
+	}
 
-    if (!args || args.length === 0) {// default case: no args: return the author's record
-        logs = await helper.fetchMessageWith(checker, message, message.author.id, config.channels.cotw);
-
-        return await message.channel.send(`Hey, ${message.author.username}, you have vowed in ${logs.length} challenge of the week.
+	if (!args || args.length === 0) {// default case: no args: return the author's record
+		logs = await helper.fetchMessageWith(checker, message, message.author.id, config.channels.cotw);
+		// Participants.sync().then(()=>{
+		//     Participants.findAll({
+		//         where: {
+		//             challengeID: 'd9815892-2bbc-4bdf-9499-b0a6e25b1835'
+		//         }
+		//     }).then(res=>console.log(res.length));
+		// }).catch(err=>console.log(err));
+		return await message.channel.send(`Hey, ${message.author.username}, you have vowed in ${logs.length} challenge of the week.
     If you want the details of your vows, send ${prefix}log details`);
 
-    } else if (args.length === 1 && args[0].toLowerCase() === 'details'){// DM the vows and time of vows to the user
-        logs = await helper.fetchMessageWith(checker, message, message.author.id, config.channels.cotw);
-        if (logs.length != 0) {// have vows: send a private message of all vows
-            // TODO: ensure the message does not exceed character limit
-            let embedArray = helper.splitArray(logs.sort((a,b)=>a.createdAt-b.createdAt),25);
-            embedArray.forEach(arr=>{
-                let vowLogMessage = new Discord.RichEmbed()
-                    .setColor('#442477') // color of habitical logo
-                    .setTitle('Your vows')
-                    .setDescription(`Below are the vows you made for COTW.`);
+	} else if (args.length === 1 && args[0].toLowerCase() === 'details'){// DM the vows and time of vows to the user
+		logs = await helper.fetchMessageWith(checker, message, message.author.id, config.channels.cotw);
+		if (logs.length != 0) {// have vows: send a private message of all vows
+			// TODO: ensure the message does not exceed character limit
+			let embedArray = helper.splitArray(logs.sort((a,b)=>a.createdAt-b.createdAt),25);
+			embedArray.forEach(arr=>{
+				let vowLogMessage = new Discord.RichEmbed()
+					.setColor('#442477') // color of habitical logo
+					.setTitle('Your vows')
+					.setDescription('Below are the vows you made for COTW.');
                 
-                arr.forEach(log => {
-                    vowLogMessage.addField(`**In ${log.createdAt.toDateString()}**`, `${log.content}`);
-                });
+				arr.forEach(log => {
+					vowLogMessage.addField(`**In ${log.createdAt.toDateString()}**`, `${log.content}`);
+				});
 
-                message.author.send(vowLogMessage).catch(err => console.error(err) );
+				message.author.send(vowLogMessage).catch(err => console.error(err) );
 
-            });
+			});
 
-            return await message.channel.send('I have sent you private message(s) with all the vows you made.')
-                .catch(err => console.error(err) );
-        } else {// no log:
-            return await message.channel.send('Sorry, I cannot find any of your vows.').catch(err => {
-                console.error(err);
-            });
-        }
+			return await message.channel.send('I have sent you private message(s) with all the vows you made.')
+				.catch(err => console.error(err) );
+		} else {// no log:
+			return await message.channel.send('Sorry, I cannot find any of your vows.').catch(err => {
+				console.error(err);
+			});
+		}
 
-    }else {// case that mentions one or more users
-        let mentionedUsers = message.mentions.users;
-        if (mentionedUsers.size == 0){
-            return await message.channel.send(`I don't know what you means. The allowed command for log are ${prefix}log, ${prefix}log details or ${prefix}log @<username>`);
-        } else{
-            mentionedUsers.forEach(user=>{
-                helper.fetchMessageWith(checker, message, user.id, config.channels.cotw).then(logs =>{
-                    message.channel.send(`Hey, ${message.author.username}, ${user.username} have vowed in ${logs.length} challenge of the week.`);
-                }).catch(err=>console.log(err) );
-            });
-            return;
-        }
+	}else {// case that mentions one or more users
+		let mentionedUsers = message.mentions.users;
+		if (mentionedUsers.size == 0){
+			return await message.channel.send(`I don't know what you means. The allowed command for log are ${prefix}log, ${prefix}log details or ${prefix}log @<username>`);
+		} else{
+			mentionedUsers.forEach(user=>{
+				helper.fetchMessageWith(checker, message, user.id, config.channels.cotw).then(logs =>{
+					message.channel.send(`Hey, ${message.author.username}, ${user.username} have vowed in ${logs.length} challenge of the week.`);
+				}).catch(err=>console.log(err) );
+			});
+			return;
+		}
 
-    }
+	}
 	
 };
 
