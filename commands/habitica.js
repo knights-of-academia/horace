@@ -112,10 +112,7 @@ module.exports.config = {
 function sendHabitacaHelp(recipient) {
     let helpMessage = new Discord.RichEmbed()
 			.setColor('#442477')
-			.setTitle(`Available ${prefix}habitica commands`)
-		// commands.forEach(command => {
-		// 	helpMessage.addField(`**${prefix}${command.config.name}**`, `${command.config.description}`);
-        // });
+			.setTitle(`Available ${prefix}habitica commands`);
     for (const [commandName, commandProperty] of Object.entries(habiticaCommands)) {
         helpMessage.addField(`**${prefix} habitica ${commandName}**`, `${commandProperty.description}`);
 
