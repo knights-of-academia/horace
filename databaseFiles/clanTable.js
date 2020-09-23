@@ -2,8 +2,6 @@ const Sequelize = require('sequelize');
 const connect = require('./connect.js');
 
 const sequelize = connect.sequelize;
-// TODO: write module to import existing data to database
-//       ? write a function that insert new clan into database 
 module.exports = sequelize.define('Clan', {
 	fullName: {
 		type: Sequelize.STRING,
