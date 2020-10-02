@@ -1,4 +1,5 @@
-const clans = require('../data/clan-data');
+const clanNames = require('../data/clan-data');
+const Clans = require('../databaseFiles/clanTable.js');
 const Habitica = require('habitica');
 
 module.exports.execute = async (client, message, args) => {
@@ -10,14 +11,19 @@ module.exports.execute = async (client, message, args) => {
 		);
 	}
 
-	let clan = clans.find((c) => c.names.includes(searchTerm));
+	let clan = clanNames.find((c) => c.names.includes(searchTerm));
 
 	if (!clan) {
 		return await message.channel.send(
 			`❌ The clan \`${searchTerm}\` couldn't be found.`
 		);
 	}
-	
+	clan = await Clans.findOne({
+		where: {
+			fullName: clan.fullName
+		}
+	}).catch(err=> console.log(err));
+	console.log(clan);
 	api = new Habitica({
 		id: clan.authId,
 		apiToken: clan.apiToken

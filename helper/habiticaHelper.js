@@ -1,13 +1,5 @@
 const Habiticas = require('../databaseFiles/habiticaTable.js');
-const clans = require('../data/clan-data');
-const Participants = require('../databaseFiles/cowtParticipantTable.js');
-const config = require('../config.json');
-
-const Habitica = require('habitica');
-const api = new Habitica({
-	id: config.habitica.id,
-	apiToken: config.habitica.token
-});
+const Clans = require('../databaseFiles/clanTable.js');
 
 module.exports = {
 	// given a habitica ID (a valid uuid), return an array of the corresponding discord user(s). If no user is present, return an empty array
@@ -27,7 +19,7 @@ module.exports = {
 		});
 	},
 
-	// fidn someone's habitica ID in database, if not exist, return undefined
+	// find someone's habitica ID in database, if not exist, return undefined
 	findHabiticaID: async function(userID) {
 		return await Habiticas.sync().then(() => {
 			return Habiticas.findAll({
@@ -49,11 +41,18 @@ module.exports = {
 	// return the name of the clan if the input match the id for a clan in clan-data.js
 	// if the input is empty/undefined, return 'Not in any party'
 	// if partyID is not an ID for any KOA clan, return 'A myserious party'
-	clanName: function(partyID) {
+	clanName: async function(partyID) {
 		if (!partyID) {
 			return 'Not in any party';
 		}
-		let clan = clans.find(clan=>clan.id==partyID);
+		let clan = await Clans.sync().then(() => {
+			return Clans.findOne({
+				where: {
+					clanId: partyID
+				}
+			})
+		}).catch(err=> console.log(err) );
+		
 		if (clan){
 			return clan.fullName;
 		} else {
@@ -68,24 +67,6 @@ module.exports = {
         
 	},
 
-	updateParticipantTable: async function (challengeID) {
-		const participants = await api.get(`/challenges/${challengeID}/members`,{includeAllMembers:true}).then(res => {return res.data;} ).catch(err=> console.log(err));
-		try {
-			Participants.sync().then(()=>{
-				participants.forEach(participant=>{
-					Participants.findOrCreate({
-						where: {
-							challengeID: challengeID,
-							participantID: participant.id,
-						}
-					});
-				});
-			});
-		} catch (err) {
-			console.log(err);			
-		}
-
-	},
 };
 
 

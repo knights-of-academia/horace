@@ -22,7 +22,6 @@ if (fs.existsSync('../config.json')) {
 
 module.exports.execute = async (client, message,args) => {
     let queriedUser;
-    let id = '';
     if (!args || args.length === 0 || args[0] == 'help') {// default case: send a help messsage 
         sendHabitacaHelp(message.author);
         return await message.channel.send(`I have send you a private message of what you can do with ${prefix}habitica`)
@@ -231,7 +230,7 @@ async function renderProfile(habiticaID, user){
         // get name for the party for the party
         let stats = await calculateStats(profile);
         let checkInDate = profile.auth.timestamps.updated.slice(0,10);
-        let partyName = habHelper.clanName(profile.party._id);
+        let partyName = await habHelper.clanName(profile.party._id);
 
         let profileMessage = new Discord.RichEmbed()
 			.setColor('#442477')

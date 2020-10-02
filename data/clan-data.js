@@ -1,14 +1,14 @@
 module.exports = [
 	{
-		formUrl: 'https://knightsofacademia.org/the-round-table/',
+		fullName: 'The Round Table',
 		names: ['trt', 'theroundtable', 'the round table', 'hard mode']
 	},
 	{
-		formUrl: 'https://knightsofacademia.org/bards-of-academia/',
+		fullName: 'Bards of Academia',
 		names: ['bards', 'the bards', 'music']
 	},
 	{
-		formUrl: 'https://knightsofacademia.org/fiction-faction/',
+		fullName: 'The Fiction Faction',
 		names: [
 			'thefictionfaction',
 			'the fiction faction',
@@ -19,15 +19,15 @@ module.exports = [
 		]
 	},
 	{
-		formUrl: 'https://knightsofacademia.org/wolf-pack/',
+		fullName: 'The Wolf Pack',
 		names: ['thewolfpack', 'the wolf pack', 'wp', 'twp', 'stem']
 	},
 	{
-		formUrl: 'https://knightsofacademia.org/the-gathering/',
+		fullName: 'The Gathering',
 		names: ['thegathering', 'the gathering', 'gathering', 'accountability']
 	},
 	{
-		formUrl: 'https://knightsofacademia.org/the-clockwork-knights/',
+		fullName: 'The Clockwork Knights',
 		names: [
 			'theclockworkknights',
 			'the clockwork knights',
@@ -37,7 +37,7 @@ module.exports = [
 		]
 	},
 	{
-		formUrl: 'https://knightsofacademia.org/the-silver-tongues/',
+		fullName: 'The Silver Tongues',
 		names: [
 			'thesilvertongues',
 			'the silver tongues ',
@@ -46,7 +46,7 @@ module.exports = [
 		]
 	},
 	{
-		formUrl: 'https://knightsofacademia.org/the-students/',
+		fullName: 'The Students',
 		names: ['thestudents', 'the students', 'students', 'study']
 	}
 ];
