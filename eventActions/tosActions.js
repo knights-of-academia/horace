@@ -8,6 +8,7 @@ class tosActions {
 				if (guildMember.roles.has(config.roles.initiate)) {
 					const initiateRole = reaction.message.guild.roles.find(r => r.id === config.roles.initiate);
 					guildMember.removeRole(initiateRole);
+					guildMember.addRole('763098573780680754');
 					// Send welcome message to the Citadel
 					client.channels.get(config.channels.citadel).send(`🎉 **A new member has arrived!** 🎉\nWelcome to Knights of Academia <@${user.id}>!`)
 						.then(message => {
