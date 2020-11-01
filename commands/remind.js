@@ -6,7 +6,6 @@ const errors = require('../helpers/remindErrors.js');
 const remindUtils = require('../utils/remindUtils.js');
 
 const Reminder = require('../databaseFiles/remindersTable.js');
-const SpellChecker = require('spellchecker'); // Used to automatically fix the typos.
 
 const monthsData = require('../data/monthsData.js');
 
@@ -20,7 +19,7 @@ module.exports.execute = async (client, message, args) => {
 	}
 
 	if (args.length === 0 || args.length === 1 && (args[0] === 'help' || args[0] === 'info')) {
-		const remindHelp = new Discord.RichEmbed()
+		const remindHelp = new Discord.MessageEmbed()
 			.setColor('#FFEC09')
 			.setTitle(`${config.emotes.reminders} Knights of Academia Remind Help ${config.emotes.reminders}`)
 			.setDescription('Here are some commands to help you out with reminders!')
@@ -76,7 +75,7 @@ module.exports.execute = async (client, message, args) => {
 		});
 
 		if (remindersStringForEmbed) {
-			const remindList = new Discord.RichEmbed()
+			const remindList = new Discord.MessageEmbed()
 				.setColor('#FFEC09')
 				.setTitle(`${config.emotes.reminders} Your Reminders ${config.emotes.reminders}`)
 				.setDescription('Each entry is in the form of <id>: <reminder>.')
@@ -87,7 +86,7 @@ module.exports.execute = async (client, message, args) => {
 			return await message.reply('you don\'t have any saved reminders!');
 		}
 	} else if (args.length === 2 && (args[0] === 'remove' || args[0] === 'delete')) {
-		if (args[1] === "all") {
+		if (args[1] === 'all') {
 			var destroyed = await Reminder.destroy({
 				where: {
 					whoToRemind: message.author.id
@@ -96,7 +95,7 @@ module.exports.execute = async (client, message, args) => {
 				console.error('Reminder Sequelize error: ', err);
 			});
 		} else if (Number.isInteger(parseInt(args[1]))) {
-			var destroyed = await Reminder.destroy({
+			destroyed = await Reminder.destroy({
 				where: {
 					id: parseInt(args[1]),
 					whoToRemind: message.author.id
@@ -105,12 +104,12 @@ module.exports.execute = async (client, message, args) => {
 				console.error('Reminder Sequelize error: ', err);
 			});
 		} else {
-			return await message.reply('your command usage is invalid! See `!remind help` for guidance.')
+			return await message.reply('your command usage is invalid! See `!remind help` for guidance.');
 		}
 
 		if (!destroyed) return await message.reply('there isn\'t a reminder with such ID assigned to you! Check `!remind list` for a list of your reminders.');
 		else if (destroyed === 1) return await message.reply('the reminder has been removed successfully!');
-		else return await message.reply('all your reminders have been removed successfully!')
+		else return await message.reply('all your reminders have been removed successfully!');
 	} else {
 		const currentDate = new Date();
 		const whoToRemind = message.author.id;
@@ -177,7 +176,7 @@ function parseReminder(unparsedArgs, currentDate, message) {
 		if (Object.keys(monthsData).includes(word)) { correctedInput.push(word); return; }
 
 		// Ternary operation that corrects the word if there's a typo, but leaves it as is if there's not.
-		toPush = SpellChecker.isMisspelled(word) ? SpellChecker.getCorrectionsForMisspelling(word)[0] : word;
+		toPush = word;
 
 		// This might be significant later on when constructing Horace's reminding message.
 		toPush = toPush.replace(regMy, 'your');
@@ -315,7 +314,7 @@ async function remind(client, date, reminder, catchUp = false) {
 		I just wanted to remind you to **${reminder.dataValues.whatToRemind}**. Off I go. 😄`;
 	}
 
-	const remindMessage = new Discord.RichEmbed()
+	const remindMessage = new Discord.MessageEmbed()
 		.setColor(color)
 		.setTitle(`${config.emotes.reminders} Reminder ${config.emotes.reminders}`)
 		.setDescription(description);
@@ -384,5 +383,5 @@ module.exports.config = {
 	name: 'remind',
 	aliases: ['remind'],
 	description: 'Set up a reminder!',
-	usage: [`\`!remind [me to] <task> in <how many> minutes/hours/days/months\``, `\`!remind [me to] <task> on <date>\``, `\`!remind [me to] <task> every <how many> minute[s]/hour[s]/day[s]/month[s]\``]
+	usage: ['`!remind [me to] <task> in <how many> minutes/hours/days/months`', '`!remind [me to] <task> on <date>`', '`!remind [me to] <task> every <how many> minute[s]/hour[s]/day[s]/month[s]`']
 };

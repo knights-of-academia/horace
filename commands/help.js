@@ -14,7 +14,7 @@ module.exports.execute = async (client, message, args) => {
 	let commandNames = [];
 
 	if (!args || args.length === 0) {
-		let helpMessage = new Discord.RichEmbed()
+		let helpMessage = new Discord.MessageEmbed()
 			.setColor('#ff0000')
 			.setTitle('List of available commands')
 			.setDescription('Commands available in ' + message.guild.name);
@@ -35,7 +35,7 @@ module.exports.execute = async (client, message, args) => {
             || command.config.aliases.find(alias => alias === args[0].toLowerCase()));
 
 		if (command) {
-			let helpMessage = new Discord.RichEmbed()
+			let helpMessage = new Discord.MessageEmbed()
 				.setColor('#ff0000')
 				.setTitle(`${prefix}${command.config.name}`)
 				.setDescription(`You asked for information on ${prefix}${command.config.name}`);

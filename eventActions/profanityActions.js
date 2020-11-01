@@ -8,7 +8,7 @@ class profanityActions {
 	static async checkForProfanity(client, message) {
 		const bannedWords = await db.get(`bannedWords-${message.guild.id}`);
 		if (bannedWords.some((word) => message.content.includes(word))) {
-			const embedMessage = new Discord.RichEmbed()
+			const embedMessage = new Discord.MessageEmbed()
 				.setColor('#ff0000')
 				.setTitle('🚩 Warning: Profanity detected 🚩')
 				.setDescription(`Profanity detected in ${message.channel}`)
@@ -19,7 +19,7 @@ class profanityActions {
 					message.author.username + '#' + message.author.discriminator,
 					message.author.avatarURL
 				);
-			return client.channels
+			return client.channels.cache
 				.get(config.channels.moderation)
 				.send(embedMessage);
 		}

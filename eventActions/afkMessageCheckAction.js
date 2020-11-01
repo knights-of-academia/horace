@@ -33,7 +33,7 @@ class afkMessageCheckAction {
 				}
 			}
 		};
-		const noLongerAFKMessage = new Discord.RichEmbed()
+		const noLongerAFKMessage = new Discord.MessageEmbed()
 			.setTitle(`You are currently AFK, ${message.member.nickname ? message.member.nickname : message.author.username}`)
 			.addField('Are you back?', 'Then react with ✅',true)
 			.addField('If you are not back!', 'Then react with ❌',true)
@@ -95,7 +95,7 @@ class afkMessageCheckAction {
 					if (result.length == 1) {
 						message.guild.fetchMember(result[0].user).then(user => {
 							let name = user.nickname ? user.nickname : user.user.username;
-							const embed = new Discord.RichEmbed()
+							const embed = new Discord.MessageEmbed()
 								.setTitle(`${name} is not here`)
 								.addField('AFK Message:',result[0].message)
 								.setColor('#FFEC09');

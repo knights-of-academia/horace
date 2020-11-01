@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 module.exports.execute = async (client, message) => {
 	return await message.channel.send('Your first week at KOA: https://koa.gg/firstweek');
 };

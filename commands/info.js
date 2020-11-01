@@ -30,7 +30,7 @@ module.exports.execute = async (client, message, args) => {
 		);
 	}
 
-	const response = new Discord.RichEmbed()
+	const response = new Discord.MessageEmbed()
 		.setTitle(result.displayname)
 		.setDescription(result.description);
 

@@ -83,7 +83,7 @@ class highlightActions {
 	static async sendHighlightDM(client, user, message, highlightedPhrase) {
 		const workingMessage = message;
 		const highlightsEmote = '☀️';
-		const highlightNotification = new Discord.RichEmbed()
+		const highlightNotification = new Discord.MessageEmbed()
 			.setColor('#FFEC09')
 			.setTitle(`${highlightsEmote} Knights of Academia Highlight Alert ${highlightsEmote}`)
 			.setDescription('One of your highlights has been triggered!')
