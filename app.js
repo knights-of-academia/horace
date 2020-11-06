@@ -5,7 +5,7 @@ const config = require('./config.json');
 const connect = require('./databaseFiles/connect.js');
 const remind = require('./commands/remind.js');
 
-const client = new Discord.Client();
+const client = new Discord.Client({ ws: { intents: ['GUILDS', 'GUILD_MEMBERS']}});
 
 fs.readdir('./events/', (err, files) => {
 	if (err) return console.error(err);
