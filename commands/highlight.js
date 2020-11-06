@@ -17,7 +17,7 @@ module.exports.execute = async (client, message, args) => {
 	const highlightsEmote = config.emotes.highlights;
 
 	if(keywords.length === 0){
-		const highlightsHelp = new Discord.RichEmbed()
+		const highlightsHelp = new Discord.MessageEmbed()
 			.setColor('#FFEC09')
 			.setTitle(`${highlightsEmote} Knights of Academia Highlight Help ${highlightsEmote}`)
 			.setDescription('Here are some commands to help you out with highlights!')
@@ -55,7 +55,7 @@ module.exports.execute = async (client, message, args) => {
 				}).catch(errHandler);
 
 				// Confirm highlight addition
-				const highlightsHelp = new Discord.RichEmbed()
+				const highlightsHelp = new Discord.MessageEmbed()
 					.setColor('#FFEC09')
 					.setTitle(`${highlightsEmote} Knights of Academia Highlight Addition ${highlightsEmote}`)
 					.setDescription('I have added the following highlight as requested!')
@@ -84,7 +84,7 @@ module.exports.execute = async (client, message, args) => {
 				return;
 			}
 			// Confirm highlight addition
-			const highlightsHelp = new Discord.RichEmbed()
+			const highlightsHelp = new Discord.MessageEmbed()
 				.setColor('#FFEC09')
 				.setTitle(`${highlightsEmote} Knights of Academia Highlight Removal ${highlightsEmote}`)
 				.setDescription('I have removed the following highlight as requested!')
@@ -108,7 +108,7 @@ module.exports.execute = async (client, message, args) => {
 					listOfWords.push(result[i].phrase);
 				}
 
-				const highlightsHelp = new Discord.RichEmbed()
+				const highlightsHelp = new Discord.MessageEmbed()
 					.setColor('#FFEC09')
 					.setTitle(`${highlightsEmote} Knights of Academia Highlight List ${highlightsEmote}`)
 					.setDescription('Here are your current highlights!')

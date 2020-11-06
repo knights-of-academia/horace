@@ -7,7 +7,7 @@ class bookmarkActions {
 		if (reaction._emoji.name === config.emotes.bookmark) {
 			const workingMessage = reaction.message;
 			const swordsEmote = '⚔';
-			const bookmarkEmbed = new Discord.RichEmbed()
+			const bookmarkEmbed = new Discord.MessageEmbed()
 				.setColor('#0F9BF1')
 				.setTitle(`${swordsEmote} Knights of Academia Bookmark ${swordsEmote}`)
 				.setDescription('You asked to bookmark this post from the Knights of Academia server.')

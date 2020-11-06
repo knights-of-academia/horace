@@ -1,6 +1,6 @@
 module.exports = async (client, channel) => {
 	// Check for max pins regardless of channel
-	const currentChannel = client.channels.get(channel.id);
+	const currentChannel = client.channels.cache.get(channel.id);
 	currentChannel.fetchPinnedMessages().then(messages => {
 		const numOfPins = messages.size;
 		// currentChannel.send('**Listen!** Currently at ' + numOfPins + ' pins');

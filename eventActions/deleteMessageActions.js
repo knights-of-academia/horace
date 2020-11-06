@@ -11,7 +11,7 @@ class deleteMessageActions {
 	
 		if(!(isHoraceBot || isCommand || isStaffAccountability)){
 			
-			let embed = new Discord.RichEmbed()
+			let embed = new Discord.MessageEmbed()
 				.setTitle('🟡 Warning: Message deleted 🟡')
 				.setColor('#ffae42')
 				.addField('Author', message.author, true)
@@ -26,7 +26,7 @@ class deleteMessageActions {
 			}
 			
 
-			client.channels.get(config.channels.moderation).send(embed);
+			client.channels.cache.get(config.channels.moderation).send(embed);
 			
 		}
 	}

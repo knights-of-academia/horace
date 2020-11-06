@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 const firstweek = require('./firstweek.js');
 const messageStub = require('../stub/messageStub');
 
