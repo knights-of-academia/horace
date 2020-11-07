@@ -4,7 +4,7 @@ class tosActions {
 	static userAcceptsTOS(reaction, user, client) {
 		if (reaction.message.channel.id === config.channels.tos
             && reaction._emoji.name === config.emotes.acceptTOS) {
-			reaction.message.guild.fetchMember(user.id).then(guildMember => {
+			reaction.message.guild.members.fetch(user.id).then(guildMember => {
 				if (guildMember.roles.has(config.roles.initiate)) {
 					const initiateRole = reaction.message.guild.roles.find(r => r.id === config.roles.initiate);
 					guildMember.removeRole(initiateRole);
