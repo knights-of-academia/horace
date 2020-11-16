@@ -1,7 +1,7 @@
 module.exports.execute = async (client, message) => {
 	return await message.channel.send(`⚔ Here is our list of KOA Clans! ⚔
 
-	🔸 **The Round Table**: All things Hard Mode by **bendre19997**#9332
+	🔸 **The Round Table**: All things Hard Mode by **bendre1997**#9332
 	🔸 **Bards of Academia**: All things music by *Position Open!*
 	🔸 **The Fiction Faction**: Creative Writing & Story Telling by **varrictethras**#5383
 	🔸 **The Gathering**: Accountability by **hikikomori**#3771
