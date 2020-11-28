@@ -6,10 +6,12 @@ class deleteMessageActions {
 		const isHoraceBot = message.author.id === client.user.id;
 
 		const isCommand = message.content.startsWith(config.prefix);
+
+		const isStaffAccountability = message.channel.id == config.channels.staffaccountability;
 	
-		if(!(isHoraceBot || isCommand)){
+		if(!(isHoraceBot || isCommand || isStaffAccountability)){
 			
-			let embed = new Discord.RichEmbed()
+			let embed = new Discord.MessageEmbed()
 				.setTitle('🟡 Warning: Message deleted 🟡')
 				.setColor('#ffae42')
 				.addField('Author', message.author, true)
@@ -24,7 +26,7 @@ class deleteMessageActions {
 			}
 			
 
-			client.channels.get(config.channels.moderation).send(embed);
+			client.channels.cache.get(config.channels.moderation).send(embed);
 			
 		}
 	}

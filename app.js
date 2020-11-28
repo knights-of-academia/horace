@@ -3,8 +3,9 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const config = require('./config.json');
 const connect = require('./databaseFiles/connect.js');
+const remind = require('./commands/remind.js');
 
-const client = new Discord.Client();
+const client = new Discord.Client({ ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES']}});
 
 fs.readdir('./events/', (err, files) => {
 	if (err) return console.error(err);
@@ -43,3 +44,10 @@ fs.readdir('./commands/', (err, files) => {
 connect.instantiateConnection();
 
 client.login(config.token);
+
+// Catch up on the belated reminders in case the bot was down at a given time.
+// Set up an interval to scan the `Reminders` table and remind people as necessary.
+client.on('ready', () => {
+	remind.catchUp(client);
+	setInterval(remind.scanForReminders, 30000, client);
+});

@@ -33,7 +33,7 @@ class afkMessageCheckAction {
 				}
 			}
 		};
-		const noLongerAFKMessage = new Discord.RichEmbed()
+		const noLongerAFKMessage = new Discord.MessageEmbed()
 			.setTitle(`You are currently AFK, ${message.member.nickname ? message.member.nickname : message.author.username}`)
 			.addField('Are you back?', 'Then react with ✅',true)
 			.addField('If you are not back!', 'Then react with ❌',true)
@@ -41,16 +41,36 @@ class afkMessageCheckAction {
 			.setColor('#FFEC09');
 		const user = message.author;
 
+		// Returns a single integer rounded down for the difference in minutes between two Date.now() timestamps
+		function timedifference(timestamp1, timestamp2) {
+			// redefine the variables to do math on
+			timestamp1 = new Date(parseInt(timestamp1));
+			timestamp2 = new Date(parseInt(timestamp2));
+
+			let difference = timestamp2.getTime() - timestamp1.getTime();
+
+			difference = Math.floor(difference/1000/60);
+			
+			return difference;
+		}
+
 		await Afks.sync().then(() => {
 			Afks.findAll({
 				where: {
 					user: user.id
 				}
 			}).then(result => {
-				if (result.length == 1) {
+				// Test to see if the difference between the cooldown and the current time is more than or equal to 3 minutes call function with variables timestamp1 and timestamp2 in call
+				if (result.length == 1 && timedifference(result[0].cooldown, Date.now()) >= 3) {
 					message.author.send(noLongerAFKMessage).then(msg => {
 						msg.react('✅');
 						msg.react('❌');
+						Afks.update(
+							{ cooldown: Date.now() },
+							{ where: {user: user.id} }
+						).catch(error => {
+							console.error('Update error: ', error);
+						});
 						// Use reaction filter to remove to remove the user from the database rather than an event
 						let collector = msg.createReactionCollector(reactionFilter, { time: 15000 });
 						collector.on('end', () => {
@@ -75,7 +95,7 @@ class afkMessageCheckAction {
 					if (result.length == 1) {
 						message.guild.fetchMember(result[0].user).then(user => {
 							let name = user.nickname ? user.nickname : user.user.username;
-							const embed = new Discord.RichEmbed()
+							const embed = new Discord.MessageEmbed()
 								.setTitle(`${name} is not here`)
 								.addField('AFK Message:',result[0].message)
 								.setColor('#FFEC09');

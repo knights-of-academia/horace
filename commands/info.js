@@ -203,6 +203,13 @@ module.exports.execute = async (client, message, args) => {
 					
 					
 	}
+
+	const response = new Discord.MessageEmbed()
+		.setTitle(result.displayname)
+		.setDescription(result.description);
+
+	return await message.channel.send(response);
+
 };
 			
 module.exports.config = {

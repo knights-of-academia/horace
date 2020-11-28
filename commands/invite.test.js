@@ -25,27 +25,27 @@ test('Sends default message on non-defined parameters', async () => {
 	expect(responseMessage).toBe(expectedResponse);
 });
 
-test('Sends right message on args jesters', async () => {
+test('Sends right message on args kod', async () => {
 	// Arrange
 	const message = new messageStub();
 
 	// Act
-	const responseMessage = await invite.execute(null, message, ['jesters']);
+	const responseMessage = await invite.execute(null, message, ['kod']);
 
 	// Assert
-	const expectedResponse = 'Invite to the Jesters of Academia server: https://discord.gg/wu3a6JA';
+	const expectedResponse = 'Invite to the Knights off Duty server: https://discord.gg/wu3a6JA';
 	expect(responseMessage).toBe(expectedResponse);
 });
 
-test('Sends right message on args JESTERS', async () => {
+test('Sends right message on args KOD', async () => {
 	// Arrange
 	const message = new messageStub();
 
 	// Act
-	const responseMessage = await invite.execute(null, message, ['JESTERS']);
+	const responseMessage = await invite.execute(null, message, ['KOD']);
 
 	// Assert
-	const expectedResponse = 'Invite to the Jesters of Academia server: https://discord.gg/wu3a6JA';
+	const expectedResponse = 'Invite to the Knights off Duty server: https://discord.gg/wu3a6JA';
 	expect(responseMessage).toBe(expectedResponse);
 });
 

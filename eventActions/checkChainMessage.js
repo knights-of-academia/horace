@@ -9,7 +9,7 @@ class CheckChainMessage {
 	// "Load" tracker object with necessary data. Called in 'ready.js'
 	static async loadChainMessageTracker(client) {
 
-		client.channels.forEach(channel => {
+		client.channels.cache.forEach(channel => {
 			const channelId = channel.id;
 			trackerObject.msgContents[channelId] = 'NIL';
 			trackerObject.msgCounts[channelId] = 1;
