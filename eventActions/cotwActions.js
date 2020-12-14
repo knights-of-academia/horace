@@ -23,7 +23,7 @@ class cotwActions {
 	}
 	static async updateCotw(client, message) {
 		if (message.channel.id === config.channels.cotw
-			&& message.member.roles.has(config.roles.cotwManager)) {
+			&& message.member.roles.cache.some(role => role.id === config.roles.cotwManager)) {
 			const store = require('data-store')({
 				path: process.cwd() + '/data/cotw.json'
 			});
@@ -87,9 +87,35 @@ class cotwActions {
 				store.set('challengeName', challengeName);
 				const emote = config.emotes.cotwReflection;
 				message.react(emote);
-				return message.channel.send(
-					`The COTW has been updated to ${challengeName}.`
-				);
+				let check = await confirmUpdate(message)
+				if (check == null) {
+					message.react(config.emotes.no)
+					return message.channel.send(
+						`An error occured and the COTW was not updated.`
+					);
+				}
+				else {
+					return message.channel.send(
+						`The COTW has been updated to ${challengeName}.`
+					);
+				}
+			}
+			async function confirmUpdate(message) {
+				let path = process.cwd() + '/data/cotw.json'
+				const stats = fs.statSync(path)
+				let mtime = stats.mtime
+				let lastModified = new Date(mtime)
+				console.log(lastModified)
+				let currentDate = new Date()
+				console.log(currentDate)
+				let diff = currentDate.getTime() - lastModified.getTime()
+				let minute = 1000 * 60
+				if (diff <= minute) {
+					return message.react(config.emotes.yes2)
+				}
+				else {
+					return null
+				}
 			}
 		}
 	}
