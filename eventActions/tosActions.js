@@ -5,17 +5,18 @@ class tosActions {
 		if (reaction.message.channel.id === config.channels.tos
             && reaction._emoji.name === config.emotes.acceptTOS) {
 			reaction.message.guild.members.fetch(user.id).then(guildMember => {
-				if (guildMember.roles.has(config.roles.initiate)) {
-					const initiateRole = reaction.message.guild.roles.find(r => r.id === config.roles.initiate);
-					guildMember.removeRole(initiateRole);
-					guildMember.addRole('763098573780680754');
+				if (guildMember.roles.cache.has(config.roles.initiate)) {
+					const initiateRole = reaction.message.guild.roles.cache.find(r => r.id === config.roles.initiate);
+					guildMember.roles.remove(initiateRole);
+					const memberRole = reaction.message.guild.roles.cache.find(r => r.id === config.roles.member);
+					guildMember.roles.add(memberRole);
 					// Send welcome message to the Citadel
 					client.channels.cache.get(config.channels.citadel).send(`🎉 **A new member has arrived!** 🎉\nWelcome to Knights of Academia <@${user.id}>!`)
 						.then(message => {
 							message.react(config.emotes.wave);
 						});
 				}
-				user.send(`**Welcome to KOA!** :blush:
+				return user.send(`**Welcome to KOA!** :blush:
 
 To begin, say hello in <#382364344731828226> and read up in <#384040181763670026> for our step by step guide.
 Lastly, to learn more visit us any time at: <https://knightsofacademia.org>.
