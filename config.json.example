@@ -7,7 +7,7 @@
     "token": "0000-0000-0000"
   },
   "roles": {
-	"member": "000",
+    "member": "000",
     "cotwChampion": "000",
     "cotwManager": "000",
     "initiate": "000",
