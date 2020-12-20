@@ -12,10 +12,10 @@ class citadelActions {
 		if (message.channel.id === config.channels.citadel) {
 			if (config.forceStrictGreetings && strict_reg_morning.test(message.content.toLowerCase())
 				|| !config.forceStrictGreetings && normal_reg_morning.test(message.content.toLowerCase())) {
-				return await message.react(config.emotes.goodmorning);
+				// return await message.react(config.emotes.goodmorning);
 			} else if (config.forceStrictGreetings && strict_reg_night.test(message.content.toLowerCase())
 				|| !config.forceStrictGreetings && normal_reg_night.test(message.content.toLowerCase())) {
-				return await message.react(config.emotes.goodnight);
+				// return await message.react(config.emotes.goodnight);
 			}
 		}
 	}
