@@ -19,6 +19,18 @@ class citadelActions {
 			}
 		}
 	}
+	
+	static async holidayReacts(client, message) {
+		// Handle merry Christmas
+		if (
+			message.content.toLowerCase().indexOf("merry") != -1 &&
+			message.content.toLowerCase().indexOf("christmas") != -1
+		) {
+			var reactions = ['🎄', '☃️', '❄️'];
+			var choice = reactions[Math.floor(Math.random() * reactions.length)];
+			return await message.react(choice);
+		}
+	}
 }
 
 module.exports = citadelActions;
