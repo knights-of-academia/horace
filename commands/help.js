@@ -2,7 +2,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 let prefix;
 if (fs.existsSync('../config.json')) {
-	prefix = require('../config.json');
+	prefix = require('../config.json').prefix;
 } else {
 	prefix = '!';
 }
