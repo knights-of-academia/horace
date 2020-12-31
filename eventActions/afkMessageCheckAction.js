@@ -35,9 +35,8 @@ class afkMessageCheckAction {
 		};
 		const noLongerAFKMessage = new Discord.MessageEmbed()
 			.setTitle(`You are currently AFK, ${message.member.nickname ? message.member.nickname : message.author.username}`)
-			.addField('Are you back?', 'Then react with ✅',true)
-			.addField('If you are not back!', 'Then react with ❌',true)
-			.setFooter('This message will delete itself after 15 seconds')
+			.addField('Are you back?', 'Go to <#415261994887938048> and run `!afk` again to turn off AFK!',true)
+			.addField('If you are not back!', 'Ignore this message. It will be deleted after 15 seconds.',true)
 			.setColor('#FFEC09');
 		const user = message.author;
 
@@ -63,16 +62,12 @@ class afkMessageCheckAction {
 				// Test to see if the difference between the cooldown and the current time is more than or equal to 3 minutes call function with variables timestamp1 and timestamp2 in call
 				if (result.length == 1 && timedifference(result[0].cooldown, Date.now()) >= 3) {
 					message.author.send(noLongerAFKMessage).then(msg => {
-						msg.react('✅');
-						msg.react('❌');
 						Afks.update(
 							{ cooldown: Date.now() },
 							{ where: {user: user.id} }
 						).catch(error => {
 							console.error('Update error: ', error);
 						});
-						// Use reaction filter to remove to remove the user from the database rather than an event
-						let collector = msg.createReactionCollector(reactionFilter, { time: 15000 });
 						collector.on('end', () => {
 							msg.delete().catch(() => console.log('Tried deleting afk message that was already deleted'));
 						});
