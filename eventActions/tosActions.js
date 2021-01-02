@@ -11,7 +11,7 @@ class tosActions {
 					const memberRole = reaction.message.guild.roles.cache.find(r => r.id === config.roles.member);
 					guildMember.roles.add(memberRole);
 					// Send welcome message to the Citadel
-					client.channels.cache.get(config.channels.citadel).send(`🎉 **A new member has arrived!** 🎉\nWelcome to Knights of Academia <@${user.id}>!`)
+					client.channels.cache.get(config.channels.citadel).send(`🎉 **A new member has arrived!** 🎉\nWelcome to Knights of Academia <@${user.id}>! <@${config.roles.welcome}> give them a warm welcome!`)
 						.then(message => {
 							message.react(config.emotes.wave);
 						});

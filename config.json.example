@@ -13,7 +13,8 @@
     "initiate": "000",
     "focusedraider": "000",
     "guardian": "000",
-    "helper": "000"
+    "helper": "000",
+    "welcome": "000"
   },
   "channels": {
     "citadel": "000",
