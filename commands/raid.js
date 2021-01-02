@@ -1,6 +1,6 @@
 ﻿module.exports.execute = async (client, message) => {
 	return await message.channel.send(
-		'**RAAAAAAAAAAAAAAAAAAAID⚔** with ' + `${message.author}` + '\nhttps://cuckoo.team/koa',
+		'**RAAAAAAAAAAAAAAAAAAAID⚔** with ' + `<@${message.author.id}>` + '\nhttps://cuckoo.team/koa',
 	);
 };
 
