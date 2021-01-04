@@ -1,5 +1,4 @@
-module.exports.execute = async (client, message) => {
-	return await message.channel.send(`⚔ Here is our list of KOA Clans! ⚔
+module.exports.execute = async (client, message) => await message.channel.send(`⚔ Here is our list of KOA Clans! ⚔
 
 	🔸 **The Round Table**: All things Hard Mode by **bendre1997**#9332
 	🔸 **Bards of Academia**: All things music by *Position Open!*
@@ -9,11 +8,10 @@ module.exports.execute = async (client, message) => {
 	🔸 **The Silver Tongues**: Language & Culture by **theamazingsplit**#2229
 	🔸 **The Students**: Academics & all things Education by **colin**#3523
 	🔸 **The Wolf Pack**: On the move for Health by **QueenWolf**#5509`);
-};
 
 module.exports.config = {
-	name: 'clans',
-	aliases: ['clanlist', 'clans'],
-	description: 'I will list all the clans for you.',
-	usage: ['clans']
+  name: 'clans',
+  aliases: ['clanlist', 'clans'],
+  description: 'I will list all the clans for you.',
+  usage: ['clans'],
 };

@@ -1,36 +1,38 @@
 const config = require('../config.json');
 
 class citadelActions {
-	static async greetMorningOrNight(client, message) {
+  static async greetMorningOrNight(message) {
+    // Handle good morning and goodnight
+    const strictMorningReg = new RegExp(config.strict_morning_regex);
+    const strictNightReg = new RegExp(config.strict_night_regex);
+    const normalMorningReg = new RegExp(config.normal_morning_regex);
+    const normalNightReg = new RegExp(config.normal_night_regex);
 
-		// Handle good morning and goodnight
-		let strict_reg_morning = new RegExp(config.strict_morning_regex);
-		let strict_reg_night = new RegExp(config.strict_night_regex);
-		let normal_reg_morning = new RegExp(config.normal_morning_regex);
-		let normal_reg_night = new RegExp(config.normal_night_regex);
+    if (message.channel.id === config.channels.citadel) {
+      if ((config.forceStrictGreetings && strictMorningReg.test(message.content.toLowerCase()))
+        || (!config.forceStrictGreetings && normalMorningReg.test(message.content.toLowerCase()))) {
+        return message.react(config.emotes.goodmorning);
+      } if ((config.forceStrictGreetings && strictNightReg.test(message.content.toLowerCase()))
+        || (!config.forceStrictGreetings && normalNightReg.test(message.content.toLowerCase()))) {
+        return message.react(config.emotes.goodnight);
+      }
+    }
 
-		if (message.channel.id === config.channels.citadel) {
-			if (config.forceStrictGreetings && strict_reg_morning.test(message.content.toLowerCase())
-				|| !config.forceStrictGreetings && normal_reg_morning.test(message.content.toLowerCase())) {
-				return await message.react(config.emotes.goodmorning);
-			} else if (config.forceStrictGreetings && strict_reg_night.test(message.content.toLowerCase())
-				|| !config.forceStrictGreetings && normal_reg_night.test(message.content.toLowerCase())) {
-				return await message.react(config.emotes.goodnight);
-			}
-		}
-	}
-	
-	static async holidayReacts(client, message) {
-		// Handle merry Christmas
-		if (
-			message.content.toLowerCase().indexOf("merry") != -1 &&
-			message.content.toLowerCase().indexOf("christmas") != -1
-		) {
-			var reactions = ['🎄', '☃️', '❄️'];
-			var choice = reactions[Math.floor(Math.random() * reactions.length)];
-			return await message.react(choice);
-		}
-	}
+    return false;
+  }
+
+  static async holidayReacts(client, message) {
+    // Handle merry Christmas
+    if (
+      message.content.toLowerCase().indexOf('merry') !== -1
+            && message.content.toLowerCase().indexOf('christmas') !== -1
+    ) {
+      const reactions = ['🎄', '☃️', '❄️'];
+      const choice = reactions[Math.floor(Math.random() * reactions.length)];
+      return message.react(choice);
+    }
+    return false;
+  }
 }
 
 module.exports = citadelActions;

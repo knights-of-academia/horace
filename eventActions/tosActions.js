@@ -1,22 +1,22 @@
 const config = require('../config.json');
 
 class tosActions {
-	static userAcceptsTOS(reaction, user, client) {
-		if (reaction.message.channel.id === config.channels.tos
+  static userAcceptsTOS(reaction, user, client) {
+    if (reaction.message.channel.id === config.channels.tos
             && reaction._emoji.name === config.emotes.acceptTOS) {
-			reaction.message.guild.members.fetch(user.id).then(guildMember => {
-				if (guildMember.roles.cache.has(config.roles.initiate)) {
-					const initiateRole = reaction.message.guild.roles.cache.find(r => r.id === config.roles.initiate);
-					guildMember.roles.remove(initiateRole);
-					const memberRole = reaction.message.guild.roles.cache.find(r => r.id === config.roles.member);
-					guildMember.roles.add(memberRole);
-					// Send welcome message to the Citadel
-					client.channels.cache.get(config.channels.citadel).send(`🎉 **A new member has arrived!** 🎉\nWelcome to Knights of Academia <@${user.id}>! <@${config.roles.welcome}> give them a warm welcome!`)
-						.then(message => {
-							message.react(config.emotes.wave);
-						});
-				}
-				return user.send(`**Welcome to KOA!** :blush:
+      reaction.message.guild.members.fetch(user.id).then((guildMember) => {
+        if (guildMember.roles.cache.has(config.roles.initiate)) {
+          const initiateRole = reaction.message.guild.roles.cache.find((r) => r.id === config.roles.initiate);
+          guildMember.roles.remove(initiateRole);
+          const memberRole = reaction.message.guild.roles.cache.find((r) => r.id === config.roles.member);
+          guildMember.roles.add(memberRole);
+          // Send welcome message to the Citadel
+          client.channels.cache.get(config.channels.citadel).send(`🎉 **A new member has arrived!** 🎉\nWelcome to Knights of Academia <@${user.id}>! <@${config.roles.welcome}> give them a warm welcome!`)
+            .then((message) => {
+              message.react(config.emotes.wave);
+            });
+        }
+        return user.send(`**Welcome to KOA!** :blush:
 
 To begin, say hello in <#382364344731828226> and read up in <#384040181763670026> for our step by step guide.
 Lastly, to learn more visit us any time at: <https://knightsofacademia.org>.
@@ -34,10 +34,9 @@ Here are a few things you can ask me:
 -!clans/!apply
 -!invite [koa][koai][jesters]
 -!choose [choice 1],[choice 2]`);
-			});
-		}
-	}
-
+      });
+    }
+  }
 }
 
 module.exports = tosActions;

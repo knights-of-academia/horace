@@ -1,16 +1,15 @@
 const clans = require('./clans.js');
 const messageStub = require('../stub/messageStub');
 
-
 test('Sends correct clans message to channel', async () => {
-	// Arrange
-	const message = new messageStub();
+  // Arrange
+  const message = new messageStub();
 
-	// Act
-	const responseMessage = await clans.execute(null, message);
+  // Act
+  const responseMessage = await clans.execute(null, message);
 
-	// Assert
-	const expectedResponse = `⚔ Here is our list of KOA Clans! ⚔
+  // Assert
+  const expectedResponse = `⚔ Here is our list of KOA Clans! ⚔
 
 	🔸 **The Round Table**: All things Hard Mode by **bendre19997**#9332
 	🔸 **Bards of Academia**: All things music by *Position Open!*
@@ -21,5 +20,5 @@ test('Sends correct clans message to channel', async () => {
 	🔸 **The Students**: Academics & all things Education by **colin**#3523
 	🔸 **The Wolf Pack**: On the move for Health by **QueenWolf**#5509`;
 
-	expect(responseMessage).toBe(expectedResponse);
+  expect(responseMessage).toBe(expectedResponse);
 });

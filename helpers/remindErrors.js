@@ -1,32 +1,32 @@
 class ValidationError extends Error {
-	constructor(message) {
-		super(message);
-		this.name = 'ValidationError';
-	}
+  constructor(message) {
+    super(message);
+    this.name = 'ValidationError';
+  }
 }
 
 class ReminderDeniedValidationError extends ValidationError {
-	constructor(message, toSend) {
-		super(message);
-		this.name = 'ReminderDeniedValidationError';
-		this.toSend = toSend;
-	}
+  constructor(message, toSend) {
+    super(message);
+    this.name = 'ReminderDeniedValidationError';
+    this.toSend = toSend;
+  }
 }
 
 class MonthLengthValidationError extends ValidationError {
-	constructor(message, month, days) {
-		super(message);
-		this.name = 'MonthLengthValidationError';
-		this.month = month;
-		this.days = days;
-	}
+  constructor(message, month, days) {
+    super(message);
+    this.name = 'MonthLengthValidationError';
+    this.month = month;
+    this.days = days;
+  }
 }
 
 class NonmatchingInputValidationError extends Error {
-	constructor(message) {
-		super(message);
-		this.name = 'NonmatchingInputValidationError';
-	}
+  constructor(message) {
+    super(message);
+    this.name = 'NonmatchingInputValidationError';
+  }
 }
 
 module.exports.ValidationError = ValidationError;

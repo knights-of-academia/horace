@@ -1,16 +1,16 @@
 const Sequelize = require('sequelize');
 const connect = require('./connect.js');
 
-const sequelize = connect.sequelize;
+const { sequelize } = connect;
 
-//A table representing the keyword inputs
+// A table representing the keyword inputs
 module.exports = sequelize.define('SearchWords', {
-	term: {
-		type: Sequelize.STRING,
-		allowNull: false
-	},
-	keyword: {
-		type: Sequelize.STRING,
-		allowNull: false
-	}
+  term: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  keyword: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
 });

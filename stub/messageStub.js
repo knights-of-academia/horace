@@ -1,10 +1,10 @@
 module.exports = class messageStub {
-	constructor() {
-		this.channel = {
-			send: async function (message) { return Promise.resolve(message); }
-		};
-		this.author = {
-			send: async function (message) { return Promise.resolve(message); }
-		};
-	}
+  constructor() {
+    this.channel = {
+      async send(message) { return Promise.resolve(message); },
+    };
+    this.author = {
+      async send(message) { return Promise.resolve(message); },
+    };
+  }
 };
