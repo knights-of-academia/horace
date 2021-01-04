@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "lint": "eslint --ignore-path .gitignore . --fix",
+    "lint-nofix": "eslint --ignore-path .gitignore .",
     "start": "node app.js",
     "test": "jest",
     "coverage": "jest --coverage --collectCoverageFrom=commands/**/*.{js,jsx}"
