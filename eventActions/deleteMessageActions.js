@@ -7,7 +7,7 @@ class deleteMessageActions {
 
     const isCommand = message.content.startsWith(config.prefix);
 
-    const isStaffAccountability = message.channel.id == config.channels.staffaccountability;
+    const isStaffAccountability = message.channel.id === config.channels.staffaccountability;
 
     if (!(isHoraceBot || isCommand || isStaffAccountability)) {
       const embed = new Discord.MessageEmbed()

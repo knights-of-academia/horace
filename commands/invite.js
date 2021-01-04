@@ -9,7 +9,7 @@ module.exports.execute = async (client, message, args) => {
       inviteText = 'Invite to the Knights of Academia: International server: https://discord.gg/Fuvabsm';
     }
   }
-  return await message.channel.send(inviteText);
+  return message.channel.send(inviteText);
 };
 
 module.exports.config = {

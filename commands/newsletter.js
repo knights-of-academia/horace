@@ -5,7 +5,7 @@ const parser = new Parser();
 module.exports.execute = async (client, message) => {
   const feed = await parser.parseURL('https://knightsofacademia.org/category/announcements/feed');
 
-  return await message.channel.send(
+  return message.channel.send(
     `The newest newsletter from ${(feed.items[0].isoDate).split('T')[0]} can be found here: ${feed.items[0].link}.`,
   );
 };

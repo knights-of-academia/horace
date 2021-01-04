@@ -10,6 +10,7 @@ function isMessagePinnedAtAll(messageToCheck, setOfPinnedMessages) {
     }
     msgVal = fetchedMessagesIterator.next().value;
   }
+  return null;
 }
 
 class accountabilityActions {
@@ -17,8 +18,9 @@ class accountabilityActions {
     /* Structure taken from tosActions.js for sake of consistency */
 
     // Check if we are in the accountability channel and the reaction emote is the proper emote
-    if (reaction.message.channel.id == config.channels.accountability
-            && reaction._emoji.name == config.emotes.pinMessage) {
+    if (reaction.message.channel.id === config.channels.accountability
+            // eslint-disable-next-line no-underscore-dangle
+            && reaction._emoji.name === config.emotes.pinMessage) {
       const sentMessage = reaction.message;
       const currentChannel = sentMessage.channel;
 
@@ -31,7 +33,7 @@ class accountabilityActions {
       });
 
       // Make sure a user is pinning their own message
-      if (user.id != sentMessage.author.id) return;
+      if (user.id !== sentMessage.author.id) return;
 
       await currentChannel.fetchPinnedMessages().then((fetchedPins) => {
         // If the pushpin reaction from the bot does not exist, pin the message
@@ -40,14 +42,14 @@ class accountabilityActions {
           let existingMessageCount = 0;
 
           // Get the pinned messages within a channel
-          if (isMessagePinnedAtAll(sentMessage, fetchedPins) == true) return;
+          if (isMessagePinnedAtAll(sentMessage, fetchedPins) === true) return;
           // Check to see if they already have pinned messages
           const pinMsgIterator = fetchedPins.values();
 
-          for (let i = 0; i < fetchedPins.size; i++) {
+          for (let i = 0; i < fetchedPins.size; i += 1) {
             const msgVal = pinMsgIterator.next().value;
             if (msgVal.author.id === user.id) {
-              existingMessageCount++;
+              existingMessageCount += 1;
             }
           }
 
@@ -81,9 +83,9 @@ class accountabilityActions {
         // Check to see if they already have pinned messages
         const pinMsgIterator = fetchedPins.values();
 
-        for (let i = 0; i < fetchedPins.size; i++) {
+        for (let i = 0; i < fetchedPins.size; i += 1) {
           const msgVal = pinMsgIterator.next();
-          if (msgVal.value.author.id == user.id) {
+          if (msgVal.value.author.id === user.id) {
             hasPinnedMessage = true;
             msgVal.value.unpin();
             break;
@@ -103,13 +105,14 @@ class accountabilityActions {
   static async userUnpinsAllMessages(message, user) {
     if (message.channel.id === config.channels.accountability) {
       await message.channel.fetchPinnedMessages().then((fetchedPins) => {
-        // We're essentially doing the same thing as unpin message, but we don't stop upon finding their most recent pin.
+        // We're essentially doing the same thing as unpin message,
+        // but we don't stop upon finding their most recent pin.
         const pinMsgIterator = fetchedPins.values();
         let hasMessages = false;
 
-        for (let i = 0; i < fetchedPins.size; i++) {
+        for (let i = 0; i < fetchedPins.size; i += 1) {
           const msgVal = pinMsgIterator.next();
-          if (msgVal.value.author.id == user.id) {
+          if (msgVal.value.author.id === user.id) {
             hasMessages = true;
             msgVal.value.unpin();
           }
@@ -126,13 +129,13 @@ class accountabilityActions {
 
   // Add a random reaction to a message sent
   static async addReaction(client, message) {
-    if (message.channel.id != config.channels.accountability) return;
+    if (message.channel.id !== config.channels.accountability) return;
     if (message.content.toLowerCase().includes('!unpin')) return;
     // Define an array of emojis to pull from
-    const random_emotes = config.emotes.accountability_emotes_array;
+    const randomEmotes = config.emotes.accountability_emotes_array;
 
     // Flag emotes
-    const { length } = random_emotes;
+    const { length } = randomEmotes;
     const flags = [
       { language: 'french', emote: '🇫🇷' },
       { language: 'spanish', emote: '🇪🇸' },
@@ -151,9 +154,10 @@ class accountabilityActions {
 
     // Check for emotes
     if (message.content.toLowerCase().includes(':yes:') || message.content.toLowerCase().includes(':v_:') || message.content.toLowerCase().includes(':white_check_mark:')) {
-      // Pull a random reaction from the common emotes for and add to post (personally I like the separation of variables, let me know if that's not preferred style)
+      // Pull a random reaction from the common emotes for and add to post
+      // (personally I like the separation of variables, let me know if that's not preferred style)
       const rand = Math.floor(Math.random() * length);
-      const selectedEmote = random_emotes[rand];
+      const selectedEmote = randomEmotes[rand];
       message.react(selectedEmote.toString());
     }
     if (message.content.toLowerCase().includes(' pom')) {

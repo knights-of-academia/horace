@@ -1,3 +1,4 @@
+const { Consola } = require('consola');
 const config = require('../config.json');
 
 const trackerObject = {
@@ -13,7 +14,7 @@ class CheckChainMessage {
       trackerObject.msgCounts[channelId] = 1;
     });
 
-    console.log('Channels have been added to track chain messages!');
+    Consola.log('Channels have been added to track chain messages!');
   }
 
   // Helper method to reset a chain
@@ -22,15 +23,15 @@ class CheckChainMessage {
     trackerObject.msgCounts[channelId] = 1;
   }
 
-  // Helper method to run the comparison if enough chains have been reached. Horace will randomly chain after 3, 4, or 5 messages.
+  // Helper method to run the comparison if enough chains have been reached.
+  // Horace will randomly chain after 3, 4, or 5 messages.
   static async makeChainMessage(channelId, channelInst) {
     // Send a message randomly on message number 3 or 4
     const rand = Math.round(Math.random(3) + 3);
-    if (trackerObject.msgCounts[channelId] == rand) {
+    if (trackerObject.msgCounts[channelId] === rand) {
       channelInst.send(`${trackerObject.msgContents[channelId]}`);
-    }
-    // Worst case, send it on 6
-    else if (trackerObject.msgCounts[channelId] == 6) {
+    } else if (trackerObject.msgCounts[channelId] === 6) {
+      // Worst case, send it on 6
       channelInst.send(`${trackerObject.msgContents[channelId]}`);
     }
   }

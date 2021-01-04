@@ -3,11 +3,11 @@ module.exports.execute = async (client, message, args) => {
   const query = args.join('+');
 
   if (searchTerm.length === 0) {
-    return await message.channel.send(
+    return message.channel.send(
       '❌ Please specify a search term.',
     );
   }
-  return await message.channel.send(
+  return message.channel.send(
     `Search for ${searchTerm}: https://www.google.com/search?q=${query}`,
   );
 };

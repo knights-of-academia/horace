@@ -46,6 +46,7 @@ function parseDateForListing(date) {
   const whichDay = date.getDate();
 
   let whichMonth = '';
+  // eslint-disable-next-line no-restricted-syntax
   for (const month in monthsData) {
     if (monthsData[month].number === date.getMonth()) {
       whichMonth = monthsData[month].fullname;

@@ -4,7 +4,7 @@ module.exports.execute = async (client, message, args) => {
   const searchTerm = args.join(' ').toLowerCase();
 
   if (searchTerm.length === 0) {
-    return await message.channel.send(
+    return message.channel.send(
       '❌ Please specify the clan you wish to apply for.',
     );
   }
@@ -12,7 +12,7 @@ module.exports.execute = async (client, message, args) => {
   const clan = clans.find((c) => c.names.includes(searchTerm));
 
   if (!clan) {
-    return await message.channel.send(
+    return message.channel.send(
       `❌ The clan \`${searchTerm}\` couldn't be found.`,
     );
   }
@@ -21,7 +21,7 @@ module.exports.execute = async (client, message, args) => {
 *Average Response Time: 24 hours or less*
 ${clan.formUrl}`;
 
-  return await message.channel.send(response);
+  return message.channel.send(response);
 };
 
 module.exports.config = {

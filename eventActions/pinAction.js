@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const config = require('../config.json');
 
 class pinAction {
@@ -8,12 +9,12 @@ class pinAction {
     // Server-wide pin feature
     const { pinLimit } = config;
     if (reaction._emoji.name === config.emotes.pinMessage && reaction.count >= pinLimit) {
-      return reaction.message.pin();
+      await reaction.message.pin();
     } if (reaction._emoji.name === config.emotes.pinMessage
-			&& reaction.message.pinned
-			&& reaction.message < pinLimit) {
+      && reaction.message.pinned
+      && reaction.message < pinLimit) {
       reaction.message.channel.send('Your message was successfully unpinned');
-      return reaction.message.unpin();
+      await reaction.message.unpin();
     }
   }
 }

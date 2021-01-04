@@ -1,3 +1,5 @@
+// TODO: these need to be separated into multiple files
+/* eslint-disable max-classes-per-file */
 class ValidationError extends Error {
   constructor(message) {
     super(message);

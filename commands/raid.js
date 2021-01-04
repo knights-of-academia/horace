@@ -1,4 +1,4 @@
-module.exports.execute = async (client, message) => await message.channel.send(
+module.exports.execute = async (client, message) => message.channel.send(
   `**RAAAAAAAAAAAAAAAAAAAID⚔** with ${message.author}\nhttps://cuckoo.team/koa`,
 );
 

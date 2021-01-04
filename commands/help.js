@@ -1,9 +1,16 @@
-const fs = require('fs');
+// TODO: this file really sucks...
+
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-shadow */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-param-reassign */
+const { Consola } = require('consola');
 const Discord = require('discord.js');
+const config = require('../config.json');
 
 let prefix;
-if (fs.existsSync('../config.json')) {
-  prefix = require('../config.json').prefix;
+if (config) {
+  prefix = config.prefix;
 } else {
   prefix = '!';
 }
@@ -23,10 +30,10 @@ module.exports.execute = async (client, message, args) => {
     try {
       message.author.send(helpMessage);
     } catch (err) {
-      console.log(err);
+      Consola.log(err);
     }
-    return await message.channel.send('I have sent you a private message with the command list.').catch((err) => {
-      console.error(err);
+    return message.channel.send('I have sent you a private message with the command list.').catch((err) => {
+      Consola.error(err);
     });
   } if (args.length === 1) {
     const command = commands.find((command) => command.config.name === args[0].toLowerCase()
@@ -44,7 +51,7 @@ module.exports.execute = async (client, message, args) => {
       try {
         message.channel.send(helpMessage);
       } catch (err) {
-        console.log(err);
+        Consola.log(err);
       }
     } else {
       commands.forEach((command) => {
@@ -54,6 +61,7 @@ module.exports.execute = async (client, message, args) => {
       return didYouMean(commandNames, args[0].toLowerCase(), message);
     }
   }
+  return null;
 };
 
 async function didYouMean(commands, search, message) {
@@ -72,39 +80,39 @@ async function didYouMean(commands, search, message) {
       for (const string of str) {
         arr.push(string.split(''));
       }
-      for (let i = 0; i < arr.length; i++) {
+      for (let i = 0; i < arr.length; i += 1) {
         score[i] = 0;
-        for (let j = 0; j < arr[i].length; j++) {
+        for (let j = 0; j < arr[i].length; j += 1) {
           if (search.split('')[j] === arr[i][j]) {
-            score[i]++;
+            score[i] += 1;
           }
         }
       }
-      return await message.channel.send(`Did you mean \`${prefix}help ${str[score.indexOf(Math.max(...score))]}\`?`).catch((err) => console.log(err));
+      return message.channel.send(`Did you mean \`${prefix}help ${str[score.indexOf(Math.max(...score))]}\`?`).catch((err) => Consola.log(err));
     }
-    return await message.channel.send(`Did you mean \`${prefix}help ${str[0]}\`?`).catch((err) => console.log(err));
+    return message.channel.send(`Did you mean \`${prefix}help ${str[0]}\`?`).catch((err) => Consola.log(err));
   }
+  return null;
 }
 
 function levenshtein(searchTerm, commandName) {
   if (searchTerm.length === 0) return commandName.length;
   if (commandName.length === 0) return searchTerm.length;
-  let tmp; let i; let j; let previous; let val; let
-    row;
+  let tmp; let i; let j; let previous; let val;
   if (searchTerm.length > commandName.length) {
     tmp = searchTerm;
     searchTerm = commandName;
     commandName = tmp;
   }
 
-  row = Array(searchTerm.length + 1);
-  for (i = 0; i <= searchTerm.length; i++) {
+  const row = Array(searchTerm.length + 1);
+  for (i = 0; i <= searchTerm.length; i += 1) {
     row[i] = i;
   }
 
-  for (i = 1; i <= commandName.length; i++) {
+  for (i = 1; i <= commandName.length; i += 1) {
     previous = i;
-    for (j = 1; j <= searchTerm.length; j++) {
+    for (j = 1; j <= searchTerm.length; j += 1) {
       if (commandName[i - 1] === searchTerm[j - 1]) {
         val = row[j - 1];
       } else {

@@ -1,8 +1,10 @@
+const { Consola } = require('consola');
 const Discord = require('discord.js');
 const config = require('../config.json');
 
 class bookmarkActions {
   static async bookmarkMessage(client, user, reaction) {
+    // eslint-disable-next-line no-underscore-dangle
     if (reaction._emoji.name === config.emotes.bookmark) {
       const workingMessage = reaction.message;
       const swordsEmote = '⚔';
@@ -15,6 +17,7 @@ class bookmarkActions {
         .addField('Channel', workingMessage.channel);
       const messageChunks = workingMessage.content.match(/[\s\S]{1,1024}/g);
 
+      // eslint-disable-next-line no-restricted-syntax
       for (const chunk of messageChunks) {
         bookmarkEmbed.addField('Full Message', chunk);
       }
@@ -22,7 +25,7 @@ class bookmarkActions {
       // Add link to attachment
       if (workingMessage.attachments.array().length > 0) {
         const attchmnt = workingMessage.attachments.array()[0].url;
-        console.log(attchmnt);
+        Consola.log(attchmnt);
         bookmarkEmbed.addField('Attachment', attchmnt)
           .setImage(attchmnt);
       }

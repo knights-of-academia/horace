@@ -1,4 +1,6 @@
 const Discord = require('discord.js');
+const { Consola } = require('consola');
+
 const Highlights = require('../databaseFiles/highlightsTable.js');
 const config = require('../config.json');
 
@@ -8,23 +10,23 @@ class highlightActions {
     // Ensure commands aren't caught
     const cmdPrefix = config.prefix;
     if (message.content.substring(0, cmdPrefix.length) === cmdPrefix) return;
-    if (config.forbiddenHighlightChannels.includes(message.channel.id)) return; // Ensure people can't "spy" on channels
+    // Ensure people can't "spy" on channels
+    if (config.forbiddenHighlightChannels.includes(message.channel.id)) return;
     // For every phrase in the table
     Highlights.findAll({
       attributes: ['phrase', 'users'],
     }).then((result) => {
-      for (let i = 0; i < result.length; i++) {
+      for (let i = 0; i < result.length; i += 1) {
         const currentPhrase = result[i].phrase;
         const currentId = result[i].users;
         let contains = false;
         // Check if the message and the phrase are the same
-        if (message.content.toLowerCase() == currentPhrase.toLowerCase()) {
+        if (message.content.toLowerCase() === currentPhrase.toLowerCase()) {
           contains = true;
-          console.log('its the same');
-        }
-        // Check if the message contains the phrase, allowing for start and end of messages
-        else if (message.content.toLowerCase().includes(` ${currentPhrase} `)) {
-          console.log('surrounded by spaces');
+          Consola.log('its the same');
+        } else if (message.content.toLowerCase().includes(` ${currentPhrase} `)) {
+          // Check if the message contains the phrase, allowing for start and end of messages
+          Consola.log('surrounded by spaces');
           contains = true;
         } else if (message.content.toLowerCase().includes(`${currentPhrase} `) || message.content.toLowerCase().includes(` ${currentPhrase}`)) {
           // Ensure the message isn't part of another phrase
@@ -32,38 +34,32 @@ class highlightActions {
           const indexOfPhraseEnd = indexOfPhraseStart + currentPhrase.length - 1;
           // Go ahead and check if it is a part of a word at all or has surrounding punctuation
           const punctuation = [' ', '.', ',', '?', '!', ':', ';', ''];
-          console.log(indexOfPhraseEnd);
-          console.log(message.content.length);
+          Consola.log(indexOfPhraseEnd);
+          Consola.log(message.content.length);
           // If it's at the start, check for containment within a word (i.e. may in mayflower)
-          if (indexOfPhraseStart == 0) {
-            if (message.content.charAt(indexOfPhraseEnd + 1) == ' ') {
+          if (indexOfPhraseStart === 0) {
+            if (message.content.charAt(indexOfPhraseEnd + 1) === ' ') {
               contains = true;
             }
-          }
-          // If it's at the end, check for containment within a word
-          else if (indexOfPhraseEnd == message.content.length - 1) {
-            if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
+          } else if (indexOfPhraseEnd === message.content.length - 1) {
+            // If it's at the end, check for containment within a word
+            if (message.content.charAt(indexOfPhraseStart - 1) === ' ') {
               contains = true;
             }
-          }
-
-          // Check if within word with space before (-1 because we already checked for the beginning of a message)
-          else if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
+          } else if (message.content.charAt(indexOfPhraseStart - 1) === ' ') {
+            // Check if within word with space before
+            // (-1 because we already checked for the beginning of a message)
             // Separated from below check because of potential following punctuation
             if (punctuation.includes(message.content.charAt(indexOfPhraseEnd + 1))) {
               contains = true;
             }
-          }
-
-          // Check if within word with space after, including a check for punctuation (which is why it's separate from above)
-          else if (message.content.charAt(indexOfPhraseEnd + 1) == ' ') {
-            if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
+          } else if (message.content.charAt(indexOfPhraseEnd + 1) === ' ') {
+            // Check if within word with space after, including a check for punctuation
+            // (which is why it's separate from above)
+            if (message.content.charAt(indexOfPhraseStart - 1) === ' ') {
               contains = true;
             }
-          }
-
-          // Check for basic punctuation
-          else if (!punctuation.includes(message.content.charAt(indexOfPhraseEnd + 1))) {
+          } else if (!punctuation.includes(message.content.charAt(indexOfPhraseEnd + 1))) {
             contains = true;
           }
         }

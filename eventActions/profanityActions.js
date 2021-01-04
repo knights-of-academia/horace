@@ -21,6 +21,7 @@ class profanityActions {
         .get(config.channels.moderation)
         .send(embedMessage);
     }
+    return null;
   }
 }
 

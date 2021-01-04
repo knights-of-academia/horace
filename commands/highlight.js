@@ -1,11 +1,13 @@
 // Get the Highlights Table stored in the SQLite database
 const Discord = require('discord.js');
+const { Consola } = require('consola');
+
 const Highlights = require('../databaseFiles/highlightsTable.js');
 const config = require('../config.json');
 
 // Error handler
 const errHandler = (err) => {
-  console.error('Highlights sequelize error: ', err);
+  Consola.error('Highlights sequelize error: ', err);
 };
 
 module.exports.execute = async (client, message, args) => {
@@ -24,7 +26,7 @@ module.exports.execute = async (client, message, args) => {
       .addField('Add a highlight', '`!highlight add <word/phrase>`')
       .addField('Remove a highlight', '`!highlight remove <word/phrase>`')
       .addField('List your highlights', '`!highlight list`');
-    return await user.send(highlightsHelp);
+    return user.send(highlightsHelp);
   }
   if (keywords.length > 1) {
     // Ensure the table exists if not already -- Is there a better place for this?
@@ -38,7 +40,7 @@ module.exports.execute = async (client, message, args) => {
           phrase: keywords,
         },
       }).then((count) => {
-        if (count != 0) {
+        if (count !== 0) {
           user.send(`Attempted to add **\`${keywords}\`** to your highlights, but it's already there!`);
         } else {
           exists = false;
@@ -70,7 +72,7 @@ module.exports.execute = async (client, message, args) => {
           users: userID,
         },
       }).then((result) => {
-        if (result == 0) {
+        if (result === 0) {
           // TODO: If the highlight doesn't exist, say so.
           user.send(`You tried to remove a highlight, \`${keywords}\`, but it doesn't seem to exist.`);
           cont = false;
@@ -78,7 +80,7 @@ module.exports.execute = async (client, message, args) => {
       });
 
       if (!cont) {
-        return;
+        return null;
       }
       // Confirm highlight addition
       const highlightsHelp = new Discord.MessageEmbed()
@@ -87,20 +89,20 @@ module.exports.execute = async (client, message, args) => {
         .setDescription('I have removed the following highlight as requested!')
         .addField('Recently removed highlight', `${keywords}`);
       // Maybe send them the remaining highlights (if any)?
-      return await user.send(highlightsHelp);
+      return user.send(highlightsHelp);
     } else if (cmd === 'list') {
       // Fetch all of the keywords where the user is the user
-      const listOfWords = new Array();
+      const listOfWords = [];
       await Highlights.findAll({
         where: {
           users: userID,
         },
       }).then((result) => {
-        if (result.length == 0) {
+        if (result.length === 0) {
           user.send('_You don\'t have any highlights._ Add some with `!highlights add <keywords>`');
           return;
         }
-        for (let i = 0; i < result.length; i++) {
+        for (let i = 0; i < result.length; i += 1) {
           listOfWords.push(result[i].phrase);
         }
 
@@ -114,9 +116,10 @@ module.exports.execute = async (client, message, args) => {
         user.send(highlightsHelp);
       });
     } else { // None of the correct commands were used
-      return await user.send('Please use `!highlight add <word/phrase>` to add a new highlight. (case insensitive)');
+      return user.send('Please use `!highlight add <word/phrase>` to add a new highlight. (case insensitive)');
     }
   }
+  return null;
 };
 
 module.exports.config = {

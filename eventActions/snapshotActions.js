@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 const Discord = require('discord.js');
 const config = require('../config.json');
 

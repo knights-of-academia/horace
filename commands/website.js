@@ -1,4 +1,4 @@
-module.exports.execute = async (client, message) => await message.channel.send('⚔️ https://knightsofacademia.org/ ⚔️');
+module.exports.execute = async (client, message) => message.channel.send('⚔️ https://knightsofacademia.org/ ⚔️');
 
 module.exports.config = {
   name: 'website',
