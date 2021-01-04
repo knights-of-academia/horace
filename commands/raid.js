@@ -1,6 +1,8 @@
-module.exports.execute = async (client, message) => message.channel.send(
-  `**RAAAAAAAAAAAAAAAAAAAID⚔** with ${message.author}\nhttps://cuckoo.team/koa`,
-);
+module.exports.execute = async (client, message) => {
+	return message.channel.send(
+		'**RAAAAAAAAAAAAAAAAAAAID⚔** with ' + `<@${message.author.id}>` + '\nhttps://cuckoo.team/koa',
+	);
+};
 
 module.exports.config = {
   name: 'raid',
