@@ -3,11 +3,14 @@ const Discord = require('discord.js');
 const db = require('quick.db');
 class profanityActions {
 
-
-
 	static async checkForProfanity(client, message) {
 		const bannedWords = await db.get(`bannedWords-${message.guild.id}`);
-		if (bannedWords.some((word) => message.content.includes(word))) {
+		
+		if (!bannedWords) {
+			console.log("Error: No banned words found in database.");
+			return;
+		}
+		else if (bannedWords.some((word) => message.content.includes(word))) {
 			const embedMessage = new Discord.MessageEmbed()
 				.setColor('#ff0000')
 				.setTitle('🚩 Warning: Profanity detected 🚩')
