@@ -6,7 +6,12 @@ class profanityActions {
 	static async checkForProfanity(client, message) {
 		const bannedWords = await db.get(`bannedWords-${message.guild.id}`);
 		
-		if (!bannedWords) {
+		// check that moderation channelID is valid before attempting profanity check
+		if (client.channels.cache.get(config.channels.moderation) === undefined) {
+			console.log("Error! Moderation Channel ID in Config in likely invalid. Please verify!");
+			return;
+		}
+		else if (!bannedWords) { // ensure bannedWords is populated
 			console.log("Error: No banned words found in database.");
 			return;
 		}
