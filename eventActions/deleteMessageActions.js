@@ -26,7 +26,7 @@ class deleteMessageActions {
 			}
 			
 
-			client.channels.cache.get(config.channels.moderation).send(embed);
+			client.channels.cache.get(config.channels.messagelogs).send(embed);
 			
 		}
 	}

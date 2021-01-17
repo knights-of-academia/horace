@@ -27,7 +27,7 @@ module.exports = async (client, message) => {
 
 		if (commandfile) {
 			commandfile.execute(client, message, args).then(() => {
-				message.delete(1500);
+				message.delete({timeout: 1500});
 			}); // Execute found command
 		}
 	}
