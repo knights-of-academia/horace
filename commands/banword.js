@@ -9,7 +9,7 @@ module.exports.execute = async (client, message, args) => {
 			return;
 		}
 
-		const returnMessage = await BanWordUtils.addWordToBannedWordTable(args[0], message.member.id);
+		const returnMessage = await BanWordUtils.addWordToBannedWordTable(args[0].toLowerCase(), message.member.id);
 		message.channel.send(returnMessage);
 		return;
 	}
