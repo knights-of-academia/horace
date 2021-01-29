@@ -1,22 +1,25 @@
-const db = require('quick.db');
+const BanWordUtils = require('../utils/banwordUtils.js');
 const config = require('../config.json');
 
 module.exports.execute = async (client, message, args) => {
-	if(message.member.roles.has(config.roles.guardian) | message.member.roles.has(config.roles.helper)) {
-		if(!args[0]) {
-			return message.channel.send('Please enter a word to ban!');
+	if (message.member.roles.cache.has(config.roles.guardian)
+  || message.member.roles.cache.has(config.roles.helper)) {
+		if (!args[0]) {
+			message.channel.send('Please enter a word to ban!');
+			return;
 		}
-		db.push(`bannedWords-${message.guild.id}`, args[0]);
-		return message.channel.send(`Success! Added ${args[0]} to the blocked word list!`);
+
+		const returnMessage = await BanWordUtils.addWordToBannedWordTable(args[0], message.member.id);
+		message.channel.send(returnMessage);
+		return;
 	}
-	else {
-		message.reply('Only moderators can run this command!');
-	}
+
+	message.reply('Only moderators can run this command!');
 };
 
 module.exports.config = {
 	name: 'banword',
 	aliases: ['blockword'],
 	description: 'Bans a specific word.',
-	usage: ['banword word']
+	usage: ['banword word'],
 };
