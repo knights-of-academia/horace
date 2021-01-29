@@ -37,7 +37,7 @@ module.exports = async (client, message) => {
 	// Handle greetings
 	citadelActions.greetMorningOrNight(client, message);
 	// Handle holiday reactions
-  	citadelActions.holidayReacts(client, message);
+	citadelActions.holidayReacts(client, message);
 	// Handle hall of conquests
 	hocActions.reactWithLetsGo(client, message);
 	// Handle snapshots

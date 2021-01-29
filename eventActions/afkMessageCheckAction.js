@@ -33,6 +33,7 @@ class afkMessageCheckAction {
 				}
 			}
 		};
+		
 		const noLongerAFKMessage = new Discord.MessageEmbed()
 			.setTitle(`You are currently AFK, ${message.member.nickname ? message.member.nickname : message.author.username}`)
 			.addField('Are you back?', 'Go to <#415261994887938048> and run `!afk` again to turn off AFK!',true)

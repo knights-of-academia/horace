@@ -1,4 +1,5 @@
 const config = require('../config.json');
+const fs = require('fs');
 
 class cotwActions {
 
@@ -87,11 +88,11 @@ class cotwActions {
 				store.set('challengeName', challengeName);
 				const emote = config.emotes.cotwReflection;
 				message.react(emote);
-				let check = await confirmUpdate(message)
+				let check = await confirmUpdate(message);
 				if (check == null) {
-					message.react(config.emotes.no)
+					message.react(config.emotes.no);
 					return message.channel.send(
-						`An error occured and the COTW was not updated.`
+						'An error occured and the COTW was not updated.'
 					);
 				}
 				else {
@@ -100,21 +101,22 @@ class cotwActions {
 					);
 				}
 			}
+
 			async function confirmUpdate(message) {
-				let path = process.cwd() + '/data/cotw.json'
-				const stats = fs.statSync(path)
-				let mtime = stats.mtime
-				let lastModified = new Date(mtime)
-				console.log(lastModified)
-				let currentDate = new Date()
-				console.log(currentDate)
-				let diff = currentDate.getTime() - lastModified.getTime()
-				let minute = 1000 * 60
+				let path = process.cwd() + '/data/cotw.json';
+				const stats = fs.statSync(path);
+				let mtime = stats.mtime;
+				let lastModified = new Date(mtime);
+				console.log(lastModified);
+				let currentDate = new Date();
+				console.log(currentDate);
+				let diff = currentDate.getTime() - lastModified.getTime();
+				let minute = 1000 * 60;
 				if (diff <= minute) {
-					return message.react(config.emotes.yes2)
+					return message.react(config.emotes.yes2);
 				}
 				else {
-					return null
+					return null;
 				}
 			}
 		}
