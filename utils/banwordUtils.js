@@ -27,6 +27,16 @@ const getBannedWords = async () => {
 	return finalResult;
 };
 
+const getBannedWordsAndAuthors = async() => {
+	await BannedWord.sync();
+	const queryResult = await BannedWord.findAll({
+		attributes: ['word', 'userID'],
+		raw: true,
+	});
+
+	return queryResult;
+};
+
 const addWordToBannedWordTable = async (word, userID) => {
 	const isAlreadyBanned = await isBanned(word);
 
@@ -66,3 +76,4 @@ module.exports.addWordToBannedWordTable = addWordToBannedWordTable;
 module.exports.deleteWord = deleteWord;
 module.exports.isBanned = isBanned;
 module.exports.getBannedWords = getBannedWords;
+module.exports.getBannedWordsAndAuthors = getBannedWordsAndAuthors;
