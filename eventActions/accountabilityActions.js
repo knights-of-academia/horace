@@ -111,7 +111,7 @@ class accountabilityActions {
 	// Removes all pinned messages by a user
 	static async userUnpinsAllMessages(message, user){
 		if(message.channel.id === config.channels.accountability) {
-			await message.channel.fetchPinnedMessages().then(fetchedPins => {
+			await message.channel.messages.fetchPinned().then(fetchedPins => {
 
 				// We're essentially doing the same thing as unpin message, but we don't stop upon finding their most recent pin.
 				const pinMsgIterator = fetchedPins.values();
