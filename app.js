@@ -5,8 +5,10 @@ const config = require('./config.json');
 const connect = require('./databaseFiles/connect.js');
 const remind = require('./commands/remind.js');
 
-// const client = new Discord.Client({ ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS']}});
-const client = new Discord.Client({ ws: { intents: new Discord.Intents(Discord.Intents.ALL) }});
+const client = new Discord.Client({
+	partials: ["REACTION", "MESSAGE"],
+	ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS']}
+});
 
 fs.readdir('./events/', (err, files) => {
 	if (err) return console.error(err);
