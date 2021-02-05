@@ -143,18 +143,14 @@ module.exports.execute = async (client, message, args) => {
 		// Ensure the table exists if not already -- Is there a better place for this?
 		Highlights.sync();
 
-		//TODO: predicting that there is no need for return statements, to be tested and removed
 		if(cmd === 'add') {
-			addHighlight(keywords, user);
-			return;
+			return await addHighlight(keywords, user);
 		}
 		else if (cmd === 'remove' || cmd === 'delete') {
-			removeHighlight(keywords, user);
-			return;
+			return await removeHighlight(keywords, user);
 		}
 		else if (cmd === 'list') {
-			listHighlights(user);
-			return;
+			return await listHighlights(user);
 		}
 		else { // None of the correct commands were used
 			return await user.send('Please use `!highlight add <word/phrase>` to add a new highlight. (case insensitive)');
