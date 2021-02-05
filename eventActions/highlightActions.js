@@ -14,7 +14,7 @@ class highlightActions {
 		await Highlights.sync();
 		Highlights.findAll({
 			attributes: ['phrase', 'users']
-		}).then(result => {
+		}).then(async (result) => {
 			for(let i = 0; i < result.length; i++){
 				let currentPhrase = result[i].phrase;
 				let currentId = result[i].users;
@@ -71,7 +71,7 @@ class highlightActions {
 					}
 				}
 				if(contains){
-					const user = client.users.get(currentId);
+					const user = await client.users.cache.get(currentId);
 					this.sendHighlightDM(client, user, message, currentPhrase);
 				}
 			}

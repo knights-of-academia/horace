@@ -112,7 +112,7 @@ const listHighlights = async (user) => {
 	let listOfWords = new Array();
 	await Highlights.findAll({
 		where: {
-			users: user.Id
+			users: user.id
 		}
 	}).then(result => {
 		if(result.length == 0){
