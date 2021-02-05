@@ -8,115 +8,153 @@ const errHandler = err => {
 	console.error('Highlights sequelize error: ', err);
 };
 
+const getHelpReply = () => {
+	const highlightsEmote = config.emotes.highlights;
+	const highlightsHelp = new Discord.MessageEmbed()
+		.setColor('#FFEC09')
+		.setTitle(`${highlightsEmote} Knights of Academia Highlight Help ${highlightsEmote}`)
+		.setDescription('Here are some commands to help you out with highlights!')
+		.addField('Add a highlight', '`!highlight add <word/phrase>`')
+		.addField('Remove a highlight', '`!highlight remove <word/phrase>`')
+		.addField('List your highlights', '`!highlight list`');
+	return highlightsHelp;
+};
+
+const getHiglightAdditionReplyMsg = (keywords) => {
+	const highlightsEmote = config.emotes.highlights;
+	const highlightsAddMessage = new Discord.MessageEmbed()
+		.setColor('#FFEC09')
+		.setTitle(`${highlightsEmote} Knights of Academia Highlight Addition ${highlightsEmote}`)
+		.setDescription('I have added the following highlight as requested!')
+		.addField('Recently added highlight', `${keywords}`);
+	return highlightsAddMessage;
+};
+
+const getHiglightRemovalReplyMsg = (keywords) => {
+	// Confirm highlight addition
+	const highlightsEmote = config.emotes.highlights;
+	const highlightsRemovalMsg = new Discord.MessageEmbed()
+		.setColor('#FFEC09')
+		.setTitle(`${highlightsEmote} Knights of Academia Highlight Removal ${highlightsEmote}`)
+		.setDescription('I have removed the following highlight as requested!')
+		.addField('Recently removed highlight', `${keywords}`);
+		// Maybe send them the remaining highlights (if any)?
+	return highlightsRemovalMsg;
+};
+
+const getHighlightsListReplyMsg = (listOfWords) => {
+	const highlightsEmote = config.emotes.highlights;
+	const HighlightsListReplyMsg = new Discord.MessageEmbed()
+		.setColor('#FFEC09')
+		.setTitle(`${highlightsEmote} Knights of Academia Highlight List ${highlightsEmote}`)
+		.setDescription('Here are your current highlights!')
+		.addField('Highlighted words and phrases', `${listOfWords}`);
+	return HighlightsListReplyMsg;
+};
+
+const addHighlight = async (keywords, user) => {
+	const userID = user.id;
+	// If highlight is already added, say so
+	let exists = true;
+	await Highlights.count({
+		where: {
+			phrase: keywords
+		}
+	}).then(count => {
+		if(count != 0){
+			user.send('Attempted to add **`' + keywords + '`** to your highlights, but it\'s already there!');
+			return;
+		} else {
+			exists = false;
+		}
+	});
+
+	if(!exists) {
+	// Add entry to table
+		Highlights.create({
+			phrase: keywords,
+			users: userID
+		}).catch(errHandler);
+
+		// Confirm highlight addition
+		const highlightsHelp = getHiglightAdditionReplyMsg(keywords);
+		return user.send(highlightsHelp);
+	}
+};
+
+const removeHighlight = async (keywords, user) => {
+	const userID = user.id;
+	// Remove entry
+	let exists = true;
+	await Highlights.destroy({
+		where: {
+			phrase: keywords,
+			users: userID
+		}
+	}).then(result =>{
+		if(result == 0){
+			// TODO: If the highlight doesn't exist, say so.
+			user.send('You tried to remove a highlight, `' + keywords + '`, but it doesn\'t seem to exist.');
+			exists = false;
+		}
+	});
+
+	if(!exists){
+		return;
+	}
+
+	const highlightsRemovalMsg = getHiglightRemovalReplyMsg(keywords);
+	return await user.send(highlightsRemovalMsg);
+};
+
+const listHighlights = async (user) => {
+	// Fetch all of the keywords where the user is the user
+	let listOfWords = new Array();
+	await Highlights.findAll({
+		where: {
+			users: user.Id
+		}
+	}).then(result => {
+		if(result.length == 0){
+			user.send('_You don\'t have any highlights._ Add some with `!highlights add <keywords>`');
+			return;
+		}
+		for(let i = 0; i < result.length; i++){
+			listOfWords.push(result[i].phrase);
+		}
+
+		// DM the embedded list to the user
+		const HighlightsListMsg = getHighlightsListReplyMsg(listOfWords);
+		user.send(HighlightsListMsg);
+	});
+};
+
 module.exports.execute = async (client, message, args) => {
 	const cmd = args[0]; // The command of what to do with the following phrase
 	const entirePhrase = args.join(' ');
 	const keywords = entirePhrase.substring(entirePhrase.indexOf(' ')+1).toLowerCase(); // Remove the first word, i.e. the command
 	const user = message.author;
-	const userID = user.id;
-	const highlightsEmote = config.emotes.highlights;
 
 	if(keywords.length === 0){
-		const highlightsHelp = new Discord.MessageEmbed()
-			.setColor('#FFEC09')
-			.setTitle(`${highlightsEmote} Knights of Academia Highlight Help ${highlightsEmote}`)
-			.setDescription('Here are some commands to help you out with highlights!')
-			.addField('Add a highlight', '`!highlight add <word/phrase>`')
-			.addField('Remove a highlight', '`!highlight remove <word/phrase>`')
-			.addField('List your highlights', '`!highlight list`');
+		const highlightsHelp = getHelpReply();
 		return await user.send(highlightsHelp);
 	}
 	else if (keywords.length > 1) {
 		// Ensure the table exists if not already -- Is there a better place for this?
 		Highlights.sync();
 
+		//TODO: predicting that there is no need for return statements, to be tested and removed
 		if(cmd === 'add') {
-
-			// If highlight is already added, say so
-			let exists = true;
-			await Highlights.count({
-				where: {
-					phrase: keywords
-				}
-			}).then(count => {
-				if(count != 0){
-					user.send('Attempted to add **`' + keywords + '`** to your highlights, but it\'s already there!');
-					return;
-				} else {
-					exists = false;
-				}
-			});
-
-			if(!exists) {
-			// Add entry to table
-				Highlights.create({
-					phrase: keywords,
-					users: userID
-				}).catch(errHandler);
-
-				// Confirm highlight addition
-				const highlightsHelp = new Discord.MessageEmbed()
-					.setColor('#FFEC09')
-					.setTitle(`${highlightsEmote} Knights of Academia Highlight Addition ${highlightsEmote}`)
-					.setDescription('I have added the following highlight as requested!')
-					.addField('Recently added highlight', `${keywords}`);
-				// Maybe send them the remaining highlights (if any)?
-				return user.send(highlightsHelp);
-			}
+			addHighlight(keywords, user);
+			return;
 		}
 		else if (cmd === 'remove' || cmd === 'delete') {
-			// Remove entry
-			let cont = true;
-			await Highlights.destroy({
-				where: {
-					phrase: keywords,
-					users: userID
-				}
-			}).then(result =>{
-				if(result == 0){
-					// TODO: If the highlight doesn't exist, say so.
-					user.send('You tried to remove a highlight, `' + keywords + '`, but it doesn\'t seem to exist.');
-					cont = false;
-				}
-			});
-
-			if(!cont){
-				return;
-			}
-			// Confirm highlight addition
-			const highlightsHelp = new Discord.MessageEmbed()
-				.setColor('#FFEC09')
-				.setTitle(`${highlightsEmote} Knights of Academia Highlight Removal ${highlightsEmote}`)
-				.setDescription('I have removed the following highlight as requested!')
-				.addField('Recently removed highlight', `${keywords}`);
-			// Maybe send them the remaining highlights (if any)?
-			return await user.send(highlightsHelp);
+			removeHighlight(keywords, user);
+			return;
 		}
 		else if (cmd === 'list') {
-			// Fetch all of the keywords where the user is the user
-			let listOfWords = new Array();
-			await Highlights.findAll({
-				where: {
-					users: userID
-				}
-			}).then(result => {
-				if(result.length == 0){
-					user.send('_You don\'t have any highlights._ Add some with `!highlights add <keywords>`');
-					return;
-				}
-				for(let i = 0; i < result.length; i++){
-					listOfWords.push(result[i].phrase);
-				}
-
-				const highlightsHelp = new Discord.MessageEmbed()
-					.setColor('#FFEC09')
-					.setTitle(`${highlightsEmote} Knights of Academia Highlight List ${highlightsEmote}`)
-					.setDescription('Here are your current highlights!')
-					.addField('Highlighted words and phrases', `${listOfWords}`);
-
-				// DM the embedded list to the user
-				user.send(highlightsHelp);
-			});
+			listHighlights(user);
+			return;
 		}
 		else { // None of the correct commands were used
 			return await user.send('Please use `!highlight add <word/phrase>` to add a new highlight. (case insensitive)');
