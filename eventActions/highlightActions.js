@@ -71,7 +71,7 @@ class highlightActions {
 					}
 				}
 				if(contains){
-					const user = await client.users.cache.get(currentId);
+					const user = client.users.cache.get(currentId);
 					this.sendHighlightDM(client, user, message, currentPhrase);
 				}
 			}
