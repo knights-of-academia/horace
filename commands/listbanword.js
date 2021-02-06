@@ -9,7 +9,7 @@ module.exports.execute = async (client, message) => {
 		.setDescription('Here is the list of the banned words: ');	
 	
 	for (const element of bannedWords) { // eslint-disable-line
-		const user = await client.users.cache.get(element.userID);
+		const user = client.users.cache.get(element.userID);
 		const username = user.username;
 		embedMessage.addField(`${element.word}`,`added by ${username}`);
 	}

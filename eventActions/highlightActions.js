@@ -11,9 +11,10 @@ class highlightActions {
 		if(message.content.substring(0, cmdPrefix.length) === cmdPrefix) return;
 		if(config.forbiddenHighlightChannels.includes(message.channel.id)) return; // Ensure people can't "spy" on channels
 		// For every phrase in the table
+		await Highlights.sync();
 		Highlights.findAll({
 			attributes: ['phrase', 'users']
-		}).then(result => {
+		}).then( (result) => {
 			for(let i = 0; i < result.length; i++){
 				let currentPhrase = result[i].phrase;
 				let currentId = result[i].users;
@@ -70,7 +71,7 @@ class highlightActions {
 					}
 				}
 				if(contains){
-					const user = client.users.get(currentId);
+					const user = client.users.cache.get(currentId);
 					this.sendHighlightDM(client, user, message, currentPhrase);
 				}
 			}
