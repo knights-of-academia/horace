@@ -84,7 +84,6 @@ class accountabilityActions {
 			let hasPinnedMessage = false;
 
 			// Get the pinned messages within a channel
-			//currentChannel.messages.fetchPinned()
 			await currentChannel.messages.fetchPinned().then(fetchedPins => {
 
 				// Check to see if they already have pinned messages
