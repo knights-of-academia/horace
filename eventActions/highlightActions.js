@@ -14,7 +14,7 @@ class highlightActions {
 		await Highlights.sync();
 		Highlights.findAll({
 			attributes: ['phrase', 'users']
-		}).then(async (result) => {
+		}).then( (result) => {
 			for(let i = 0; i < result.length; i++){
 				let currentPhrase = result[i].phrase;
 				let currentId = result[i].users;
