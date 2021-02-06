@@ -25,7 +25,7 @@ class accountabilityActions {
 			const currentChannel = sentMessage.channel;
 
 			// Check if there are too many existing pins
-			currentChannel.fetchPinnedMessages().then(messages => {
+			currentChannel.messages.fetchPinned().then(messages => {
 				const numOfPins = messages.size;
 				if(numOfPins === 50){
 					currentChannel.send('**Uh oh!** This channel has reached its pin limit. Contact a Helper to purge the list.');
@@ -36,7 +36,7 @@ class accountabilityActions {
 			// Make sure a user is pinning their own message
 			if(user.id != sentMessage.author.id) return;
 
-			await currentChannel.fetchPinnedMessages().then(fetchedPins =>{
+			await currentChannel.messages.fetchPinned().then(fetchedPins =>{
 
 				// If the pushpin reaction from the bot does not exist, pin the message
 				if(!isMessagePinnedAtAll(sentMessage, fetchedPins)){
@@ -57,7 +57,7 @@ class accountabilityActions {
 					}
 
 					// Pin the message
-					sentMessage.clearReactions();
+					sentMessage.reactions.removeAll();
 					sentMessage.react(config.emotes.pinMessage);
 					sentMessage.pin();
 
@@ -84,7 +84,7 @@ class accountabilityActions {
 			let hasPinnedMessage = false;
 
 			// Get the pinned messages within a channel
-			await currentChannel.fetchPinnedMessages().then(fetchedPins => {
+			await currentChannel.messages.fetchPinned().then(fetchedPins => {
 
 				// Check to see if they already have pinned messages
 				const pinMsgIterator = fetchedPins.values();
@@ -110,7 +110,7 @@ class accountabilityActions {
 	// Removes all pinned messages by a user
 	static async userUnpinsAllMessages(message, user){
 		if(message.channel.id === config.channels.accountability) {
-			await message.channel.fetchPinnedMessages().then(fetchedPins => {
+			await message.channel.messages.fetchPinned().then(fetchedPins => {
 
 				// We're essentially doing the same thing as unpin message, but we don't stop upon finding their most recent pin.
 				const pinMsgIterator = fetchedPins.values();
