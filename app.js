@@ -6,7 +6,7 @@ const connect = require('./databaseFiles/connect.js');
 const remind = require('./commands/remind.js');
 
 const client = new Discord.Client({
-	partials: ["REACTION", "MESSAGE"],
+	partials: ['REACTION', 'MESSAGE'],
 	ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS']}
 });
 
@@ -52,5 +52,5 @@ client.login(config.token);
 // Set up an interval to scan the `Reminders` table and remind people as necessary.
 client.on('ready', () => {
 	remind.catchUp(client);
-	setInterval(remind.scanForReminders, 30000, client);
+	setInterval(remind.scanForReminders, config.reminderScanInterval, client);
 });

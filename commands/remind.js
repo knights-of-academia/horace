@@ -301,7 +301,7 @@ Do you want me to remind you to ${whatToRemind} ${whenToRemind}? React with thum
 }
 
 async function remind(client, date, reminder, catchUp = false) {
-	let userToRemind = await client.fetchUser(reminder.dataValues.whoToRemind);
+	let userToRemind = await client.users.fetch(reminder.dataValues.whoToRemind);
 	let color, description;
 
 	if (catchUp) {
@@ -352,7 +352,7 @@ async function scanForReminders(client) {
 		let difference;
 		reminders.forEach(async reminder => {
 			difference = currentDate - reminder.dataValues.whenToRemind;
-			if (difference > -30000) {
+			if (difference > (-1)*config.reminderScanInterval) {
 				remind(client, currentDate, reminder);
 			}
 		});
@@ -361,6 +361,8 @@ async function scanForReminders(client) {
 
 async function catchUp(client) {
 	const currentDate = new Date();
+	// ensures that the Reminder Table exists, and synchronizes it before checking for reminders
+	await Reminder.sync(); 
 	const reminders = await Reminder.findAll().catch(err => {
 		console.error('Reminder Sequelize error: ', err);
 	});
