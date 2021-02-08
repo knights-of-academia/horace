@@ -301,7 +301,7 @@ Do you want me to remind you to ${whatToRemind} ${whenToRemind}? React with thum
 }
 
 async function remind(client, date, reminder, catchUp = false) {
-	let userToRemind = await client.fetchUser(reminder.dataValues.whoToRemind);
+	let userToRemind = await client.users.fetch(reminder.dataValues.whoToRemind);
 	let color, description;
 
 	if (catchUp) {
