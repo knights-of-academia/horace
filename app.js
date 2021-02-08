@@ -6,7 +6,7 @@ const connect = require('./databaseFiles/connect.js');
 const remind = require('./commands/remind.js');
 
 const client = new Discord.Client({
-	partials: ["REACTION", "MESSAGE"],
+	partials: ['REACTION', 'MESSAGE'],
 	ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS']}
 });
 
