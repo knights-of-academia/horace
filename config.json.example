@@ -57,6 +57,7 @@
   "pinLimit": 5,
   "reflectionCheckDepth": 5,
   "focusedRaiderMessageId": "000",
+  "reminderScanInterval": 30000,
   "chainMessageCharLimit": "40",
   "forbiddenHighlightChannels": ["0000", "0000"],
   "forceStrictGreetings": false,

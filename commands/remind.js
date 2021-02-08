@@ -351,8 +351,8 @@ async function scanForReminders(client) {
 	if (reminders) {
 		let difference;
 		reminders.forEach(async reminder => {
-			difference = currentDate - reminder.dataValues.whenToRemind;
-			if (difference > -30000) {
+			difference = reminder.dataValues.whenToRemind - currentDate;
+			if (difference > config.reminderScanInterval) {
 				remind(client, currentDate, reminder);
 			}
 		});

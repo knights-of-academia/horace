@@ -52,5 +52,5 @@ client.login(config.token);
 // Set up an interval to scan the `Reminders` table and remind people as necessary.
 client.on('ready', () => {
 	remind.catchUp(client);
-	setInterval(remind.scanForReminders, 30000, client);
+	setInterval(remind.scanForReminders, config.reminderScanInterval, client);
 });
