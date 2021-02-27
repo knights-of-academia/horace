@@ -15,7 +15,7 @@ class focusedRaiderActions {
 					guildMember.roles.add(role);
 				})
 				.catch(error => {
-					console.log(error);
+					console.error(error);
 				});
 		}
 	}
@@ -35,7 +35,7 @@ class focusedRaiderActions {
 					guildMember.roles.remove(role);
 				})
 				.catch(error => {
-					console.log(error);
+					console.error(error);
 				});
 		}
 	}
