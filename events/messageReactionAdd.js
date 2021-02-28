@@ -5,6 +5,15 @@ const focusedRaiderActions = require('../eventActions/focusedRaiderActions');
 const bookmarkActions = require ('../eventActions/bookmarkActions');
 
 module.exports = async (client, reaction, user) => {
+	if (reaction.message.partial) {
+		try {
+			await reaction.message.fetch();
+		} catch (error) {
+			console.error('messageReactionAdd was unable to fetch the reaction message: ', error);
+			return;
+		}
+	}
+
 	// Handle reaction to the ToS message in ToS channel
 	tosActions.userAcceptsTOS(reaction, user, client);
 

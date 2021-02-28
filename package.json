@@ -18,7 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "data-store": "^4.0.3",
-    "discord.js": "^12.0.0",
+    "discord.js": "^12.5.1",
     "eslint-plugin-jest": "^22.17.0",
     "habitica": "^4.0.0",
     "mysql2": "^2.0.2",

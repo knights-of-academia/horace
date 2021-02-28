@@ -10,9 +10,13 @@ class focusedRaiderActions {
 			const role = reaction.message.guild.roles.cache.find(role => role.id === config.roles.focusedraider);
 
 			// Create a GuildMember object from passed in user, and add role
-			await reaction.message.guild.members.fetch(user.id).then(guildMember => {
-				guildMember.roles.add(role);
-			});
+			await reaction.message.guild.members.fetch(user.id)
+				.then(guildMember => {
+					guildMember.roles.add(role);
+				})
+				.catch(error => {
+					console.error(error);
+				});
 		}
 	}
 
@@ -25,10 +29,14 @@ class focusedRaiderActions {
 			// Create the role variable
 			const role = reaction.message.guild.roles.cache.find(role => role.id === config.roles.focusedraider);
 
-			// Create a GuildMember object from passed in user, adn remove role
-			await reaction.message.guild.members.fetch(user.id).then(guildMember => {
-				guildMember.roles.remove(role);
-			});
+			// Create a GuildMember object from passed in user, and remove role
+			await reaction.message.guild.members.fetch(user.id)
+				.then(guildMember => {
+					guildMember.roles.remove(role);
+				})
+				.catch(error => {
+					console.error(error);
+				});
 		}
 	}
 }
