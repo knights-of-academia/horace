@@ -4,7 +4,7 @@ class focusedRaiderActions {
 
 	static async giveRole(reaction, user){
 		// Ensure we're in the proper channel and using the proper reaction
-		if(reaction.message.channel.id == config.channels.chooseroles && reaction._emoji.toString() === config.emotes.focusedRaider) {
+		if(reaction.message.channel.id == config.channels.chooseroles && reaction._emoji.toString() == config.emotes.focusedRaider) {
 			if(reaction.message.id != config.focusedRaiderMessageId) return;
 			// Create the role variable
 			const role = reaction.message.guild.roles.cache.find(role => role.id === config.roles.focusedraider);
