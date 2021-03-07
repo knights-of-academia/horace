@@ -1,9 +1,8 @@
 module.exports = async (client, channel) => {
 	// Check for max pins regardless of channel
 	const currentChannel = client.channels.cache.get(channel.id);
-	currentChannel.fetchPinnedMessages().then(messages => {
+	currentChannel.messages.fetchPinned().then(messages => {
 		const numOfPins = messages.size;
-		// currentChannel.send('**Listen!** Currently at ' + numOfPins + ' pins');
 		if(numOfPins === 50){
 			currentChannel.send('**Uh oh!** This channel has reached its pin limit. Contact a Helper to purge the list.');
 			return;
