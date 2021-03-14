@@ -82,9 +82,8 @@ class highlightActions {
 
 	// Method to call that DMs a user about a message containing a highlighted phrase
 	static async sendHighlightDM(client, user, message, highlightedPhrase) {
-		const workingMessage = message;
 		const highlightsEmote = '☀️';
-		if (workingMessage.author == user) {
+		if (message.author == user) {
 			return console.log('no DM to same user');
 		}
 		else {
@@ -93,10 +92,10 @@ class highlightActions {
 				.setTitle(`${highlightsEmote} Knights of Academia Highlight Alert ${highlightsEmote}`)
 				.setDescription('One of your highlights has been triggered!')
 				.addField('Highlighted Phrase', highlightedPhrase)
-				.addField('Full Message', workingMessage)
-				.addField('From', workingMessage.author, true)
-				.addField('Link to Message', `[Jump to Message](${workingMessage.url})`, true)
-				.addField('Channel', workingMessage.channel);
+				.addField('Full Message', message)
+				.addField('From', message.author, true)
+				.addField('Link to Message', `[Jump to Message](${message.url})`, true)
+				.addField('Channel', message.channel);
 	
 			user.send(highlightNotification);
 		}
