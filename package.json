@@ -19,10 +19,9 @@
   "dependencies": {
     "data-store": "^4.0.3",
     "discord.js": "^12.5.1",
-    "eslint-plugin-jest": "^22.17.0",
     "habitica": "^4.0.0",
     "mysql2": "^2.0.2",
-    "quick.db": "^7.1.1",
+    "quick.db": "^7.1.3",
     "rss-parser": "^3.7.2",
     "sequelize": "^5.21.3",
     "sqlite3": "^4.2.0"
