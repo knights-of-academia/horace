@@ -1,6 +1,7 @@
 /* eslint-disable linebreak-style */
 module.exports.execute = async (client, message) => {
-	return await message.channel.send('Your first week at KOA: https://koa.gg/firstweek');
+	// Link enclosed in angle brackets to stop Discord from automatically embedding the link
+	return await message.channel.send('Your first week at KOA: <https://knightsofacademia.org/your-first-week-at-koa>');
 };
 
 module.exports.config = {
