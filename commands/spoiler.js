@@ -1,7 +1,11 @@
 module.exports.execute = async (client, message, args) => {
 
-	let spoilerText = '||' + args.join(' ') + '||';
-	let author = '**' + message.author.username + '**';
+	let spoiler = args.join(' ');
+	if (spoiler.length === 0){
+		return await message.channel.send('Please include text to send as a spoilered message!\n`!spoiler [text to spoiler]`');
+	}
+	let spoilerText = '||' + spoiler + '||';
+	let author = `<@${message.author.id}>`;
 
 	return await message.channel.send(`${author}\n${spoilerText}`);
 };
