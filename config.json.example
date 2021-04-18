@@ -16,6 +16,8 @@
     "helper": "000"
   },
   "channels": {
+    "mapofkoa": "000",
+    "raidroom": "000",
     "citadel": "000",
     "cotw": "000",
     "tos": "000",
@@ -55,7 +57,12 @@
     "reminders": "❗",
     "confirm": "👍",
     "deny": "👎",
-    "heart": "♥"
+    "heart": "♥",
+    "welcomearrow": "→",
+    "horace": ""
+  },
+  "colors": {
+    "koaYellow": "#FFFA4F"
   },
   "pinLimit": 5,
   "reflectionCheckDepth": 5,
