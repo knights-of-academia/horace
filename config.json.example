@@ -30,7 +30,8 @@
     "chooseroles": "000",
     "gratitude": "000",
     "staffaccountability": "000",
-    "commandcenter": "000"
+    "commandcenter": "000",
+    "contentNotifier": "000"
   },
   "emotes": {
     "acceptTOS": "✅",
@@ -56,6 +57,7 @@
     "reminders": "❗",
     "confirm": "👍",
     "deny": "👎",
+    "heart": "♥",
     "welcomearrow": "→",
     "horace": ""
   },
