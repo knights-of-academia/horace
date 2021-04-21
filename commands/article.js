@@ -6,7 +6,7 @@ module.exports.execute = async (client, message) => {
 
 module.exports.config = {
 	name: 'article',
-	aliases: ['facebook'],
+	aliases: ['article'],
 	description: 'I will send you the link to our Articles page.',
 	usage: ['article']
 };
