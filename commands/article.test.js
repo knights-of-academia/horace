@@ -8,11 +8,7 @@ test("Sends Correct article message to the channel",async()=>{
     //Act
     const responseMessage = await article.execute(null,message);
 
-    //Assert
     // Assert
-	const expectedResponse = 'KOA Articles Page : https://knightsofacademia.org/category/articles/';
-	expect(responseMessage).toBe(expectedResponse);
-
-
-
+    const expectedResponse = 'KOA Articles Page : https://knightsofacademia.org/category/articles/';
+    expect(responseMessage).toBe(expectedResponse);
 });
