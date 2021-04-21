@@ -10,7 +10,7 @@ test("Sends Correct article message to the channel",async()=>{
 
     //Assert
     // Assert
-	const expectedResponse = 'KOA Articles Page : https://knightsofacademia.org/category/articles/';
+	const expectedResponse = 'KOA Articles Page : ' + article.config.latest_article;
 	expect(responseMessage).toBe(expectedResponse);
 
 
