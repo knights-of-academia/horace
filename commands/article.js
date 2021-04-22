@@ -1,8 +1,5 @@
-const config = require('../config.json');
 const Parser = require('rss-parser');
 const parser = new Parser();
-
-
 
 module.exports.execute = async (client, message, args) => {
 	const feed = await parser.parseURL('https://knightsofacademia.org/category/articles/feed');
