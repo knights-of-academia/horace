@@ -116,3 +116,6 @@ public
 
 # Database
 *.sqlite
+
+#test out file
+out.txt
