@@ -1,5 +1,6 @@
 const config = require('../config.json');
 const Discord = require('discord.js');
+const tosReminder = require("../eventActions/tosReminderAction");
 
 class tosActions {
 	static userAcceptsTOS(reaction, user, client) {
@@ -11,6 +12,7 @@ class tosActions {
 					guildMember.roles.remove(initiateRole);
 					const memberRole = reaction.message.guild.roles.cache.find(r => r.id === config.roles.member);
 					guildMember.roles.add(memberRole);
+					tosReminder.removeFromDataBase(user.id);
 					// Send welcome message to the Citadel
 					client.channels.cache.get(config.channels.citadel).send(`🎉 **A new member has arrived!** 🎉\nWelcome to Knights of Academia <@${user.id}>!`)
 						.then(message => {
