@@ -1,4 +1,5 @@
 const config = require('../config.json');
+const Discord = require('discord.js');
 
 class tosActions {
 	static userAcceptsTOS(reaction, user, client) {
@@ -16,28 +17,27 @@ class tosActions {
 							message.react(config.emotes.wave);
 						});
 				}
-				return user.send(`**Welcome to KOA!** :blush:
 
-To begin, say hello in <#382364344731828226> and read up in <#384040181763670026> for our step by step guide.
-Lastly, to learn more visit us any time at: <https://knightsofacademia.org>.
+				const embed = new Discord.MessageEmbed()
+					.setTitle(`**Welcome to KOA! — You’re All Set** ${config.emotes.yes2}`)
+					.setDescription(`
+						I’m a bot built by the engineering team here at [KOA](<https://knightsofacademia.org>).\
+						Whether you’re here to learn, meet new people, or get more done; you’ve come to the right place :)
 
+						\`Quick Suggestions:\`
+						${config.emotes.welcomearrow} <#${config.channels.mapofkoa}> learn about useful features
+						${config.emotes.welcomearrow} <#${config.channels.raidroom}> work alongside others
+						${config.emotes.welcomearrow} <#${config.channels.hallofconquests}> share your victories
+						${config.emotes.welcomearrow} <#${config.channels.chooseroles}> personalize your experience with your very own roles
 
-**Ask me questions, tell me to do stuff.**
-I am your all in one assistant, designed to help and cater to your needs. It's nice to meet you. 
+						${config.emotes.horace}  Summon me anytime by typing \`!faq\` in a channel that looks interesting.
+					`)
+					.setColor(config.colors.koaYellow)
 
-Here are a few things you can ask me:
-
--!info [term]
--!raid
--!help
--!highlight
--!clans/!apply
--!invite [koa][koai][jesters]
--!choose [choice 1],[choice 2]`);
+				return user.send(embed);
 			});
 		}
 	}
-
 }
 
 module.exports = tosActions;
