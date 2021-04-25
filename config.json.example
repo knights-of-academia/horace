@@ -18,6 +18,8 @@
   "channels": {
     "mapofkoa": "000",
     "raidroom": "000",
+    "raidroom50": "000",
+    "raidroom90": "000",
     "citadel": "000",
     "cotw": "000",
     "tos": "000",
