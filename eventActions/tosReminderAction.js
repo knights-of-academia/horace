@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 table = require('../databaseFiles/tosReminderTable');
 
 const addToDatabase = async function(user,joinTime,reminded=false){
-    table.sync(/*{ force: true }*/).then(()=>{
+    table.sync(/*{ force: true }*/).then(async ()=>{
         await table.create({
             user_id: user.user_id,
             joinTime: joinTime,
@@ -27,9 +27,9 @@ const tosRemind = async function(client){
             reminded: false
         }
     });
-    unreminded.forEach(user_id =>{
-        userToRemind= await client.users.fetch(user_id);
-        userToRemind.send(messageEmbed)
+    console.log('unreminded fetcthed');
+    unreminded.forEach((user_id) =>  {
+        fetchuserid(user_id).send(messageEmbed)
     });
     table.update({
         reminded:true
@@ -40,6 +40,9 @@ const tosRemind = async function(client){
         }
     }
     );
+}
+const fetchuserid = async function(user_id){
+    return await client.users.fetch(user_id);
 }
 module.exports.addToDataBase = addToDatabase;
 module.exports.removeFromDataBase = removeFromDatabase;
