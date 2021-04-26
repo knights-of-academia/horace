@@ -32,7 +32,7 @@ class tosActions {
 
 						${config.emotes.horace}  Summon me anytime by typing \`!faq\` in a channel that looks interesting.
 					`)
-					.setColor(config.colors.koaYellow)
+					.setColor(config.colors.koaYellow);
 
 				return user.send(embed);
 			});
