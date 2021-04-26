@@ -11,7 +11,7 @@ const highlightActions = require('../eventActions/highlightActions');
 const afkAction = require('../eventActions/afkMessageCheckAction');
 const gratitudeActions = require('../eventActions/gratitudeActions');
 const staffAccountabilityActions = require('../eventActions/staffAcountabilityActions');
-const contentActions = require('../eventActions/contentActions')
+const contentActions = require('../eventActions/contentActions');
 
 module.exports = async (client, message) => {
 
@@ -62,5 +62,5 @@ module.exports = async (client, message) => {
 	// Staff accountability messages
 	staffAccountabilityActions.checkForMessages(client, message);
 	// WP Content Notifier reactions
-	contentActions.reactToPost(client, message)
+	contentActions.reactToPost(client, message);
 };
