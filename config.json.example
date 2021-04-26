@@ -33,7 +33,8 @@
     "gratitude": "000",
     "staffaccountability": "000",
     "commandcenter": "000",
-    "contentNotifier": "000"
+    "contentNotifier": "000",
+    "errors:" "000"
   },
   "emotes": {
     "acceptTOS": "✅",

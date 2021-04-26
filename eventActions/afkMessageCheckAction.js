@@ -10,7 +10,7 @@ class afkMessageCheckAction {
 			return;
 		}
 		const sender = message.author;
-		const reactionFilter = (reaction, user) => {
+		(reaction, user) => {
 			if ((reaction.emoji.name === '✅' || reaction.emoji.name === '❌') && user.id == sender.id) {
 				if (reaction.emoji.name === '✅') {
 					Afks.destroy({
@@ -69,9 +69,7 @@ class afkMessageCheckAction {
 						).catch(error => {
 							console.error('Update error: ', error);
 						});
-						collector.on('end', () => {
-							msg.delete().catch(() => console.log('Tried deleting afk message that was already deleted'));
-						});
+						msg.delete().catch(() => console.log('Tried deleting afk message that was already deleted'));
 					});
 				}
 			});
