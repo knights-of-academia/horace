@@ -3,10 +3,10 @@ table = require('../databaseFiles/tosReminderTable');
 const config = require('../config.json');
 
 //Adds to database
-const addToDatabase = async function(user_id,joinTime,reminded=false){
+const addToDatabase = async function(user,joinTime,reminded=false){
     table.sync().then(async ()=>{
         await table.create({
-            user_id: user_id,
+            user_id: user.id,
             joinTime: joinTime,
             reminded: reminded
         }).catch(err =>{
@@ -16,10 +16,10 @@ const addToDatabase = async function(user_id,joinTime,reminded=false){
 }
 
 //Removes user from Database
-const removeFromDatabase = async function(user_id){
+const removeFromDatabase = async function(user){
     await table.destroy({
         where:{
-            user_id:user_id
+            user_id:user.id
         }
     }).catch(err =>{
         console.error("Tos reminder error" + err)
