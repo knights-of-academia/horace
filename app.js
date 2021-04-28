@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 const config = require('./config.json');
 const connect = require('./databaseFiles/connect.js');
 const remind = require('./commands/remind.js');
-const tosRemind = require("./eventActions/tosReminderAction");
+const tosRemind = require("./eventActions/tosReminderAction.js");
 
 const client = new Discord.Client({
 	partials: ['USER', 'REACTION', 'MESSAGE'],

@@ -1,10 +1,12 @@
-const Discord = require('discord.js')
+const Discord = require('discord.js');
 table = require('../databaseFiles/tosReminderTable');
+const config = require('../config.json');
 
-const addToDatabase = async function(user,joinTime,reminded=false){
-    table.sync(/*{ force: true }*/).then(async ()=>{
+//Adds to database
+const addToDatabase = async function(user_id,joinTime,reminded=false){
+    table.sync().then(async ()=>{
         await table.create({
-            user_id: user.id,
+            user_id: user_id,
             joinTime: joinTime,
             reminded: reminded
         }).catch(err =>{
@@ -12,8 +14,10 @@ const addToDatabase = async function(user,joinTime,reminded=false){
         })
     })
 }
+
+//Removes user from Database
 const removeFromDatabase = async function(user_id){
-    await table.destory({
+    await table.destroy({
         where:{
             user_id:user_id
         }
@@ -21,43 +25,46 @@ const removeFromDatabase = async function(user_id){
         console.error("Tos reminder error" + err)
     })
 }
+
+//Reminds the user
 const tosRemind = async function(client){
     messageEmbed = new Discord.MessageEmbed()
-    .setColor("#FC0303")
-    .addField("Hey :wave: noticed you joined, but never got access to KOA.")
-    .addField("Tap the check mark in https://discord.com/channels/382364344731828224/458682389850488862/620385598582292481 in this message to have full access to all KOA channels. Enjoy your newfound powers :relieved:")
+     .setColor(config.colors.koaYellow)
+     .addField("Hey :wave: noticed you joined, but never got access to KOA.")
+     .addField(`Tap the check mark in https://discord.com/channels/382364344731828224/${config.channels.tos}/ in this message to have full access to all KOA channels. Enjoy your newfound powers :relieved:`)
     const unreminded = await table.findAll({
         where:{
-            reminded: false
+            reminded: false 
         }
     }).catch(err =>{
         console.error('Tos reminder error : ' + err)
     });
-    console.log('unreminded fetcthed');
     unreminded.forEach(async reminder =>{
         const userToRemind = reminder.dataValues.user_id;
-        const user = await fetchuserid(userToRemind,client).catch(err => {
-            console.error('TosReminder error: ',err);
-        });
-        user.send(messageEmbed);
-        await table.update({
-            reminded:true
-        },{
-            where:{
-                user_id:userToRemind
-            }
-        }).catch(err => {
-            console.log('tosReminder error : ', err)
-        });
-    })
-    
-}
-const fetchuserid = async function(user_id,client){
-    return await client.users.fetch(user_id).catch(err =>{
-        console.error('Tosreminder errror : '+ err)
-    });
+        //Checks if the time given in config has passed
+        if(new Date() - reminder.dataValues.joinTime  >= config.tosRemindAfterHours * 3600000){
+            //Gets the user
+            const user = await client.users.fetch(userToRemind).catch(err => {
+                console.error('TosReminder error: ',err);
+            });
+
+            //Sends the meassage to the user
+            user.send(messageEmbed);
+            
+            //Updates the table
+            await table.update({
+                reminded:true
+            },
+            {
+                where:{
+                    user_id:userToRemind
+                }
+            }).catch(err => {
+                console.log('TosReminder error : ', err)
+            });
+        }
+    })   
 }
 module.exports.addToDatabase = addToDatabase;
 module.exports.removeFromDatabase = removeFromDatabase;
 module.exports.tosRemind = tosRemind;
-
