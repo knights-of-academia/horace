@@ -30,9 +30,10 @@ const removeFromDatabase = async function(user){
 const tosRemind = async function(client){
     messageEmbed = new Discord.MessageEmbed()
      .setColor(config.colors.koaYellow)
-     .addField("Hey :wave: noticed you joined, but never got access to KOA.")
-     .addField(`Tap the check mark in <#${config.channels.tos}> to have full access to all KOA channels. Enjoy your newfound powers :relieved:`)
-    const unreminded = await table.findAll({
+     .setTitle("Hey :wave: noticed you joined, but never got access to KOA.")
+     .setDescription(`Tap the check mark in <#${config.channels.tos}> to have full access to all KOA channels. Enjoy your newfound powers :relieved:`)
+     
+     const unreminded = await table.findAll({
         where:{
             reminded: false 
         }
