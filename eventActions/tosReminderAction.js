@@ -31,7 +31,7 @@ const tosRemind = async function(client){
     messageEmbed = new Discord.MessageEmbed()
      .setColor(config.colors.koaYellow)
      .addField("Hey :wave: noticed you joined, but never got access to KOA.")
-     .addField(`Tap the check mark in https://discord.com/channels/382364344731828224/${config.channels.tos}/ in this message to have full access to all KOA channels. Enjoy your newfound powers :relieved:`)
+     .addField(`Tap the check mark in <#${config.channels.tos}> to have full access to all KOA channels. Enjoy your newfound powers :relieved:`)
     const unreminded = await table.findAll({
         where:{
             reminded: false 
