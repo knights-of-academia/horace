@@ -11,6 +11,6 @@ test('Sends a correct message with a URL to the channel', async () => {
 	const responseMessage = await firstweek.execute(null, message);
 
 	// Assert
-	const expectedResponse = 'Your first week at KOA: https://koa.gg/firstweek';
+	const expectedResponse = 'Your first week at KOA: <https://knightsofacademia.org/your-first-week-at-koa>';
 	expect(responseMessage).toBe(expectedResponse);
 });
