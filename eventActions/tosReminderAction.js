@@ -10,7 +10,7 @@ const addToDatabase = async function(user,joinTime,reminded=false){
             joinTime: joinTime,
             reminded: reminded
         }).catch(err =>{
-            console.error('Tosreminder error: ' + err )
+            console.error('Tosreminder error:',err )
         })
     })
 }
@@ -22,12 +22,15 @@ const removeFromDatabase = async function(user){
             user_id:user.id
         }
     }).catch(err =>{
-        console.error("Tos reminder error" + err)
+        console.error("Tos reminder error:",err)
     })
 }
 
 //Reminds the user
 const tosRemind = async function(client){
+    table.sync().catch(err =>{
+        console.error("Tos reminder error:",err);
+    });
     messageEmbed = new Discord.MessageEmbed()
      .setColor(config.colors.koaYellow)
      .setTitle("Hey :wave: noticed you joined, but never got access to KOA.")
@@ -38,7 +41,7 @@ const tosRemind = async function(client){
             reminded: false 
         }
     }).catch(err =>{
-        console.error('Tos reminder error : ' + err)
+        console.error('TosReminder error:',err)
     });
     unreminded.forEach(async reminder =>{
         const userToRemind = reminder.dataValues.user_id;
