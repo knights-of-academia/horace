@@ -9,7 +9,7 @@ module.exports.execute = async (client, message, args) => {
 		if(args[0].toLowerCase() === 'home') {
 			response = 'KOA Article Archive: https://knightsofacademia.org/category/articles';
 		}
-		else if(args[0].toLowerCase() === 'latest') {
+		if(args[0].toLowerCase() === 'latest') {
 			response = `The latest article from KOA is called "${(feed.items[0].title)}" and can be found here: ${feed.items[0].link}.`;
 		}
 	}
