@@ -10,8 +10,6 @@ class highlightActions {
 		const cmdPrefix = config.prefix;
 		if(message.content.substring(0, cmdPrefix.length) === cmdPrefix) return;
 		if(config.forbiddenHighlightChannels.includes(message.channel.id)) return; // Ensure people can't "spy" on channels
-		// For every phrase in the table
-		await Highlights.sync();
 		Highlights.findAll({
 			attributes: ['phrase', 'users']
 		}).then( (result) => {

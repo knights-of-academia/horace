@@ -1,7 +1,6 @@
 const BannedWord = require('../databaseFiles/bannedWordTable.js');
 
 const isBanned = async (word) => {
-	await BannedWord.sync();
 	const result = await BannedWord.findOne({
 		where: {
 			word,
@@ -13,7 +12,6 @@ const isBanned = async (word) => {
 };
 
 const getBannedWords = async () => {
-	await BannedWord.sync();
 	const queryResult = await BannedWord.findAll({
 		attributes: ['word'],
 		raw: true,
@@ -28,7 +26,6 @@ const getBannedWords = async () => {
 };
 
 const getBannedWordsAndAuthors = async() => {
-	await BannedWord.sync();
 	const queryResult = await BannedWord.findAll({
 		attributes: ['word', 'userID'],
 		raw: true,
@@ -41,11 +38,9 @@ const addWordToBannedWordTable = async (word, userID) => {
 	const isAlreadyBanned = await isBanned(word);
 
 	if (!isAlreadyBanned) {
-		BannedWord.sync().then(async () => {
-			await BannedWord.create({
-				word,
-				userID,
-			});
+		await BannedWord.create({
+			word,
+			userID,
 		});
 
 		return `Success! Added ${word} to the blocked word list!`;
@@ -61,12 +56,10 @@ const deleteWord = async (word) => {
 		return 'That word isn\'t currently banned!';
 	}
 
-	BannedWord.sync().then(async () => {
-		await BannedWord.destroy({
-			where: {
-				word,
-			},
-		});
+	await BannedWord.destroy({
+		where: {
+			word,
+		},
 	});
 
 	return `Success! Unbanned ${word} from the list!`;

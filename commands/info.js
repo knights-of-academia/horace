@@ -4,12 +4,6 @@ const SearchWords = require('../databaseFiles/searchWordsTable.js');
 const Discord = require('discord.js');
 const config = require('../config.json');
 
-
-
-//Ensure the tables exist if not already
-InfoTerms.sync();
-SearchWords.sync();
-
 module.exports.execute = async (client, message, args) => {
 	// Error handler
 	const errHandler = err => {

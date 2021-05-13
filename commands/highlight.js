@@ -140,9 +140,6 @@ module.exports.execute = async (client, message, args) => {
 		return await user.send(highlightsHelp);
 	}
 	else if (keywords.length > 1) {
-		// Ensure the table exists if not already -- Is there a better place for this?
-		Highlights.sync();
-
 		if(cmd === 'add') {
 			return await addHighlight(keywords, user);
 		}

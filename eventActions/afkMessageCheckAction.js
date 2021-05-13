@@ -54,25 +54,23 @@ class afkMessageCheckAction {
 			return difference;
 		}
 
-		await Afks.sync().then(() => {
-			Afks.findAll({
-				where: {
-					user: user.id
-				}
-			}).then(result => {
-				// Test to see if the difference between the cooldown and the current time is more than or equal to 3 minutes call function with variables timestamp1 and timestamp2 in call
-				if (result.length == 1 && timedifference(result[0].cooldown, Date.now()) >= 3) {
-					message.author.send(noLongerAFKMessage).then(msg => {
-						Afks.update(
-							{ cooldown: Date.now() },
-							{ where: {user: user.id} }
-						).catch(error => {
-							console.error('Update error: ', error);
-						});
-						msg.delete().catch(() => console.log('Tried deleting afk message that was already deleted'));
+		Afks.findAll({
+			where: {
+				user: user.id
+			}
+		}).then(result => {
+			// Test to see if the difference between the cooldown and the current time is more than or equal to 3 minutes call function with variables timestamp1 and timestamp2 in call
+			if (result.length == 1 && timedifference(result[0].cooldown, Date.now()) >= 3) {
+				message.author.send(noLongerAFKMessage).then(msg => {
+					Afks.update(
+						{ cooldown: Date.now() },
+						{ where: {user: user.id} }
+					).catch(error => {
+						console.error('Update error: ', error);
 					});
-				}
-			});
+					msg.delete().catch(() => console.log('Tried deleting afk message that was already deleted'));
+				});
+			}
 		});
 	}
 
@@ -80,23 +78,21 @@ class afkMessageCheckAction {
 		// Make sure the message is meant for the one person only. This also means the bot will not trigger on tag spams.
 		if (message.mentions.members.size == 1) {
 			let id = message.mentions.members.firstKey();
-			Afks.sync().then(() => {
-				Afks.findAll({
-					where: {
-						user: id
-					}
-				}).then(result => {
-					if (result.length == 1) {
-						message.guild.fetchMember(result[0].user).then(user => {
-							let name = user.nickname ? user.nickname : user.user.username;
-							const embed = new Discord.MessageEmbed()
-								.setTitle(`${name} is not here`)
-								.addField('AFK Message:',result[0].message)
-								.setColor('#FFEC09');
-							message.channel.send(embed).then(msg => msg.delete(5000).catch(() => console.log('Tried deleting afk message that was already deleted')));
-						});
-					}
-				});
+			Afks.findAll({
+				where: {
+					user: id
+				}
+			}).then(result => {
+				if (result.length == 1) {
+					message.guild.fetchMember(result[0].user).then(user => {
+						let name = user.nickname ? user.nickname : user.user.username;
+						const embed = new Discord.MessageEmbed()
+							.setTitle(`${name} is not here`)
+							.addField('AFK Message:',result[0].message)
+							.setColor('#FFEC09');
+						message.channel.send(embed).then(msg => msg.delete(5000).catch(() => console.log('Tried deleting afk message that was already deleted')));
+					});
+				}
 			});
 		}
 	}

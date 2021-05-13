@@ -361,8 +361,6 @@ async function scanForReminders(client) {
 
 async function catchUp(client) {
 	const currentDate = new Date();
-	// ensures that the Reminder Table exists, and synchronizes it before checking for reminders
-	await Reminder.sync(); 
 	const reminders = await Reminder.findAll().catch(err => {
 		console.error('Reminder Sequelize error: ', err);
 	});
