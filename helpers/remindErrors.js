@@ -22,14 +22,14 @@ class MonthLengthValidationError extends ValidationError {
 	}
 }
 
-class NonmatchingInputValidationError extends Error {
+class NonMatchingInputValidationError extends Error {
 	constructor(message) {
 		super(message);
-		this.name = 'NonmatchingInputValidationError';
+		this.name = 'NonMatchingInputValidationError';
 	}
 }
 
 module.exports.ValidationError = ValidationError;
 module.exports.ReminderDeniedValidationError = ReminderDeniedValidationError;
 module.exports.MonthLengthValidationError = MonthLengthValidationError;
-module.exports.NonmatchingInputValidationError = NonmatchingInputValidationError;
+module.exports.NonMatchingInputValidationError = NonMatchingInputValidationError;
