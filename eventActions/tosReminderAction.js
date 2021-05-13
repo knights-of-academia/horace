@@ -28,7 +28,7 @@ const removeFromDatabase = async function(user){
 
 //Reminds the user
 const tosRemind = async function(client){
-    table.sync().catch(err =>{
+    await table.sync().catch(err =>{
         console.error("Tos reminder error:",err);
     });
     messageEmbed = new Discord.MessageEmbed()
@@ -43,31 +43,33 @@ const tosRemind = async function(client){
     }).catch(err =>{
         console.error('TosReminder error:',err)
     });
-    unreminded.forEach(async reminder =>{
-        const userToRemind = reminder.dataValues.user_id;
-        //Checks if the time given in config has passed
-        if(new Date() - reminder.dataValues.joinTime  >= config.tosRemindAfterHours * 3600000){
-            //Gets the user
-            const user = await client.users.fetch(userToRemind).catch(err => {
-                console.error('TosReminder error: ',err);
-            });
+    if(unreminded){
+        unreminded.forEach(async reminder =>{
+            const userToRemind = reminder.dataValues.user_id;
+            //Checks if the time given in config has passed
+            if(new Date() - reminder.dataValues.joinTime  >= config.tosRemindAfterHours * 3600000){
+                //Gets the user
+                const user = await client.users.fetch(userToRemind).catch(err => {
+                    console.error('TosReminder error: ',err);
+                });
 
-            //Sends the meassage to the user
-            user.send(messageEmbed);
-            
-            //Updates the table
-            await table.update({
-                reminded:true
-            },
-            {
-                where:{
-                    user_id:userToRemind
-                }
-            }).catch(err => {
-                console.log('TosReminder error : ', err)
-            });
-        }
-    })   
+                //Sends the meassage to the user
+                user.send(messageEmbed);
+                
+                //Updates the table
+                await table.update({
+                    reminded:true
+                },
+                {
+                    where:{
+                        user_id:userToRemind
+                    }
+                }).catch(err => {
+                    console.log('TosReminder error : ', err)
+                });
+            }
+        })
+    }
 }
 module.exports.addToDatabase = addToDatabase;
 module.exports.removeFromDatabase = removeFromDatabase;
