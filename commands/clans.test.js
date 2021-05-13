@@ -2,13 +2,9 @@ const clans = require('./clans.js');
 const messageStub = require('../stub/messageStub');
 
 test('Sends correct clans message to channel', async () => {
-	// Arrange
 	const message = new messageStub();
-
-	// Act
 	const responseMessage = await clans.execute(null, message);
 
-	// Assert
 	const expectedResponse = `⚔ Here is our list of KOA Clans! ⚔
 
 	🔸 **The Round Table**: All things Hard Mode by **bendre1997**#9332

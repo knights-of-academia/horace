@@ -31,7 +31,6 @@ const getHiglightAdditionReplyMsg = (keywords) => {
 };
 
 const getHiglightRemovalReplyMsg = (keywords) => {
-	// Confirm highlight addition
 	const highlightsEmote = config.emotes.highlights;
 	const highlightsRemovalMsg = new Discord.MessageEmbed()
 		.setColor('#FFEC09')
@@ -54,7 +53,6 @@ const getHighlightsListReplyMsg = (listOfWords) => {
 
 const addHighlight = async (keywords, user) => {
 	const userID = user.id;
-	// If highlight is already added, say so
 	let exists = true;
 	await Highlights.count({
 		where: {
@@ -70,13 +68,11 @@ const addHighlight = async (keywords, user) => {
 	});
 
 	if(!exists) {
-	// Add entry to table
 		Highlights.create({
 			phrase: keywords,
 			users: userID
 		}).catch(errHandler);
 
-		// Confirm highlight addition
 		const highlightsHelp = getHiglightAdditionReplyMsg(keywords);
 		return user.send(highlightsHelp);
 	}
@@ -84,7 +80,6 @@ const addHighlight = async (keywords, user) => {
 
 const removeHighlight = async (keywords, user) => {
 	const userID = user.id;
-	// Remove entry
 	let exists = true;
 	await Highlights.destroy({
 		where: {
@@ -108,7 +103,6 @@ const removeHighlight = async (keywords, user) => {
 };
 
 const listHighlights = async (user) => {
-	// Fetch all of the keywords where the user is the user
 	let listOfWords = new Array();
 	await Highlights.findAll({
 		where: {
@@ -123,7 +117,6 @@ const listHighlights = async (user) => {
 			listOfWords.push(result[i].phrase);
 		}
 
-		// DM the embedded list to the user
 		const HighlightsListMsg = getHighlightsListReplyMsg(listOfWords);
 		user.send(HighlightsListMsg);
 	});
@@ -149,7 +142,7 @@ module.exports.execute = async (client, message, args) => {
 		else if (cmd === 'list') {
 			return await listHighlights(user);
 		}
-		else { // None of the correct commands were used
+		else {
 			return await user.send('Please use `!highlight add <word/phrase>` to add a new highlight. (case insensitive)');
 		}
 	}
