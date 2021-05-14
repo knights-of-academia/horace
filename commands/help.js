@@ -21,13 +21,11 @@ module.exports.execute = async (client, message, args) => {
 		});
 		try {
 			await message.author.send(helpMessage);
+			await message.channel.send('I have sent you a private message with the command list.');
 		}
 		catch(err) {
 			console.log(err);
 		}
-		return await message.channel.send('I have sent you a private message with the command list.').catch(err => {
-			console.error(err);
-		});
 	} else if (args.length === 1) {
 		let command = commands.find(command => command.config.name === args[0].toLowerCase()
             || command.config.aliases.find(alias => alias === args[0].toLowerCase()));
@@ -42,7 +40,7 @@ module.exports.execute = async (client, message, args) => {
 			helpMessage.addField('Usage:', command.config.usage);
 
 			try {
-				message.channel.send(helpMessage);
+				await message.channel.send(helpMessage);
 			}
 			catch(err) {
 				console.log(err);

@@ -9,7 +9,7 @@
     "start": "node app.js",
     "test": "jest",
     "coverage": "jest --coverage --collectCoverageFrom=commands/**/*.js",
-    "helptest": "jest commands/tests/help.test.js --detectOpenHandles"
+    "helptest": "jest commands/tests/help.test.js"
   },
   "keywords": [
     "node",
