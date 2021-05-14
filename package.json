@@ -7,7 +7,7 @@
     "pretest": "eslint --ignore-path .gitignore .",
     "fixlinting": "eslint --ignore-path .gitignore . --fix",
     "start": "node app.js",
-    "test": "jest",
+    "test": "jest --verbose",
     "coverage": "jest --coverage --collectCoverageFrom=commands/**/*.js",
     "helptest": "jest commands/tests/help.test.js"
   },
