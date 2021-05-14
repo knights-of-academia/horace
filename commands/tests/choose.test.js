@@ -1,5 +1,5 @@
-const choose = require('./choose.js');
-const messageStub = require('../stub/messageStub');
+const choose = require('../choose.js');
+const messageStub = require('../../stub/messageStub');
 
 test('Returns the correct message when no arguments are passed', async () => {
 	const message = new messageStub();

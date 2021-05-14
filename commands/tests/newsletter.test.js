@@ -1,5 +1,5 @@
-const newsletter = require('./newsletter.js');
-const messageStub = require('../stub/messageStub');
+const newsletter = require('../newsletter.js');
+const messageStub = require('../../stub/messageStub');
 
 
 test('Sends newletter link to channel', async () => {

@@ -1,5 +1,5 @@
-const facebook = require('./facebook.js');
-const messageStub = require('../stub/messageStub');
+const facebook = require('../facebook.js');
+const messageStub = require('../../stub/messageStub');
 
 
 test('Sends correct facebook message to channel', async () => {

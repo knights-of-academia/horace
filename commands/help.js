@@ -8,8 +8,6 @@ if (fs.existsSync('../config.json')) {
 }
 
 module.exports.execute = async (client, message, args) => {
-
-
 	let commands = client.commands;
 	let commandNames = [];
 
@@ -22,7 +20,7 @@ module.exports.execute = async (client, message, args) => {
 			helpMessage.addField(`**${prefix}${command.config.name}**`, `${command.config.description}`);
 		});
 		try {
-			message.author.send(helpMessage);
+			await message.author.send(helpMessage);
 		}
 		catch(err) {
 			console.log(err);

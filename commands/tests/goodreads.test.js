@@ -1,5 +1,5 @@
-const goodreads = require('./goodreads.js');
-const messageStub = require('../stub/messageStub');
+const goodreads = require('../goodreads.js');
+const messageStub = require('../../stub/messageStub');
 
 test('sends correct goodreads message to channel', async () => {
 	const message = new messageStub();

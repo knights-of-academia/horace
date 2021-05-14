@@ -1,5 +1,5 @@
-const dice = require('./dice');
-const messageStub = require('../stub/messageStub');
+const dice = require('../dice');
+const messageStub = require('../../stub/messageStub');
 
 test('Sends correct message when args is null', async() => {
 	const message = new messageStub();

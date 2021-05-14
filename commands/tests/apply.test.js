@@ -1,5 +1,5 @@
-const apply = require('./apply.js');
-const messageStub = require('../stub/messageStub');
+const apply = require('../apply.js');
+const messageStub = require('../../stub/messageStub');
 
 
 test('Returns the correct message when no argument is passed', async () => {

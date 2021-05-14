@@ -1,5 +1,5 @@
-const search = require('./search.js');
-const messageStub = require('../stub/messageStub');
+const search = require('../search.js');
+const messageStub = require('../../stub/messageStub');
 
 test('Returns the correct message when no argument is passed', async () => {
 	const message = new messageStub();

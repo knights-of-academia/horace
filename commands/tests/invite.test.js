@@ -1,5 +1,5 @@
-const invite = require('./invite.js');
-const messageStub = require('../stub/messageStub');
+const invite = require('../invite.js');
+const messageStub = require('../../stub/messageStub');
 
 test('Sends default message on no parameters', async () => {
 	const message = new messageStub();

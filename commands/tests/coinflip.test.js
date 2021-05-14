@@ -1,5 +1,5 @@
-const coinflip = require('./coinflip');
-const messageStub = require('../stub/messageStub');
+const coinflip = require('../coinflip');
+const messageStub = require('../../stub/messageStub');
 
 test('random return value less than 0.5', async () => {
 	const message = new messageStub();

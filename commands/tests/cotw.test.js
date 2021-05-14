@@ -1,5 +1,5 @@
-const cotw = require('./cotw.js');
-const messageStub = require('../stub/messageStub');
+const cotw = require('../cotw.js');
+const messageStub = require('../../stub/messageStub');
 
 const store = require('data-store')({ path: process.cwd() + '/data/cotw.json' });
 

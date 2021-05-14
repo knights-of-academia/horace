@@ -1,5 +1,5 @@
-const clans = require('./clans.js');
-const messageStub = require('../stub/messageStub');
+const clans = require('../clans.js');
+const messageStub = require('../../stub/messageStub');
 
 test('Sends correct clans message to channel', async () => {
 	const message = new messageStub();

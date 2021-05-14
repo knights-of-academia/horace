@@ -1,5 +1,5 @@
-const website = require('./website.js');
-const messageStub = require('../stub/messageStub');
+const website = require('../website.js');
+const messageStub = require('../../stub/messageStub');
 
 
 test('Sends a correct message with a URL to the channel', async () => {

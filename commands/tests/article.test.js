@@ -1,5 +1,5 @@
-const article = require('./article.js');
-const messageStub = require('../stub/messageStub.js');
+const article = require('../article.js');
+const messageStub = require('../../stub/messageStub.js');
 
 test('Sends correct response with no arguments', async() => {
 	const message = new messageStub();

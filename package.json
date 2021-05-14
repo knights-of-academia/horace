@@ -8,7 +8,8 @@
     "fixlinting": "eslint --ignore-path .gitignore . --fix",
     "start": "node app.js",
     "test": "jest",
-    "coverage": "jest --coverage --collectCoverageFrom=commands/**/*.js"
+    "coverage": "jest --coverage --collectCoverageFrom=commands/**/*.js",
+    "helptest": "jest commands/tests/help.test.js --detectOpenHandles"
   },
   "keywords": [
     "node",
