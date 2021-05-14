@@ -1,18 +1,9 @@
 const Discord = require('discord.js');
+const MockMessage = require('../../stub/MockMessage.js');
 const help = require('../help.js');
 
 const client = new Discord.Client();
-const message = ({
-	channel: {
-		send: jest.fn((msg) => Promise.resolve(msg)),
-	},
-	author: {
-		send: jest.fn((msg) => Promise.resolve(msg)),
-	},
-	guild: {
-		name: 'KOA'
-	}
-});
+const message = new MockMessage();
 
 beforeAll(() => {
 	client.commands = new Discord.Collection();

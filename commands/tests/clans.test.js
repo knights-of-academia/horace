@@ -1,8 +1,8 @@
 const clans = require('../clans.js');
-const messageStub = require('../../stub/messageStub');
+const MockMessage = require('../../stub/MockMessage.js');
 
 test('Sends correct clans message to channel', async () => {
-	const message = new messageStub();
+	const message = new MockMessage();
 	const responseMessage = await clans.execute(null, message);
 
 	const expectedResponse = `⚔ Here is our list of KOA Clans! ⚔
