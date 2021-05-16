@@ -16,8 +16,8 @@ pids
 *.pid.lock
 
 # COTW information file
-/data/cotw.json
+data/cotw.json
 
 # Database
 *.sqlite
-/databaseFiles/storagedata.db
+databaseFiles/storagedata.db
