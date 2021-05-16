@@ -7,8 +7,8 @@ module.exports = class MockMessage {
 
 		this.author = {
 			send: jest.fn((msg) => Promise.resolve(msg)),
-			id: '',
-			username: ''
+			id: '123456789876543210',
+			username: 'MockedUser'
 		};
 
 		this.guild = {
