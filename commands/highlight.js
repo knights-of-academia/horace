@@ -1,9 +1,7 @@
-// Get the Highlights Table stored in the SQLite database
 const Highlights = require('../databaseFiles/highlightsTable.js');
 const Discord = require('discord.js');
 const config = require('../config.json');
 
-// Error handler
 const errHandler = err => {
 	console.error('Highlights sequelize error: ', err);
 };

@@ -20,6 +20,7 @@ class cotwActions {
 			return null;
 		}
 	}
+
 	static async reactToVowAndReflections(client, message) {
 		// React to vow
 		if (message.channel.id === config.channels.cotw
@@ -39,6 +40,7 @@ class cotwActions {
 			}
 		}
 	}
+
 	static async updateCotw(client, message) {
 		if (message.channel.id === config.channels.cotw
 			&& message.member.roles.cache.some(role => role.id === config.roles.cotwManager)) {

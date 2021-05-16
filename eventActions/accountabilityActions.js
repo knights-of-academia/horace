@@ -14,9 +14,6 @@ function isMessagePinnedAtAll(messageToCheck, setOfPinnedMessages){
 
 class accountabilityActions {
 	static async userPinsMessage(reaction, user) {
-
-		/* Structure taken from tosActions.js for sake of consistency */
-
 		// Check if we are in the accountability channel and the reaction emote is the proper emote
 		if(reaction.message.channel.id == config.channels.accountability
             && reaction._emoji.name == config.emotes.pinMessage) {

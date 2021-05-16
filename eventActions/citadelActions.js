@@ -2,8 +2,6 @@ const config = require('../config.json');
 
 class citadelActions {
 	static async greetMorningOrNight(client, message) {
-
-		// Handle good morning and goodnight
 		let strict_reg_morning = new RegExp(config.strict_morning_regex);
 		let strict_reg_night = new RegExp(config.strict_night_regex);
 		let normal_reg_morning = new RegExp(config.normal_morning_regex);

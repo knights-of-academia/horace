@@ -6,10 +6,8 @@ class snapshotActions {
 		if (message.channel.id === config.channels.snapshots
             && message.attachments.size === 0) {
 
-			// Delete message
 			await message.delete();
 
-			// Send warning to author
 			await message.author.send(`Hey! I noticed you sent a message in <#${config.channels.snapshots}> that wasn't a picture. To help maintain the integrity of the channel, the staff team has made the decision to only allow pictures, captions and reactions there. As a result of this, your message has been removed. Thanks for understanding! 😄`);
 
 			const embedMessage = new Discord.MessageEmbed()

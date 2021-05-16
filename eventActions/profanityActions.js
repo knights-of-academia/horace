@@ -11,7 +11,6 @@ class profanityActions {
 			return console.log('Error! Moderation Channel ID in Config in likely invalid. Please verify!');
 		} 
 		
-		// ensure bannedWords is populated
 		if (bannedWordsSQL.length == 0) { 
 			return console.log('Error: No banned words found in database.');
 		}

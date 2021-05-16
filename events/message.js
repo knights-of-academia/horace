@@ -14,9 +14,8 @@ const staffAccountabilityActions = require('../eventActions/staffAcountabilityAc
 const contentActions = require('../eventActions/contentActions');
 
 module.exports = async (client, message) => {
-
 	if (!message.guild || message.author.bot) return;
-	const args = message.content.split(/\s+/g); // Return the message content and split the prefix.
+	const args = message.content.split(/\s+/g);
 	const command =
 		message.content.startsWith(config.prefix) &&
 		args.shift().slice(config.prefix.length).toLowerCase();
@@ -29,7 +28,7 @@ module.exports = async (client, message) => {
 		if (commandfile) {
 			commandfile.execute(client, message, args).then(() => {
 				message.delete({timeout: 1500});
-			}); // Execute found command
+			});
 		}
 	}
 
