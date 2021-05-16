@@ -2,7 +2,7 @@ module.exports = class MockMessage {
 	constructor() {
 		this.channel = {
 			send: jest.fn((msg) => Promise.resolve(msg)),
-			id: '',
+			id: '123123123123123123',
 		};
 
 		this.author = {

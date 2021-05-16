@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 const MockMessage = require('../../stub/MockMessage.js');
 const spoiler = require('../spoiler.js');
 
