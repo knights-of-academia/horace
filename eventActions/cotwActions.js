@@ -43,7 +43,7 @@ class cotwActions {
 
 	static async updateCotw(client, message) {
 		if (message.channel.id === config.channels.cotw
-			&& message.member.roles.cache.some(role => role.id === config.roles.cotwManager)) {
+			&& message.member.roles.cache.has(config.roles.cotwManager)) {
 			const store = require('data-store')({
 				path: process.cwd() + '/data/cotw.json'
 			});
@@ -51,19 +51,26 @@ class cotwActions {
 			if (message.content.toLowerCase().includes('congratulations')
 				&& message.mentions.members) {
 				const winner = message.mentions.members.first();
-				const cotwRole = message.guild.roles.find(role => role.id === config.roles.cotwChampion
-				);
+				const cotwRole = message.guild.roles.cache.get(config.roles.cotwChampion);
 
 				// Remove role from all previous winners
-				message.guild.members.forEach(member => {
-					if (!member.roles.find(t => t.id === cotwRole.id)) return;
-					member.removeRole(cotwRole.id);
+				message.guild.members.cache.each(async (member) =>{
+					if (member.roles.cache.has(cotwRole.id)) {
+						await member.roles.remove(cotwRole);
+					}
 				});
 
-				winner.addRole(cotwRole);
 				const emote = config.emotes.congrats;
-				message.react(emote);
-				return message.channel.send(`Congratulations <@${winner.id}>!`);
+				try {
+					await winner.roles.add(cotwRole),
+					Promise.all([
+						message.react(emote),
+						message.channel.send(`Congratulations <@${winner.id}>!`)
+					]);
+				}
+				catch(err) {
+					console.log(err);
+				}
 			}
 
 			// If message contains link to a new poll, update it in store and send message to confirm the action.
