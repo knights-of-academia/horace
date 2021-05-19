@@ -1,11 +1,22 @@
 module.exports.execute = async (client, message) => {
 	const store = require('data-store')({ path: process.cwd() + '/data/cotw.json' });
-	const pollOpen = store.get('pollActive');
+	const pollActive = store.get('pollActive');
+	const pollLink = store.get('pollLink');
+	const challengeId = store.get('challengeId');
+	const challengeName = store.get('challengeName');
 
-	let response = `⚔  Challenge of the Week ⚔\n\n🔸 The current challenge ***${store.get('challengeName')}*** can be found here: https://habitica.com/challenges/${store.get('challengeId')}`;
+	let response = '';
 
-	if (pollOpen) {
-		response += `\n🔸 The poll for next week's challenge can be found here: ${store.get('pollLink')}`;
+	if (challengeId != undefined && challengeName != undefined) {
+		response += `⚔  Challenge of the Week ⚔\n\n🔸 The current challenge, **${challengeName}**, can be found here: https://habitica.com/challenges/${challengeId}`;
+	}
+
+	if (pollActive && pollLink != undefined) {
+		response += `\n🔸 The poll for next week's challenge can be found here: ${pollLink}`;
+	}
+
+	if (!response.length) {
+		response = 'Could not get the current Challenge of the Week.';
 	}
 
 	return await message.channel.send(response);
