@@ -78,22 +78,27 @@ class afkMessageCheckAction {
 		// Make sure the message is meant for the one person only. This also means the bot will not trigger on tag spams.
 		if (message.mentions.members.size == 1) {
 			let id = message.mentions.members.firstKey();
-			Afks.findAll({
+
+			const result = await Afks.findAll({
 				where: {
 					user: id
 				}
-			}).then(result => {
-				if (result.length == 1) {
-					message.guild.fetchMember(result[0].user).then(user => {
-						let name = user.nickname ? user.nickname : user.user.username;
-						const embed = new Discord.MessageEmbed()
-							.setTitle(`${name} is not here`)
-							.addField('AFK Message:',result[0].message)
-							.setColor('#FFEC09');
-						message.channel.send(embed).then(msg => msg.delete(5000).catch(() => console.log('Tried deleting afk message that was already deleted')));
-					});
-				}
 			});
+
+			if (result.length == 1) {
+				const mentionedUser = message.guild.members.cache.get(result[0].user);
+				let name = mentionedUser.nickname ? mentionedUser.nickname : mentionedUser.user.username;
+				const embed = new Discord.MessageEmbed()
+					.setTitle(`${name} is not here`)
+					.addField('AFK Message:',result[0].message)
+					.setColor('#FFEC09');
+				try {
+					await message.channel.send(embed);
+				}
+				catch(err) {
+					console.err(err);
+				}
+			}
 		}
 	}
 }
