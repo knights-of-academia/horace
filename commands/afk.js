@@ -1,69 +1,49 @@
-// Get the afk Table stored in the SQLite database
 const Afks = require('../databaseFiles/afkTable.js');
 
-
 module.exports.execute = async (client, message, args) => {
-	const sender = message.author;
 	const afkMessage = args.length > 0 ? args.join(' ') : 'They didn\'t tell us where they went...';
 
-	Afks.findAll({
+	const findresult = await Afks.findAll({
 		where: {
-			user: sender.id,
+			user: message.author.id,
 		},
-	}).then(findresult => {
-		if (findresult.length == 0) {
-			Afks.create({
+	});
+
+	if (findresult.length == 0) {
+		try {
+			await Afks.create({
 				message: afkMessage,
 				cooldown: Date.now(),
-				user: sender.id
-			}).then(() => {
-				sender.send('I have marked you as AFK. Safe travels!').then(msg => msg.delete(5000).catch());
-			}).catch(err => {
-				if (err.name == 'SequelizeUniqueConstraintError') {
-					Afks.destroy({
-						where: {
-							user: sender.id,
-						},
-					}).then((result) => {
-						// User successfully removed from table
-						if (result == 1) {
-							return message.channel
-								.send(
-									`Welcome back, ${
-										message.member.nickname
-											? message.member.nickname
-											: message.author.username
-									}!`
-								)
-								.then((delmessage) => delmessage.delete({ timeout: 5000 }))
-								.catch('Error sending message.');
-						}
-					});
-				}
-				console.error('Afk sequelize error: ', err);
+				user: message.author.id
 			});
-		} else {
-			Afks.destroy({
-				where: {
-					user: sender.id,
-				},
-			}).then((result) => {
-				// User successfully removed from table
-				if (result == 1) {
-					return message.channel
-						.send(
-							`Welcome back, ${
-								message.member.nickname
-									? message.member.nickname
-									: message.author.username
-							}!`
-						)
-						.then((delmessage) => delmessage.delete({ timeout: 5000 }))
-						.catch('Error sending message.');
-				}
-			});
+
+			await message.author.send('I have marked you as AFK. Safe travels!');
 		}
-	});
+		catch(err) {
+			console.error('Afk error: ', err);
+		}			
+	} else {
+		const result = await Afks.destroy({
+			where: {
+				user: message.author.id,
+			},
+		});
+
+		if (result == 1) {
+			try {
+				await message.channel.send(
+					`Welcome back, ${
+						message.member.nickname
+							? message.member.nickname
+							: message.author.username
+					}!`
+				);
+			}
+			catch(err) {
+				console.error('Afk error: ', err);
+			}
+		}
+	}
 };
 
 module.exports.config = {
