@@ -73,9 +73,11 @@
   "reminderScanInterval": 30000,
   "chainMessageCharLimit": "40",
   "forbiddenHighlightChannels": ["0000", "0000"],
+  "tosReminderTimer": "30000",
   "forceStrictGreetings": false,
   "strict_morning_regex": "mo*rning (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$",
   "strict_night_regex": "ni*ght (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$",
   "normal_morning_regex": "g+o{2,}d+\\s*m+o+r+n+i+n+g+",
-  "normal_night_regex": "g+o{2,}d+\\s*n+i+g+h+t+"
+  "normal_night_regex": "g+o{2,}d+\\s*n+i+g+h+t+",
+  "tosRemindAfterHours": 72
 }

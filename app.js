@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 const config = require('./config.json');
 const connect = require('./databaseFiles/connect.js');
 const remind = require('./commands/remind.js');
+const tosRemind = require("./eventActions/tosReminderAction.js");
 
 const client = new Discord.Client({
 	partials: ['USER', 'REACTION', 'MESSAGE'],
@@ -53,4 +54,5 @@ client.login(config.token);
 client.on('ready', () => {
 	remind.catchUp(client);
 	setInterval(remind.scanForReminders, config.reminderScanInterval, client);
+	setInterval(tosRemind.tosRemind,config.tosReminderTimer,client);
 });
