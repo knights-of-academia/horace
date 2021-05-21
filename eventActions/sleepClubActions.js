@@ -1,6 +1,6 @@
 const config = require('../config.json');
 
-class sleepclubActions {
+class sleepClubActions {
 	static async reactToSleepLog(client, message) {
 		const emote = config.emotes.sleeplogReaction;
 		if (message.channel.id === config.channels.sleepclub
@@ -11,4 +11,4 @@ class sleepclubActions {
 	}
 }
 
-module.exports = sleepclubActions;
+module.exports = sleepClubActions;

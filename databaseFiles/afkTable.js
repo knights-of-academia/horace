@@ -14,7 +14,7 @@ module.exports = sequelize.define('Afk', {
 		unique: true        
 	},
 	cooldown: {
-		type: Sequelize.STRING,
+		type: Sequelize.TIME,
 		allowNull: false
 	}
 });
