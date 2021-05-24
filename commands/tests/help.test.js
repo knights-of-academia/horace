@@ -24,8 +24,18 @@ afterAll(() => {
 test('Sends default help message when no argument is provided', async () => {	
 	await help.execute(client, message, []);
 
-	const expectedResponse = 'I have sent you a private message with the command list.';
+	const expectedEmbed = new Discord.MessageEmbed()
+		.setColor('#ff0000')
+		.setTitle('List of available commands')
+		.setDescription('Commands available in KOA')
+		.addField('**!help**', 'I will send you this message, or the usage of a specific command.')
+		.addField('**!facebook**', 'I will send you the link to our Facebook group.')
+		.addField('**!invite**', 'Want to invite a friend to the server? This will get you the invite link.')
+		.addField('**!coinflip**', 'We will flip a coin together. Heads or tails?');
+	expect(message.author.send).toHaveBeenCalledWith(expectedEmbed);
 	expect(message.author.send).toHaveBeenCalledTimes(1);
+
+	const expectedResponse = 'I have sent you a private message with the command list.';
 	expect(message.channel.send).toHaveBeenCalledWith(expectedResponse);
 });
 
