@@ -123,7 +123,7 @@ module.exports.execute = async (client, message, args) => {
 				return await message.channel.send(
 					`Whoops! ${err.month} doesn't have ${err.days} days! Please correct the command or see \`!remind help\` for guidance!`
 				);
-			} else if (err instanceof errors.NonmatchingInputValidationError) {
+			} else if (err instanceof errors.NonMatchingInputValidationError) {
 				return await message.channel.send(
 					'I\'m sorry, but the command you\'ve used is invalid. Please use `!remind help` for guidance on how to structure it correctly!'
 				);
@@ -249,7 +249,7 @@ function parseReminder(unparsedArgs, currentDate, message) {
 
 		confirmReminder(whatToRemind, whenToRemindForConfirmation, message);
 	} else {
-		throw new errors.NonmatchingInputValidationError('The command format doesn\'t match any of the regexes.');
+		throw new errors.NonMatchingInputValidationError('The command format doesn\'t match any of the regexes.');
 	}
 
 
@@ -361,8 +361,6 @@ async function scanForReminders(client) {
 
 async function catchUp(client) {
 	const currentDate = new Date();
-	// ensures that the Reminder Table exists, and synchronizes it before checking for reminders
-	await Reminder.sync(); 
 	const reminders = await Reminder.findAll().catch(err => {
 		console.error('Reminder Sequelize error: ', err);
 	});

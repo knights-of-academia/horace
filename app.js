@@ -3,8 +3,6 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const config = require('./config.json');
 const connect = require('./databaseFiles/connect.js');
-const remind = require('./commands/remind.js');
-const tosRemind = require("./eventActions/tosReminderAction.js");
 
 const client = new Discord.Client({
 	partials: ['USER', 'REACTION', 'MESSAGE'],
@@ -44,15 +42,5 @@ fs.readdir('./commands/', (err, files) => {
 	});
 });
 
-// Connect to given database
 connect.instantiateConnection();
-
 client.login(config.token);
-
-// Catch up on the belated reminders in case the bot was down at a given time.
-// Set up an interval to scan the `Reminders` table and remind people as necessary.
-client.on('ready', () => {
-	remind.catchUp(client);
-	setInterval(remind.scanForReminders, config.reminderScanInterval, client);
-	setInterval(tosRemind.tosRemind,config.tosReminderTimer,client);
-});

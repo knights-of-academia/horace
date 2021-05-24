@@ -5,8 +5,7 @@ let trackerObject = {
 	msgCounts: []
 };
 class CheckChainMessage {
-
-	// "Load" tracker object with necessary data. Called in 'ready.js'
+	// "Load" tracker object with necessary data.
 	static async loadChainMessageTracker(client) {
 
 		client.channels.cache.forEach(channel => {

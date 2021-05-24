@@ -3,7 +3,7 @@ const connect = require('./connect.js');
 
 const sequelize = connect.sequelize;
 
-//A table representing the keyword inputs
+// A table representing the keyword inputs
 module.exports = sequelize.define('SearchWords', {
 	term: {
 		type: Sequelize.STRING,

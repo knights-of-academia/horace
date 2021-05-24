@@ -1,15 +1,10 @@
-const facebook = require('./facebook.js');
-const messageStub = require('../stub/messageStub');
+const facebook = require('../facebook.js');
+const MockMessage = require('../../stub/MockMessage.js');
 
 
 test('Sends correct facebook message to channel', async () => {
-	// Arrange
-	const message = new messageStub();
-
-	// Act
+	const message = new MockMessage();
 	const responseMessage = await facebook.execute(null, message);
-
-	// Assert
 	const expectedResponse = 'KOA Facebook Group : https://www.facebook.com/groups/1895927804047033/';
 	expect(responseMessage).toBe(expectedResponse);
 });

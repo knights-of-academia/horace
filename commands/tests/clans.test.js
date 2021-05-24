@@ -1,19 +1,13 @@
-const clans = require('./clans.js');
-const messageStub = require('../stub/messageStub');
-
+const clans = require('../clans.js');
+const MockMessage = require('../../stub/MockMessage.js');
 
 test('Sends correct clans message to channel', async () => {
-	// Arrange
-	const message = new messageStub();
-
-	// Act
+	const message = new MockMessage();
 	const responseMessage = await clans.execute(null, message);
 
-	// Assert
 	const expectedResponse = `⚔ Here is our list of KOA Clans! ⚔
 
-	🔸 **The Round Table**: All things Hard Mode by **bendre19997**#9332
-	🔸 **Bards of Academia**: All things music by *Position Open!*
+	🔸 **The Round Table**: All things Hard Mode by **bendre1997**#9332
 	🔸 **The Fiction Faction**: Creative Writing & Story Telling by **varrictethras**#5383
 	🔸 **The Gathering**: Accountability by **hikikomori**#3771
 	🔸 **The Clockwork Knights**: Productivity & Efficiency through the use of Systems by **stoneybaby**#3398

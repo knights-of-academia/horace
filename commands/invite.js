@@ -1,5 +1,4 @@
 module.exports.execute = async (client, message, args) => {
-
 	let inviteText = 'Invite to the KOA server: https://discord.gg/EYX7XGG';
 
 	if(args[0]) {

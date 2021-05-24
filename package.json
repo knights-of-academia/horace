@@ -4,11 +4,12 @@
   "description": "Main bot for Knights of Academia.",
   "main": "app.js",
   "scripts": {
-    "pretest": "eslint --ignore-path .gitignore .",
-    "fixlinting": "eslint --ignore-path .gitignore . --fix",
     "start": "node app.js",
+    "lint": "eslint --cache .",
+    "lint:fix": "npm run lint -- --fix",
     "test": "jest",
-    "coverage": "jest --coverage --collectCoverageFrom=commands/**/*.{js,jsx}"
+    "posttest": "npm run lint",
+    "coverage": "jest --coverage --collectCoverageFrom=commands/**/*.js"
   },
   "keywords": [
     "node",
@@ -20,8 +21,6 @@
     "data-store": "^4.0.3",
     "discord.js": "^12.5.1",
     "habitica": "^4.0.0",
-    "mysql2": "^2.0.2",
-    "quick.db": "^7.1.3",
     "rss-parser": "^3.7.2",
     "sequelize": "^5.21.3",
     "sqlite3": "^4.2.0"
@@ -32,7 +31,6 @@
   "devDependencies": {
     "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-formatter-pretty": "^2.1.1",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^23.20.0",
     "jest": "^24.9.0"

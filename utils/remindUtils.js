@@ -36,7 +36,7 @@ function addToDate(date, amountToAdd, whatToAdd) {
 		result.setFullYear(result.getFullYear() + amountToAdd);
 		break;
 	default:
-		throw new errors.NonmatchingInputValidationError('The unit (minutes, hours, ...) could\'nt be parsed correctly.');
+		throw new errors.NonMatchingInputValidationError('The unit (minutes, hours, ...) couldn\'t be parsed correctly.');
 	}
 
 	return result;

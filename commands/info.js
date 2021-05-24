@@ -1,17 +1,9 @@
-//Get the InfoTerms Table and Search Words Table in the SQLite database
-const InfoTerms = require('../databaseFiles/infoTermsTable.js');
-const SearchWords = require('../databaseFiles/searchWordsTable.js');
 const Discord = require('discord.js');
 const config = require('../config.json');
-
-
-
-//Ensure the tables exist if not already
-InfoTerms.sync();
-SearchWords.sync();
+const InfoTerms = require('../databaseFiles/infoTermsTable.js');
+const SearchWords = require('../databaseFiles/searchWordsTable.js');
 
 module.exports.execute = async (client, message, args) => {
-	// Error handler
 	const errHandler = err => {
 		client.channel.get(config.channels.errors).send(err);
 	};

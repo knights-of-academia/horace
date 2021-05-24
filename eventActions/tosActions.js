@@ -1,6 +1,6 @@
 const config = require('../config.json');
 const Discord = require('discord.js');
-const tosReminder = require("../eventActions/tosReminderAction");
+const tosReminder = require('../eventActions/tosReminderAction');
 
 class tosActions {
 	static userAcceptsTOS(reaction, user, client) {

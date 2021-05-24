@@ -1,5 +1,4 @@
 module.exports = async (client, channel) => {
-	// Check for max pins regardless of channel
 	const currentChannel = client.channels.cache.get(channel.id);
 	currentChannel.messages.fetchPinned().then(messages => {
 		const numOfPins = messages.size;
