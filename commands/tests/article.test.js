@@ -56,3 +56,10 @@ test('Sends correct response when latest article is requested', async() => {
 	const expectedStart = 'The latest article from KOA is';
 	expect(responseMessage).toMatch(new RegExp(`^${expectedStart}`));
 });
+
+test('Sends correct response when incorrect argument is passed', async() => {
+	const message = new MockMessage();
+	const responseMessage = await article.execute(null, message, ['abcd']);
+	const expectedStart = '`abcd` is not a valid argument. Use `!help article` for more information.';
+	expect(responseMessage).toMatch(new RegExp(`^${expectedStart}`));
+});
