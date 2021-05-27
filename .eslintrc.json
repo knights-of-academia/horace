@@ -27,6 +27,7 @@
         "key-spacing": "error",
         "keyword-spacing": "error",
         "arrow-parens": "error",
+        "space-in-parens": "error",
         "space-before-blocks": "error",
         "newline-per-chained-call": "error",
         "comma-style": "error",

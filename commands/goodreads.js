@@ -1,4 +1,4 @@
-module.exports.execute = async (client, message ) => {
+module.exports.execute = async (client, message) => {
 	return await message.channel.send('KOA Goodreads page: https://www.goodreads.com/group/show/756579-knights-of-academia');
 };
 

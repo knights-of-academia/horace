@@ -11,7 +11,7 @@ class highlightActions {
 		if (config.forbiddenHighlightChannels.includes(message.channel.id)) return; // Ensure people can't "spy" on channels
 		Highlights.findAll({
 			attributes: ['phrase', 'users']
-		}).then( (result) => {
+		}).then((result) => {
 			for (let i = 0; i < result.length; i++) {
 				let currentPhrase = result[i].phrase;
 				let currentId = result[i].users;
