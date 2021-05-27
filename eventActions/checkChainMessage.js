@@ -25,7 +25,7 @@ class CheckChainMessage {
 	// Helper method to run the comparison if enough chains have been reached. Horace will randomly chain after 3, 4, or 5 messages.
 	static async makeChainMessage(channelId, channelInst) {
 		// Send a message randomly on message number 3 or 4
-		const rand = Math.round(Math.random(3)+3);
+		const rand = Math.round(Math.random(3) + 3);
 		if (trackerObject.msgCounts[channelId] == rand) {
 			channelInst.send('' + trackerObject.msgContents[channelId]);
 		}
@@ -48,7 +48,7 @@ class CheckChainMessage {
 		const lastMessageInChannel = trackerObject.msgContents[channelId];
 		const currentChainCount = trackerObject.msgCounts[channelId];
 		if (messageContent === lastMessageInChannel) {
-			trackerObject.msgCounts[channelId] = currentChainCount+1;
+			trackerObject.msgCounts[channelId] = currentChainCount + 1;
 			this.makeChainMessage(channelId, message.channel);
 		} else {
 			this.resetChannelChain(channelId, messageContent);

@@ -7,7 +7,7 @@ module.exports.execute = async (client, message, args) => {
 		return await message.channel.send('❌ Please specify a number for the dice size.');
 	}
 	const diceSize = Number.parseInt(args[0], 10);
-	const diceResult = Math.floor(Math.random()*diceSize)+1;
+	const diceResult = Math.floor(Math.random() * diceSize) + 1;
 
 	return await message.channel.send(`⚅ result: ${diceResult}`);
 };

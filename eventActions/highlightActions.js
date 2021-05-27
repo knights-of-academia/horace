@@ -36,34 +36,34 @@ class highlightActions {
 					console.log(message.content.length);
 					// If it's at the start, check for containment within a word (i.e. may in mayflower)
 					if (indexOfPhraseStart == 0) {
-						if (message.content.charAt(indexOfPhraseEnd+1) == ' ') {
+						if (message.content.charAt(indexOfPhraseEnd + 1) == ' ') {
 							contains = true;
 						}
 					}
 					// If it's at the end, check for containment within a word
-					else if (indexOfPhraseEnd == message.content.length-1) {
-						if (message.content.charAt(indexOfPhraseStart-1) == ' ') {
+					else if (indexOfPhraseEnd == message.content.length - 1) {
+						if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
 							contains = true;
 						}
 					}
 
 					// Check if within word with space before (-1 because we already checked for the beginning of a message)
-					else if (message.content.charAt(indexOfPhraseStart-1) == ' ') {
+					else if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
 						// Separated from below check because of potential following punctuation
-						if (punctuation.includes(message.content.charAt(indexOfPhraseEnd+1))) {
+						if (punctuation.includes(message.content.charAt(indexOfPhraseEnd + 1))) {
 							contains = true;
 						}
 					}
 
 					// Check if within word with space after, including a check for punctuation (which is why it's separate from above)
-					else if (message.content.charAt(indexOfPhraseEnd+1) == ' ') {
-						if (message.content.charAt(indexOfPhraseStart-1) == ' ') {
+					else if (message.content.charAt(indexOfPhraseEnd + 1) == ' ') {
+						if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
 							contains = true;
 						}
 					}
 
 					// Check for basic punctuation
-					else if (!punctuation.includes(message.content.charAt(indexOfPhraseEnd+1))) {
+					else if (!punctuation.includes(message.content.charAt(indexOfPhraseEnd + 1))) {
 						contains = true;
 					}
 				}

@@ -10,8 +10,8 @@ module.exports.execute = async (client, message, args) => {
 	const cmd = args[0];
 	const term = args[1];
 	const entirePhrase = args.join(' ');
-	const keywords = entirePhrase.substring(entirePhrase.indexOf(' ')+1);
-	const desc = keywords.substring(keywords.indexOf('-')+1);
+	const keywords = entirePhrase.substring(entirePhrase.indexOf(' ') + 1);
+	const desc = keywords.substring(keywords.indexOf('-') + 1);
 	const user = message.author;
 	const infoEmote = config.emotes.info;
 

@@ -29,6 +29,7 @@
         "arrow-parens": "error",
         "space-in-parens": "error",
         "space-before-blocks": "error",
+        "space-infix-ops": "error",
         "newline-per-chained-call": "error",
         "comma-style": "error",
         "dot-notation": "error",

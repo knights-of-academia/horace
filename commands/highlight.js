@@ -122,7 +122,7 @@ const listHighlights = async (user) => {
 module.exports.execute = async (client, message, args) => {
 	const cmd = args[0]; // The command of what to do with the following phrase
 	const entirePhrase = args.join(' ');
-	const keywords = entirePhrase.substring(entirePhrase.indexOf(' ')+1).toLowerCase(); // Remove the first word, i.e. the command
+	const keywords = entirePhrase.substring(entirePhrase.indexOf(' ') + 1).toLowerCase(); // Remove the first word, i.e. the command
 	const user = message.author;
 
 	if (keywords.length === 0) {

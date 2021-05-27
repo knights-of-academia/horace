@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const table = require('../databaseFiles/tosReminderTable');
 const config = require('../config.json');
 
-const addToDatabase = async (user, joinTime, reminded=false) => {
+const addToDatabase = async (user, joinTime, reminded = false) => {
 	try {
 		await table.create({
 			user_id: user.id,
