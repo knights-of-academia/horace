@@ -16,19 +16,19 @@ module.exports.execute = async (client, message, args) => {
 			.setColor('#ff0000')
 			.setTitle('List of available commands')
 			.setDescription('Commands available in ' + message.guild.name);
-		commands.forEach(command => {
+		commands.forEach((command) => {
 			helpMessage.addField(`**${prefix}${command.config.name}**`, `${command.config.description}`);
 		});
 		try {
 			await message.author.send(helpMessage);
 			await message.channel.send('I have sent you a private message with the command list.');
 		}
-		catch(err) {
+		catch (err) {
 			console.log(err);
 		}
 	} else if (args.length === 1) {
-		let command = commands.find(command => command.config.name === args[0].toLowerCase()
-            || command.config.aliases.find(alias => alias === args[0].toLowerCase()));
+		let command = commands.find((command) => command.config.name === args[0].toLowerCase()
+            || command.config.aliases.find((alias) => alias === args[0].toLowerCase()));
 
 		if (command) {
 			let helpMessage = new Discord.MessageEmbed()
@@ -42,13 +42,13 @@ module.exports.execute = async (client, message, args) => {
 			try {
 				await message.channel.send(helpMessage);
 			}
-			catch(err) {
+			catch (err) {
 				console.log(err);
 			}
 		} else {
-			commands.forEach(command => {
+			commands.forEach((command) => {
 				commandNames.push(command.config.name);
-				command.config.aliases.forEach(alias => commandNames.push(alias));
+				command.config.aliases.forEach((alias) => commandNames.push(alias));
 			});
 			return didYouMean(commandNames, args[0].toLowerCase(), message);
 		}
@@ -80,10 +80,9 @@ async function didYouMean(commands, search, message) {
 					}
 				}
 			}
-			return await message.channel.send(`Did you mean \`${prefix}help ${str[score.indexOf(Math.max(...score))]}\`?`).catch(err => console.log(err));
-
+			return await message.channel.send(`Did you mean \`${prefix}help ${str[score.indexOf(Math.max(...score))]}\`?`).catch((err) => console.log(err));
 		} else {
-			return await message.channel.send(`Did you mean \`${prefix}help ${str[0]}\`?`).catch(err => console.log(err));
+			return await message.channel.send(`Did you mean \`${prefix}help ${str[0]}\`?`).catch((err) => console.log(err));
 		}
 	}
 }

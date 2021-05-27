@@ -10,15 +10,15 @@ class staffaccountability {
 			message.channel.fetchMessages({
 				limit: 100,
 			}).then((messages) => {
-				const userMessages = messages.filter(m => m.author.id === filterBy).array();
-				if(userMessages) {
+				const userMessages = messages.filter((m) => m.author.id === filterBy).array();
+				if (userMessages) {
 					message.author.send(`Hey, you have extra messages in ${message.channel}, should I remove them?`)
 						.then((message) => {
 							message.react(config.emotes.yes2);
 							message.react(config.emotes.no);
 							// gather user reactions and ignore bot reactions
 							message.awaitReactions((reaction, user) => user != message.author && (reaction.emoji.name == config.emotes.yes2 || reaction.emoji.name == config.emotes.no),
-								{ max: 1, time: 10000 }).then(collected => {
+								{ max: 1, time: 10000 }).then((collected) => {
 								let item = collected.array()[0];
 								if (item._emoji.name == config.emotes.yes2) {
 									userMessages.shift();
@@ -28,9 +28,10 @@ class staffaccountability {
 								else {
 									message.reply('Gotcha, I won\'t delete your old messages.');
 								}
-							}).catch(() => {
-								message.reply('No reaction after 60 seconds, messages will not be deleted.');
-							});
+							})
+								.catch(() => {
+									message.reply('No reaction after 60 seconds, messages will not be deleted.');
+								});
 						});
 				}
 			});

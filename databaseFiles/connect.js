@@ -10,13 +10,13 @@ const sequelize = new Sequelize({
 
 module.exports.sequelize = sequelize;
 
-module.exports.instantiateConnection = function (){
+module.exports.instantiateConnection = function () {
 	sequelize
 		.authenticate()
 		.then(() => {
 			console.log('Horace reporting... connection to database successful!');
 		})
-		.catch(err => {
+		.catch((err) => {
 			console.error('Horace reporting... connection to database could not be established!', err);
 		});
 };

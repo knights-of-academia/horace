@@ -9,7 +9,7 @@ module.exports = sequelize.define('Highlights', {
 		type: Sequelize.STRING,
 		allowNull: false
 	},
-	users:{
+	users: {
 		type: Sequelize.STRING,
 		allowNull: false,
 	}

@@ -10,7 +10,7 @@ const addToDatabase = async (user, joinTime, reminded=false) => {
 			reminded: reminded
 		});
 	}
-	catch(err) {
+	catch (err) {
 		console.error('TosReminder error: ', err);
 	}
 };
@@ -19,11 +19,11 @@ const removeFromDatabase = async (user) => {
 	try {
 		await table.destroy({
 			where: {
-				user_id:user.id
+				user_id: user.id
 			}
 		});
 	}
-	catch(err)
+	catch (err)
 	{
 		console.error('TosReminder error: ', err);
 	}
@@ -44,33 +44,33 @@ const tosRemind = async (client) => {
 			}
 		});
 	}
-	catch(err) {
+	catch (err) {
 		console.error('TosReminder error: ', err);
 	}
 
-	if(!unreminded) {
+	if (!unreminded) {
 		return;
 	}
 
-	unreminded.forEach(async reminder => {
+	unreminded.forEach(async (reminder) => {
 		const userToRemind = reminder.dataValues.user_id;
 		// Checks if the time given in config has passed
-		if(new Date() - reminder.dataValues.joinTime >= config.tosRemindAfterHours * 3600000) {
+		if (new Date() - reminder.dataValues.joinTime >= config.tosRemindAfterHours * 3600000) {
 			try {
 				const user = await client.users.fetch(userToRemind);
 				await user.send(messageEmbed);
 			}
-			catch(err) {
+			catch (err) {
 				console.error('TosReminder error: ',err);
 			}
 
 			try {
 				await table.update(
 					{ reminded: true },
-					{ where: { user_id: userToRemind }}
+					{ where: { user_id: userToRemind } }
 				);
 			}
-			catch(err) {
+			catch (err) {
 				console.log('TosReminder error: ', err);
 			}
 		}

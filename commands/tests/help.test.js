@@ -8,7 +8,7 @@ const message = new MockMessage();
 beforeAll(() => {
 	client.commands = new Discord.Collection();
 	client.aliases = new Discord.Collection();
-	['help', 'facebook','invite','coinflip'].forEach(name => 
+	['help', 'facebook','invite','coinflip'].forEach((name) =>
 		client.commands.set(name, require(`../${name}`))
 	);
 });
@@ -21,7 +21,7 @@ afterAll(() => {
 	client.destroy();
 });
 
-test('Sends default help message when no argument is provided', async () => {	
+test('Sends default help message when no argument is provided', async () => {
 	await help.execute(client, message, []);
 
 	const expectedEmbed = new Discord.MessageEmbed()
@@ -54,7 +54,7 @@ test('Sends default help message when an argument is provided', async () => {
 
 test('Sends name correction when an incorrect command is looked up', async () => {
 	await help.execute(client, message, ['yelp']);
-	
+
 	const expectedResponse = 'Did you mean `!help help`?';
 	expect(message.channel.send).toHaveBeenCalledWith(expectedResponse);
 });

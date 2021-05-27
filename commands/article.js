@@ -5,9 +5,9 @@ module.exports.execute = async (client, message, args) => {
 	const feed = await parser.parseURL('https://knightsofacademia.org/category/articles/feed');
 	const r = Math.floor(Math.random() * (feed.items.length));
 	let response = `Here's a random article from KOA titled "${(feed.items[r].title)}": ${feed.items[r].link}`;
-	if(args[0]) {
+	if (args[0]) {
 		const arg = args[0].toLowerCase();
-		switch(arg) {
+		switch (arg) {
 		case 'home':
 			response = 'KOA Article Archive: https://knightsofacademia.org/category/articles';
 			break;
