@@ -300,11 +300,11 @@ Do you want me to remind you to ${whatToRemind} ${whenToRemind}? React with thum
 		});
 }
 
-async function remind(client, date, reminder, catchUp = false) {
+async function remind(client, date, reminder, shouldCatchUp = false) {
 	let userToRemind = await client.users.fetch(reminder.dataValues.whoToRemind);
 	let color, description;
 
-	if (catchUp) {
+	if (shouldCatchUp) {
 		color = '#FF4500';
 		description = `Whoops! Sorry for being late, I was probably down for maintenance. 😅
 		Anyway, you asked me to remind you to **${reminder.dataValues.whatToRemind}**. I hope it's not too late. 🤐`;

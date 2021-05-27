@@ -64,12 +64,17 @@ module.exports.execute = async (client, message, args) => {
 				}).catch(errHandler);
 
 				//Add keywords to SearchWords Table
+				let databaseCalls = [];
 				for (const keyword of searchTerms) {
-					await SearchWords.create({
-						term: term,
-						keyword: keyword
-					}).catch(errHandler);
+					databaseCalls.push(
+						SearchWords.create({
+							term: term,
+							keyword: keyword
+						})
+					);
 				}
+
+				await Promise.all(databaseCalls).catch(errHandler);
 
 				//Confirm Info Addition
 				return await message.channel.send(`New term, ${term}, added!`);

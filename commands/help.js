@@ -27,8 +27,10 @@ module.exports.execute = async (client, message, args) => {
 			console.log(err);
 		}
 	} else if (args.length === 1) {
-		let command = commands.find((command) => command.config.name === args[0].toLowerCase()
-            || command.config.aliases.find((alias) => alias === args[0].toLowerCase()));
+		let command = commands.find((theCommand) =>
+			theCommand.config.name === args[0].toLowerCase() ||
+			theCommand.config.aliases.find((alias) => alias === args[0].toLowerCase())
+		);
 
 		if (command) {
 			let helpMessage = new Discord.MessageEmbed()
@@ -46,9 +48,9 @@ module.exports.execute = async (client, message, args) => {
 				console.log(err);
 			}
 		} else {
-			commands.forEach((command) => {
-				commandNames.push(command.config.name);
-				command.config.aliases.forEach((alias) => commandNames.push(alias));
+			commands.forEach((theCommand) => {
+				commandNames.push(theCommand.config.name);
+				theCommand.config.aliases.forEach((alias) => commandNames.push(alias));
 			});
 			return didYouMean(commandNames, args[0].toLowerCase(), message);
 		}

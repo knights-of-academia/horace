@@ -34,7 +34,6 @@
         "no-shadow": "error",
         "no-trailing-spaces": "error",
         "no-multiple-empty-lines": "error",
-        "no-return-await": "warn",
         "no-await-in-loop": "warn",
         "no-useless-return": "warn",
         "yoda": "warn"
