@@ -16,10 +16,13 @@ const contentActions = require('../eventActions/contentActions');
 module.exports = async (client, message) => {
 	if (!message.guild || message.author.bot) return;
 	const args = message.content.split(/\s+/g);
-	const command =
-		message.content.startsWith(config.prefix) &&
-		args.shift().slice(config.prefix.length)
+	let command = '';
+	if (message.content.startsWith(config.prefix)) {
+		command = args
+			.shift()
+			.slice(config.prefix.length)
 			.toLowerCase();
+	}
 
 	if (command) {
 		const commandFile =
