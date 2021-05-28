@@ -9,9 +9,9 @@ class profanityActions {
 		// check that moderation channelID is valid before attempting profanity check
 		if (client.channels.cache.get(config.channels.moderation) === undefined) {
 			return console.log('Error! Moderation Channel ID in Config in likely invalid. Please verify!');
-		} 
-		
-		if (bannedWordsSQL.length == 0) { 
+		}
+
+		if (bannedWordsSQL.length == 0) {
 			return console.log('Error: No banned words found in database.');
 		}
 

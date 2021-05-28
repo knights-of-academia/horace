@@ -8,7 +8,7 @@ class afkMessageCheckAction {
 		if (message.content.startsWith(config.prefix)) {
 			return;
 		}
-		
+
 		const result = await Afks.findAll({
 			where: {
 				user: message.author.id
@@ -33,10 +33,10 @@ class afkMessageCheckAction {
 					.setColor('#FFEC09'));
 				await Afks.update(
 					{ cooldown: Date.now() },
-					{ where: {user: message.author.id} }
+					{ where: { user: message.author.id } }
 				);
 			}
-			catch(err) {
+			catch (err) {
 				console.err(err);
 			}
 		}
@@ -63,7 +63,7 @@ class afkMessageCheckAction {
 				try {
 					await message.channel.send(embed);
 				}
-				catch(err) {
+				catch (err) {
 					console.err(err);
 				}
 			}

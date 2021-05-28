@@ -22,7 +22,6 @@ module.exports.execute = async (client, message, args) => {
 ${clan.formUrl}`;
 
 	return await message.channel.send(response);
-
 };
 
 module.exports.config = {

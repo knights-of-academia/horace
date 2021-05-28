@@ -2,7 +2,7 @@ const Highlights = require('../databaseFiles/highlightsTable.js');
 const Discord = require('discord.js');
 const config = require('../config.json');
 
-const errHandler = err => {
+const errHandler = (err) => {
 	console.error('Highlights sequelize error: ', err);
 };
 
@@ -56,16 +56,15 @@ const addHighlight = async (keywords, user) => {
 		where: {
 			phrase: keywords
 		}
-	}).then(count => {
-		if(count != 0){
+	}).then((count) => {
+		if (count != 0) {
 			user.send('Attempted to add **`' + keywords + '`** to your highlights, but it\'s already there!');
-			return;
 		} else {
 			exists = false;
 		}
 	});
 
-	if(!exists) {
+	if (!exists) {
 		Highlights.create({
 			phrase: keywords,
 			users: userID
@@ -84,15 +83,15 @@ const removeHighlight = async (keywords, user) => {
 			phrase: keywords,
 			users: userID
 		}
-	}).then(result =>{
-		if(result == 0){
+	}).then((result) => {
+		if (result == 0) {
 			// TODO: If the highlight doesn't exist, say so.
 			user.send('You tried to remove a highlight, `' + keywords + '`, but it doesn\'t seem to exist.');
 			exists = false;
 		}
 	});
 
-	if(!exists){
+	if (!exists) {
 		return;
 	}
 
@@ -106,12 +105,12 @@ const listHighlights = async (user) => {
 		where: {
 			users: user.id
 		}
-	}).then(result => {
-		if(result.length == 0){
+	}).then((result) => {
+		if (result.length == 0) {
 			user.send('_You don\'t have any highlights._ Add some with `!highlights add <keywords>`');
 			return;
 		}
-		for(let i = 0; i < result.length; i++){
+		for (let i = 0; i < result.length; i++) {
 			listOfWords.push(result[i].phrase);
 		}
 
@@ -123,15 +122,15 @@ const listHighlights = async (user) => {
 module.exports.execute = async (client, message, args) => {
 	const cmd = args[0]; // The command of what to do with the following phrase
 	const entirePhrase = args.join(' ');
-	const keywords = entirePhrase.substring(entirePhrase.indexOf(' ')+1).toLowerCase(); // Remove the first word, i.e. the command
+	const keywords = entirePhrase.substring(entirePhrase.indexOf(' ') + 1).toLowerCase(); // Remove the first word, i.e. the command
 	const user = message.author;
 
-	if(keywords.length === 0){
+	if (keywords.length === 0) {
 		const highlightsHelp = getHelpReply();
 		return await user.send(highlightsHelp);
 	}
 	else if (keywords.length > 1) {
-		if(cmd === 'add') {
+		if (cmd === 'add') {
 			return await addHighlight(keywords, user);
 		}
 		else if (cmd === 'remove' || cmd === 'delete') {

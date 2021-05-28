@@ -25,4 +25,4 @@ module.exports = sequelize.define('Reminder', {
 	}
 }, {
 	timestamps: false
-}); 
+});

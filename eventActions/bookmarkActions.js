@@ -2,7 +2,6 @@ const config = require('../config.json');
 const Discord = require('discord.js');
 
 class bookmarkActions {
-
 	static async bookmarkMessage(client, user, reaction) {
 		if (reaction._emoji.name === config.emotes.bookmark) {
 			const workingMessage = reaction.message;
@@ -21,7 +20,7 @@ class bookmarkActions {
 			}
 
 			// Add link to attachment
-			if(workingMessage.attachments.array().length > 0){
+			if (workingMessage.attachments.array().length > 0) {
 				const attchmnt = workingMessage.attachments.array()[0].url;
 				console.log(attchmnt);
 				bookmarkEmbed.addField('Attachment', attchmnt)

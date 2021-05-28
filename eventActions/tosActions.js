@@ -6,16 +6,16 @@ class tosActions {
 	static userAcceptsTOS(reaction, user, client) {
 		if (reaction.message.channel.id === config.channels.tos
             && reaction._emoji.name === config.emotes.acceptTOS) {
-			reaction.message.guild.members.fetch(user.id).then(guildMember => {
+			reaction.message.guild.members.fetch(user.id).then((guildMember) => {
 				if (guildMember.roles.cache.has(config.roles.initiate)) {
-					const initiateRole = reaction.message.guild.roles.cache.find(r => r.id === config.roles.initiate);
+					const initiateRole = reaction.message.guild.roles.cache.find((r) => r.id === config.roles.initiate);
 					guildMember.roles.remove(initiateRole);
-					const memberRole = reaction.message.guild.roles.cache.find(r => r.id === config.roles.member);
+					const memberRole = reaction.message.guild.roles.cache.find((r) => r.id === config.roles.member);
 					guildMember.roles.add(memberRole);
 					tosReminder.removeFromDatabase(user);
 					// Send welcome message to the Citadel
 					client.channels.cache.get(config.channels.citadel).send(`🎉 **A new member has arrived!** 🎉\nWelcome to Knights of Academia <@${user.id}>!`)
-						.then(message => {
+						.then((message) => {
 							message.react(config.emotes.wave);
 						});
 				}

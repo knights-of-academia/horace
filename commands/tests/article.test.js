@@ -6,7 +6,7 @@ jest.mock('rss-parser');
 
 beforeAll(() => {
 	jest.spyOn(Parser.prototype, 'parseURL').mockImplementation((link) => {
-		if(link == 'https://knightsofacademia.org/category/articles/feed')
+		if (link == 'https://knightsofacademia.org/category/articles/feed')
 		{
 			return {
 				items: [

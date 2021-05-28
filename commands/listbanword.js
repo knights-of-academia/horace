@@ -6,8 +6,8 @@ module.exports.execute = async (client, message) => {
 	const embedMessage = new Discord.MessageEmbed()
 		.setColor('#ffff00')
 		.setTitle('🚩Banned Words 🚩')
-		.setDescription('Here is the list of the banned words: ');	
-	
+		.setDescription('Here is the list of the banned words: ');
+
 	for (const element of bannedWords) { // eslint-disable-line
 		const user = client.users.cache.get(element.userID);
 		const username = user.username;

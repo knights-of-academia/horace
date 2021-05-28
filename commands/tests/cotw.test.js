@@ -15,7 +15,7 @@ test('Sends the correct response when the poll is open', async () => {
 				},
 
 				get: (key) => {
-					switch(key) {
+					switch (key) {
 					case 'pollActive':
 						return true;
 					case 'pollLink':
@@ -44,7 +44,7 @@ test('Sends the correct response when the poll is closed', async () => {
 				},
 
 				get: (key) => {
-					switch(key) {
+					switch (key) {
 					case 'pollActive':
 						return false;
 					case 'pollLink':

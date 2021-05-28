@@ -7,7 +7,7 @@ beforeEach(() => {
 	jest.clearAllMocks();
 });
 
-test('Sends clarification when no arguments are provided', async () => {	
+test('Sends clarification when no arguments are provided', async () => {
 	await spoiler.execute(null, message, []);
 	const expectedResponse = 'Please include text to send as a spoilered message!\n`!spoiler [text to spoiler]`';
 	expect(message.author.send).not.toHaveBeenCalled();

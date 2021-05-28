@@ -54,7 +54,7 @@ module.exports.execute = async (client, message, args) => {
 
 		let remindersStringForEmbed = '';
 
-		userReminders.forEach(reminder => {
+		userReminders.forEach((reminder) => {
 			let id = reminder.dataValues.id;
 			let whatToRemind = reminder.dataValues.whatToRemind;
 			let whenToRemind = reminder.dataValues.whenToRemind;
@@ -91,7 +91,7 @@ module.exports.execute = async (client, message, args) => {
 				where: {
 					whoToRemind: message.author.id
 				}
-			}).catch(err => {
+			}).catch((err) => {
 				console.error('Reminder Sequelize error: ', err);
 			});
 		} else if (Number.isInteger(parseInt(args[1]))) {
@@ -100,7 +100,7 @@ module.exports.execute = async (client, message, args) => {
 					id: parseInt(args[1]),
 					whoToRemind: message.author.id
 				}
-			}).catch(err => {
+			}).catch((err) => {
 				console.error('Reminder Sequelize error: ', err);
 			});
 		} else {
@@ -136,7 +136,7 @@ module.exports.execute = async (client, message, args) => {
 				whenToRemind: whenToRemind,
 				recurring: recurring,
 				howOftenToRemind: howOftenToRemind
-			}).catch(err => {
+			}).catch((err) => {
 				console.error('Reminder Sequelize error: ', err);
 			});
 		});
@@ -169,7 +169,7 @@ function parseReminder(unparsedArgs, currentDate, message) {
 	let toPush = '';
 	let correctedInput = [];
 
-	unparsedArgs.forEach(word => {
+	unparsedArgs.forEach((word) => {
 		// HACK SpellChecker corrects some of the month names' abbreviations (e.g. "feb" -> "fib").
 		// This works around that by checking if the word to be added is in fact such abbreviation,
 		// and if so, the loop continues with the next iteration.
@@ -212,12 +212,12 @@ function parseReminder(unparsedArgs, currentDate, message) {
 		whatToRemind = matchRegTwo[1];
 
 		let monthAbbreviation = matchRegTwo[2].slice(0, 3).toLowerCase();
-		let month = monthsData[monthAbbreviation]['number'];
+		let month = monthsData[monthAbbreviation].number;
 		let day = matchRegTwo[3];
 
-		if (day > monthsData[monthAbbreviation]['length']) {
-			let errorMessage = `${monthsData[monthAbbreviation]['fullname']} doesn't have ${day} days.`;
-			throw new errors.MonthLengthValidationError(errorMessage, monthsData[monthAbbreviation]['fullname'], day);
+		if (day > monthsData[monthAbbreviation].length) {
+			let errorMessage = `${monthsData[monthAbbreviation].fullname} doesn't have ${day} days.`;
+			throw new errors.MonthLengthValidationError(errorMessage, monthsData[monthAbbreviation].fullname, day);
 		}
 
 		whenToRemind = new Date(currentDate.getFullYear(), month, day, currentDate.getHours(), currentDate.getMinutes());
@@ -230,7 +230,7 @@ function parseReminder(unparsedArgs, currentDate, message) {
 		howOftenToRemind = null;
 
 		// We need to build the confirmation message differently than in the database.
-		let whenToRemindForConfirmation = 'on ' + monthsData[monthAbbreviation]['fullname'] + ' ' + day;
+		let whenToRemindForConfirmation = 'on ' + monthsData[monthAbbreviation].fullname + ' ' + day;
 		confirmReminder(whatToRemind, whenToRemindForConfirmation, message);
 	} else if (matchRegThree) {
 		whatToRemind = matchRegThree[1];
@@ -274,7 +274,7 @@ Do you want me to remind you to ${whatToRemind} ${whenToRemind}? React with thum
 	};
 
 	confirmation_message.awaitReactions(filter, { max: 1, time: 20000, errors: ['time'] })
-		.then(collected => {
+		.then((collected) => {
 			const reaction = collected.first();
 
 			confirmation_message.delete();
@@ -288,7 +288,7 @@ Do you want me to remind you to ${whatToRemind} ${whenToRemind}? React with thum
 				throw new errors.ReminderDeniedValidationError(errorMessage, toSend);
 			}
 		})
-		.catch(err => {
+		.catch((err) => {
 			confirmation_message.delete();
 
 			if (err instanceof errors.ReminderDeniedValidationError) {
@@ -300,11 +300,11 @@ Do you want me to remind you to ${whatToRemind} ${whenToRemind}? React with thum
 		});
 }
 
-async function remind(client, date, reminder, catchUp = false) {
+async function remind(client, date, reminder, shouldCatchUp = false) {
 	let userToRemind = await client.users.fetch(reminder.dataValues.whoToRemind);
 	let color, description;
 
-	if (catchUp) {
+	if (shouldCatchUp) {
 		color = '#FF4500';
 		description = `Whoops! Sorry for being late, I was probably down for maintenance. 😅
 		Anyway, you asked me to remind you to **${reminder.dataValues.whatToRemind}**. I hope it's not too late. 🤐`;
@@ -326,7 +326,7 @@ async function remind(client, date, reminder, catchUp = false) {
 			where: {
 				id: reminder.dataValues.id
 			}
-		}).catch(err => {
+		}).catch((err) => {
 			console.error('Reminder Sequelize error: ', err);
 		});
 	} else {
@@ -336,7 +336,7 @@ async function remind(client, date, reminder, catchUp = false) {
 			where: {
 				id: reminder.dataValues.id
 			}
-		}).catch(err => {
+		}).catch((err) => {
 			console.error('Reminder Sequelize error: ', err);
 		});
 	}
@@ -344,15 +344,15 @@ async function remind(client, date, reminder, catchUp = false) {
 
 async function scanForReminders(client) {
 	const currentDate = new Date();
-	const reminders = await Reminder.findAll().catch(err => {
+	const reminders = await Reminder.findAll().catch((err) => {
 		console.error('Reminder Sequelize error: ', err);
 	});
 
 	if (reminders) {
 		let difference;
-		reminders.forEach(async reminder => {
+		reminders.forEach(async (reminder) => {
 			difference = currentDate - reminder.dataValues.whenToRemind;
-			if (difference > (-1)*config.reminderScanInterval) {
+			if (difference > (-1) * config.reminderScanInterval) {
 				remind(client, currentDate, reminder);
 			}
 		});
@@ -361,13 +361,13 @@ async function scanForReminders(client) {
 
 async function catchUp(client) {
 	const currentDate = new Date();
-	const reminders = await Reminder.findAll().catch(err => {
+	const reminders = await Reminder.findAll().catch((err) => {
 		console.error('Reminder Sequelize error: ', err);
 	});
 
 	if (reminders) {
 		let difference;
-		reminders.forEach(async reminder => {
+		reminders.forEach(async (reminder) => {
 			difference = currentDate - reminder.dataValues.whenToRemind;
 			if (difference > 0) {
 				remind(client, currentDate, reminder, true);

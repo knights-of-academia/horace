@@ -19,9 +19,9 @@ module.exports.execute = async (client, message, args) => {
 
 			await message.author.send('I have marked you as AFK. Safe travels!');
 		}
-		catch(err) {
+		catch (err) {
 			console.error('Afk error: ', err);
-		}			
+		}
 	} else {
 		const result = await Afks.destroy({
 			where: {
@@ -39,7 +39,7 @@ module.exports.execute = async (client, message, args) => {
 					}!`
 				);
 			}
-			catch(err) {
+			catch (err) {
 				console.error('Afk error: ', err);
 			}
 		}

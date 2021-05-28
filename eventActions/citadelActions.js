@@ -17,7 +17,7 @@ class citadelActions {
 			}
 		}
 	}
-	
+
 	static async holidayReacts(client, message) {
 		// Handle merry Christmas
 		if (

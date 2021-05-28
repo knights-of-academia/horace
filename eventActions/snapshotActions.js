@@ -5,7 +5,6 @@ class snapshotActions {
 	static async userPostsImage(client, message) {
 		if (message.channel.id === config.channels.snapshots
             && message.attachments.size === 0) {
-
 			await message.delete();
 
 			await message.author.send(`Hey! I noticed you sent a message in <#${config.channels.snapshots}> that wasn't a picture. To help maintain the integrity of the channel, the staff team has made the decision to only allow pictures, captions and reactions there. As a result of this, your message has been removed. Thanks for understanding! 😄`);
@@ -27,7 +26,6 @@ class snapshotActions {
 			client.channels.cache.get(config.channels.moderation).send(embedMessage);
 		}
 	}
-
 }
 
 module.exports = snapshotActions;

@@ -47,8 +47,8 @@ function parseDateForListing(date) {
 
 	let whichMonth = '';
 	for (let month in monthsData) {
-		if (monthsData[month]['number'] === date.getMonth()) {
-			whichMonth = monthsData[month]['fullname'];
+		if (monthsData[month].number === date.getMonth()) {
+			whichMonth = monthsData[month].fullname;
 		}
 	}
 

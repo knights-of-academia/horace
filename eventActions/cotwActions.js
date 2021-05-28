@@ -2,7 +2,6 @@ const config = require('../config.json');
 const fs = require('fs');
 
 class cotwActions {
-
 	static async confirmUpdate(message) {
 		let path = process.cwd() + '/data/cotw.json';
 		const stats = fs.statSync(path);
@@ -31,8 +30,10 @@ class cotwActions {
 
 		// React to reflection
 		if (message.channel.id === config.channels.cotw) {
-			let arrayMatching = message.content.toLowerCase().replace(/  +/g, ' ').split(' ').slice(0, config.reflectionCheckDepth);
-			if (arrayMatching.some(str => {
+			let arrayMatching = message.content.toLowerCase().replace(/  +/g, ' ')
+				.split(' ')
+				.slice(0, config.reflectionCheckDepth);
+			if (arrayMatching.some((str) => {
 				return str.includes('reflection');
 			})) {
 				const emote = config.emotes.cotwReflection;
@@ -54,7 +55,7 @@ class cotwActions {
 				const cotwRole = message.guild.roles.cache.get(config.roles.cotwChampion);
 
 				// Remove role from all previous winners
-				message.guild.members.cache.each(async (member) =>{
+				message.guild.members.cache.each(async (member) => {
 					if (member.roles.cache.has(cotwRole.id)) {
 						await member.roles.remove(cotwRole);
 					}
@@ -68,7 +69,7 @@ class cotwActions {
 						message.channel.send(`Congratulations <@${winner.id}>!`)
 					]);
 				}
-				catch(err) {
+				catch (err) {
 					console.log(err);
 				}
 			}
@@ -77,7 +78,7 @@ class cotwActions {
 			if (message.content.includes('https://forms.gle')) {
 				const messageContent = message.content.split(/[\s\n]+/);
 				let link;
-				messageContent.map(x => {
+				messageContent.map((x) => {
 					if (x.includes('https://forms.gle')) {
 						link = x;
 					}
@@ -100,7 +101,7 @@ class cotwActions {
 				const messageContent = message.content.split(/[\s\n]+/);
 
 				let challengeId;
-				messageContent.map(x => {
+				messageContent.map((x) => {
 					if (x.includes('https://habitica.com/challenges/')) {
 						challengeId = x.split('/challenges/')[1];
 					}
