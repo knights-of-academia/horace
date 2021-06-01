@@ -18,4 +18,4 @@ Want to contribute to Horace? Check out our [Guide for Contributing](https://git
 KOA is an educational organization devoted to helping individuals actively become their greatest versions of themselves through the development of self discipline and through the fostering of critical thinking.
 We believe that in order to see true change in the world, we need to first embody that change within ourselves.
 
-More information about Knights of Academia can be found on [our website](https://knightsofacademia.org/start-here/about-knights-of-academia/).
+More information about Knights of Academia can be found on [our website](https://knightsofacademia.org).
