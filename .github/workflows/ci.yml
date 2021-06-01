@@ -1,4 +1,4 @@
-name: Test and Lint
+name: Horace CI
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
       - develop
 
 jobs:
-  build:
+  test-and-lint:
 
     runs-on: ubuntu-latest
 
@@ -21,6 +21,9 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm test
-    - run: npm run lint
+    - name: Clean install dependencies
+      run: npm ci
+    - name: Run tests
+      run: npm run test:standalone
+    - name: Run linting
+      run: npm run lint
