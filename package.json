@@ -7,7 +7,8 @@
     "start": "node app.js",
     "lint": "eslint --cache .",
     "lint:fix": "npm run lint -- --fix",
-    "test": "jest",
+    "test:standalone": "jest",
+    "test": "npm run test:standalone",
     "posttest": "npm run lint",
     "coverage": "jest --coverage --collectCoverageFrom=commands/**/*.js"
   },
