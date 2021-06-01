@@ -1,6 +1,10 @@
 name: Test and Lint
 
-on: [push, pull_request]
+on:
+  pull-request:
+  push:
+    branches:
+      - develop
 
 jobs:
   build:
