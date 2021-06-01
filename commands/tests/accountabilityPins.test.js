@@ -8,13 +8,17 @@ beforeEach(async () => {
 
 describe('Accountability when inside correct channel', () => {
 	test('"Unpin" calls handler when in accountability channel', async () => {
-		jest.mock('../../config.json', () => {
-			return {
-				channels: {
-					accountability: '123123123123123123'
-				}
-			};
-		});
+		jest.mock(
+			'../../config.json',
+			() => {
+				return {
+					channels: {
+						accountability: '123123123123123123'
+					}
+				};
+			},
+			{ virtual: true }
+		);
 		jest.mock('../../eventActions/accountabilityActions.js');
 		const accActions = require('../../eventActions/accountabilityActions.js');
 
@@ -24,13 +28,17 @@ describe('Accountability when inside correct channel', () => {
 	});
 
 	test('"Unpin All" calls handler when in accountability channel', async () => {
-		jest.mock('../../config.json', () => {
-			return {
-				channels: {
-					accountability: '123123123123123123'
-				}
-			};
-		});
+		jest.mock(
+			'../../config.json',
+			() => {
+				return {
+					channels: {
+						accountability: '123123123123123123'
+					}
+				};
+			},
+			{ virtual: true }
+		);
 		jest.mock('../../eventActions/accountabilityActions.js');
 		const accActions = require('../../eventActions/accountabilityActions.js');
 
@@ -42,13 +50,17 @@ describe('Accountability when inside correct channel', () => {
 
 describe('Accountability when outside correct channel', () => {
 	test('"Unpin" does not call handler when not in accountability channel', async () => {
-		jest.mock('../../config.json', () => {
-			return {
-				channels: {
-					accountability: '000'
-				}
-			};
-		});
+		jest.mock(
+			'../../config.json',
+			() => {
+				return {
+					channels: {
+						accountability: '000'
+					}
+				};
+			},
+			{ virtual: true }
+		);
 		jest.mock('../../eventActions/accountabilityActions.js');
 		const accActions = require('../../eventActions/accountabilityActions.js');
 
@@ -58,13 +70,17 @@ describe('Accountability when outside correct channel', () => {
 	});
 
 	test('"Unpin All" does not call handler when not in accountability channel', async () => {
-		jest.mock('../../config.json', () => {
-			return {
-				channels: {
-					accountability: '000'
-				}
-			};
-		});
+		jest.mock(
+			'../../config.json',
+			() => {
+				return {
+					channels: {
+						accountability: '000'
+					}
+				};
+			},
+			{ virtual: true }
+		);
 		jest.mock('../../eventActions/accountabilityActions.js');
 		const accActions = require('../../eventActions/accountabilityActions.js');
 
