@@ -25,6 +25,9 @@ class snapshotActions {
 			// Send message to moderation log
 			client.channels.cache.get(config.channels.moderation).send(embedMessage);
 		}
+		else if (message.channel.id === config.channels.snapshots) {
+			return message.react(config.emotes.heart);
+		}
 	}
 }
 
