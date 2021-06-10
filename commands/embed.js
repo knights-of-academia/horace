@@ -24,6 +24,9 @@ module.exports.execute = async (client, message) => {
 		if (answer == null) {
 			throw 'Embed title was null!';
 		}
+		else {
+			title = answer;
+		}
 	}
 
 	async function getURL() {
@@ -39,6 +42,76 @@ module.exports.execute = async (client, message) => {
 				valid = false;
 			}
 		}
+		if (valid) {
+			url = answer;
+		}
+		else {
+			throw 'Embed URL was not valid';
+		}
+	}
+
+	async function getDescription() {
+		let answer = ask('What should the description be?');
+		if (answer == null) {
+			throw 'Embed description not valid';
+		}
+		else {
+			description = answer;
+		}
+	}
+
+	async function getSubtitle() {
+		let answer = ask('What should the subtitle be?');
+		if (answer == null) {
+			throw 'Embed subtitle not valid';
+		}
+		else {
+			subtitle = answer;
+		}
+	}
+
+	async function getBody() {
+		let answer = ask('What should the embed body be?');
+		if (answer == null) {
+			throw 'Embed body not valid';
+		}
+		else {
+			body = answer;
+		}
+	}
+
+	async function getColour() {
+		let answer = ask('What should the embed colour be? (Hex code)');
+		let valid;
+		let pattern = new RegExp('^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$');
+		valid = pattern.test(answer);
+		if (valid) {
+			colour = answer;
+		}
+		else {
+			throw 'Embed colour hex code was invalid';
+		}
+	}
+
+	async function getImage() {
+		let answer = ask('What image should the title be hyperlinked to? (Reply with No to skip)');
+		let valid = true;
+		if (answer == 'No') {
+			answer = '';
+		}
+		else {
+			try {
+				new URL(answer);
+			} catch (_) {
+				valid = false;
+			}
+		}
+		if (valid) {
+			imageLink = answer;
+		}
+		else {
+			throw 'Embed image URL was not valid';
+		}
 	}
 
 	if (!message.member.roles.cache.has(config.roles.admin)) {
@@ -48,70 +121,43 @@ module.exports.execute = async (client, message) => {
 
 	let title;
 	let url;
+	let description;
+	let subtitle;
+	let body;
+	let colour;
+	let imageLink;
 
 	title = getTitle()
 		.then(
 			getURL()
 		)
 		.then (
-
+			getDescription()
 		)
-
-/* 	let answers = [];
-	let questions = [
-		'What should the embed title be?',
-		'What URL should the title be hyperlinked to? (Reply with No to skip)',
-		'What should the description be?',
-		'What should the subtitle be?',
-		'What should the body be?',
-		'What should the embed colour be? (Hex code)',
-		'What image (provide link) should the embed have? (Reply with No to skip'
-	];
-
-	for (const question of questions) {
-		console.log(question);
-		let answer = await ask(question);
-		let valid;
-		if (answer == null) {
-			return;
-		}
-		else if (question == questions[1] || question == questions[6]) {
-			valid = true;
-			if (answer == 'No') {
-				answer = '';
-			}
-			else {
-				try {
-					new URL(answer);
-				} catch (_) {
-					valid = false;
-				}
-			}
-		}
-		else if (question == questions[5]) {
-			let pattern = new RegExp('^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$');
-			valid = pattern.test(answer);
-		}
-		else {
-			valid = true;
-		}
-
-		if (valid) {
-			answers.push(answer);
-		}
-		else {
-			return message.channel.send('**There was an error in your response. Embed creation canceled.**');
-		}
-	} */
+		.then (
+			getSubtitle()
+		)
+		.then (
+			getBody()
+		)
+		.then (
+			getColour()
+		)
+		.then (
+			getImage()
+		)
+		.catch((err) => {
+			console.log(err);
+		});
 
 	const embed = new Discord.MessageEmbed()
-		.setColor(answers[5])
-		.setTitle(answers[0])
-		.setThumbnail(answers[6])
-		.setURL(answers[1])
+		.setColor(colour)
+		.setTitle(title)
+		.setThumbnail(imageLink)
+		.setURL(url)
 		.setAuthor(message.author.username, 'https://cdn.discordapp.com/avatars/' + message.author.id + '/' + message.author.avatar + '.webp?size=128')
-		.setDescription(answers[2])
-		.addField(answers[3], answers[4])
+		.setDescription(description)
+		.addField(subtitle, body)
 		.setTimestamp();
 
 	message.channel.send(embed);
