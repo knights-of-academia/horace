@@ -20,9 +20,9 @@ module.exports.execute = async (client, message) => {
 	}
 
 	async function getTitle() {
-		let answer = ask('What should the embed title be?');
+		let answer = await ask('What should the embed title be?');
 		if (answer == null) {
-			throw 'Embed title was null!';
+			throw 'Embed title was not valid!';
 		}
 		else {
 			title = answer;
@@ -30,7 +30,7 @@ module.exports.execute = async (client, message) => {
 	}
 
 	async function getURL() {
-		let answer = ask('What URL should the title be hyperlinked to? (Reply with No to skip)');
+		let answer = await ask('What URL should the title be hyperlinked to? (Reply with No to skip)');
 		let valid = true;
 		if (answer == 'No') {
 			answer = '';
@@ -51,7 +51,7 @@ module.exports.execute = async (client, message) => {
 	}
 
 	async function getDescription() {
-		let answer = ask('What should the description be?');
+		let answer = await ask('What should the description be?');
 		if (answer == null) {
 			throw 'Embed description not valid';
 		}
@@ -61,7 +61,7 @@ module.exports.execute = async (client, message) => {
 	}
 
 	async function getSubtitle() {
-		let answer = ask('What should the subtitle be?');
+		let answer = await ask('What should the subtitle be?');
 		if (answer == null) {
 			throw 'Embed subtitle not valid';
 		}
@@ -71,7 +71,7 @@ module.exports.execute = async (client, message) => {
 	}
 
 	async function getBody() {
-		let answer = ask('What should the embed body be?');
+		let answer = await ask('What should the embed body be?');
 		if (answer == null) {
 			throw 'Embed body not valid';
 		}
@@ -81,7 +81,7 @@ module.exports.execute = async (client, message) => {
 	}
 
 	async function getColour() {
-		let answer = ask('What should the embed colour be? (Hex code)');
+		let answer = await ask('What should the embed colour be? (Hex code)');
 		let valid;
 		let pattern = new RegExp('^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$');
 		valid = pattern.test(answer);
@@ -94,7 +94,7 @@ module.exports.execute = async (client, message) => {
 	}
 
 	async function getImage() {
-		let answer = ask('What image should the title be hyperlinked to? (Reply with No to skip)');
+		let answer = await ask('What image should the title be hyperlinked to? (Reply with No to skip)');
 		let valid = true;
 		if (answer == 'No') {
 			answer = '';
@@ -127,40 +127,39 @@ module.exports.execute = async (client, message) => {
 	let colour;
 	let imageLink;
 
-	title = getTitle()
+	getTitle()
 		.then(
-			getURL()
+			getURL
 		)
 		.then (
-			getDescription()
+			getDescription
 		)
 		.then (
-			getSubtitle()
+			getSubtitle
 		)
 		.then (
-			getBody()
+			getBody
 		)
 		.then (
-			getColour()
+			getColour
 		)
 		.then (
-			getImage()
+			getImage
 		)
-		.catch((err) => {
-			console.log(err);
-		});
+		.then(() => {
+			const embed = new Discord.MessageEmbed()
+				.setColor(colour)
+				.setTitle(title)
+				.setThumbnail(imageLink)
+				.setURL(url)
+				.setAuthor(message.author.username, 'https://cdn.discordapp.com/avatars/' + message.author.id + '/' + message.author.avatar + '.webp?size=128')
+				.setDescription(description)
+				.addField(subtitle, body)
+				.setTimestamp();
 
-	const embed = new Discord.MessageEmbed()
-		.setColor(colour)
-		.setTitle(title)
-		.setThumbnail(imageLink)
-		.setURL(url)
-		.setAuthor(message.author.username, 'https://cdn.discordapp.com/avatars/' + message.author.id + '/' + message.author.avatar + '.webp?size=128')
-		.setDescription(description)
-		.addField(subtitle, body)
-		.setTimestamp();
-
-	message.channel.send(embed);
+			message.channel.send(embed);
+		})
+		.catch((err) => console.log(err));
 };
 
 module.exports.config = {
