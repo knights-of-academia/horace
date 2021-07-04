@@ -25,7 +25,7 @@ module.exports.execute = async (client, message) => {
 			throw 'Embed title was not valid!';
 		}
 		else {
-			title = answer;
+			return answer;
 		}
 	}
 
@@ -43,7 +43,7 @@ module.exports.execute = async (client, message) => {
 			}
 		}
 		if (valid) {
-			url = answer;
+			return answer;
 		}
 		else {
 			throw 'Embed URL was not valid';
@@ -56,7 +56,7 @@ module.exports.execute = async (client, message) => {
 			throw 'Embed description not valid';
 		}
 		else {
-			description = answer;
+			return answer;
 		}
 	}
 
@@ -66,7 +66,7 @@ module.exports.execute = async (client, message) => {
 			throw 'Embed subtitle not valid';
 		}
 		else {
-			subtitle = answer;
+			return answer;
 		}
 	}
 
@@ -76,7 +76,7 @@ module.exports.execute = async (client, message) => {
 			throw 'Embed body not valid';
 		}
 		else {
-			body = answer;
+			return answer;
 		}
 	}
 
@@ -86,7 +86,7 @@ module.exports.execute = async (client, message) => {
 		let pattern = new RegExp('^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$');
 		valid = pattern.test(answer);
 		if (valid) {
-			colour = answer;
+			return answer;
 		}
 		else {
 			throw 'Embed colour hex code was invalid';
@@ -107,7 +107,7 @@ module.exports.execute = async (client, message) => {
 			}
 		}
 		if (valid) {
-			imageLink = answer;
+			return answer;
 		}
 		else {
 			throw 'Embed image URL was not valid';
@@ -128,24 +128,19 @@ module.exports.execute = async (client, message) => {
 	let imageLink;
 
 	getTitle()
-		.then(
-			getURL
-		)
-		.then (
-			getDescription
-		)
-		.then (
-			getSubtitle
-		)
-		.then (
-			getBody
-		)
-		.then (
-			getColour
-		)
-		.then (
-			getImage
-		)
+		.then((answer) => { title = answer; })
+		.then(getURL)
+		.then((answer) => { url = answer; })
+		.then(getDescription)
+		.then((answer) => { description = answer; })
+		.then(getSubtitle)
+		.then((answer) => { subtitle = answer; })
+		.then(getBody)
+		.then((answer) => { body = answer; })
+		.then(getColour)
+		.then((answer) => { colour = answer; })
+		.then(getImage)
+		.then((answer) => { imageLink = answer; })
 		.then(() => {
 			const embed = new Discord.MessageEmbed()
 				.setColor(colour)
