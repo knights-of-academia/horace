@@ -19,6 +19,18 @@ module.exports.execute = async (client, message) => {
 		}
 	}
 
+	async function getChannel() {
+		let answer = await ask('What channel should the embed be posted in?');
+		let channelID = answer.replace(/[<|#|>]/g, '');
+		let isIDValid = message.guild.channels.cache.some((channel) => channel.id === channelID);
+		if (isIDValid == false) {
+			throw 'Embed channel was not valid!';
+		}
+		else {
+			return message.guild.channels.cache.find((channel) => channel.id === channelID);
+		}
+	}
+
 	async function getTitle() {
 		let answer = await ask('What should the embed title be?');
 		if (answer == null) {
@@ -119,6 +131,7 @@ module.exports.execute = async (client, message) => {
 	}
 	message.channel.send('Welcome to Horace Embed Creator!');
 
+	let channel;
 	let title;
 	let url;
 	let description;
@@ -127,7 +140,9 @@ module.exports.execute = async (client, message) => {
 	let colour;
 	let imageLink;
 
-	getTitle()
+	getChannel()
+		.then((answer) => { channel = answer; })
+		.then(getTitle)
 		.then((answer) => { title = answer; })
 		.then(getURL)
 		.then((answer) => { url = answer; })
@@ -152,7 +167,7 @@ module.exports.execute = async (client, message) => {
 				.addField(subtitle, body)
 				.setTimestamp();
 
-			message.channel.send(embed);
+			channel.send(embed);
 		})
 		.catch((err) => console.log(err));
 };
