@@ -126,7 +126,7 @@ module.exports.execute = async (client, message) => {
 		}
 	}
 
-	if (!message.member.roles.cache.has(config.roles.admin)) {
+	if (!message.member.roles.cache.has(config.roles.admin) && !config.allowedEmbedCmdUsers.includes(message.member.id)) {
 		return message.channel.send('You do not have permission to use this command.');
 	}
 	message.channel.send('Welcome to Horace Embed Creator!');
