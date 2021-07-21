@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const config = require('../config.json');
+const errors = require('../helpers/embedErrors.js');
 
 // module.exports.execute = async (client, message)
 
@@ -25,7 +26,7 @@ class embed {
 		let channelID = answer.replace(/[<|#|>]/g, '');
 		let isIDValid = message.guild.channels.cache.some((channel) => channel.id === channelID);
 		if (isIDValid == false) {
-			throw 'Embed channel was not valid!';
+			throw new errors.EmbedInputErr('Embed channel not valid!');
 		}
 		else {
 			return message.guild.channels.cache.find((channel) => channel.id === channelID);
@@ -35,7 +36,7 @@ class embed {
 	static async getTitle(message) {
 		let answer = await this.ask(message, 'What should the embed title be?');
 		if (answer == null) {
-			throw 'Embed title was not valid!';
+			throw new errors.EmbedInputErr('Embed title not valid!');
 		}
 		else {
 			return answer;
@@ -59,14 +60,14 @@ class embed {
 			return answer;
 		}
 		else {
-			throw 'Embed URL was not valid';
+			throw new errors.EmbedInputErr('Embed URL not valid!');
 		}
 	}
 
 	static async getDescription(message) {
 		let answer = await this.ask(message, 'What should the description be?');
 		if (answer == null) {
-			throw 'Embed description not valid';
+			throw new errors.EmbedInputErr('Embed description not valid!');
 		}
 		else {
 			return answer;
@@ -76,7 +77,7 @@ class embed {
 	static async getSubtitle(message) {
 		let answer = await this.ask(message, 'What should the subtitle be?');
 		if (answer == null) {
-			throw 'Embed subtitle not valid';
+			throw new errors.EmbedInputErr('Embed subtitle not valid!');
 		}
 		else {
 			return answer;
@@ -86,7 +87,7 @@ class embed {
 	static async getBody(message) {
 		let answer = await this.ask(message, 'What should the embed body be?');
 		if (answer == null) {
-			throw 'Embed body not valid';
+			throw new errors.EmbedInputErr('Embed body not valid!');
 		}
 		else {
 			return answer;
@@ -102,7 +103,7 @@ class embed {
 			return answer;
 		}
 		else {
-			throw 'Embed colour hex code was invalid';
+			throw new errors.EmbedInputErr('Embed colour hex code not valid!');
 		}
 	}
 
@@ -123,7 +124,7 @@ class embed {
 			return answer;
 		}
 		else {
-			throw 'Embed image URL was not valid';
+			throw new errors.EmbedInputErr('Embed image URL not valid!');
 		}
 	}
 
@@ -194,10 +195,13 @@ class embed {
 				.addField(subtitle, body)
 				.setTimestamp();
 			channel.send(embedMessage);
+			message.channel.send('Your embed was sent!');
 		}
 		catch (err) {
-			console.log(err);
-			return message.channel.send(err);
+			if (err instanceof errors.EmbedInputErr) {
+				console.log(err.errMsg);
+				return message.channel.send(err.errMsg);
+			}
 		}
 	}
 }
