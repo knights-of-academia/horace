@@ -2,8 +2,6 @@ const Discord = require('discord.js');
 const config = require('../config.json');
 const errors = require('../helpers/embedErrors.js');
 
-// module.exports.execute = async (client, message)
-
 class embed {
 	static async ask(message, question) {
 		const filter = (m) => m.author.id === message.author.id;
