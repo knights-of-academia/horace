@@ -140,39 +140,7 @@ class embed {
 		let body;
 		let colour;
 		let imageLink;
-
-		/*
-		this.getChannel(message)
-			.then((answer) => { channel = answer; })
-			.then((result) => { this.getTitle(message, result); })
-			.then((answer) => { title = answer; })
-			.then((result) => { this.getURL(message, result); })
-			.then((answer) => { url = answer; })
-			.then((result) => { this.getDescription(message, result); })
-			.then((answer) => { description = answer; })
-			.then((result) => { this.getSubtitle(message, result); })
-			.then((answer) => { subtitle = answer; })
-			.then((result) => { this.getBody(message, result); })
-			.then((answer) => { body = answer; })
-			.then((result) => { this.getColour(message, result); })
-			.then((answer) => { colour = answer; })
-			.then((result) => { this.getImage(message, result); })
-			.then((answer) => { imageLink = answer; })
-			.then((result) => {
-				const embedMessage = new Discord.MessageEmbed()
-					.setColor(colour)
-					.setTitle(title)
-					.setThumbnail(imageLink)
-					.setURL(url)
-					.setAuthor(message.author.username, 'https://cdn.discordapp.com/avatars/' + message.author.id + '/' + message.author.avatar + '.webp?size=128')
-					.setDescription(description)
-					.addField(subtitle, body)
-					.setTimestamp();
-
-				channel.send(embedMessage);
-			})
-			.catch((err) => console.log(err));
-			*/
+		let embedMessage;
 
 		try {
 			channel = await this.getChannel(message);
@@ -183,7 +151,7 @@ class embed {
 			body = await this.getBody(message);
 			colour = await this.getColour(message);
 			imageLink = await this.getImage(message);
-			const embedMessage = new Discord.MessageEmbed()
+			embedMessage = new Discord.MessageEmbed()
 				.setColor(colour)
 				.setTitle(title)
 				.setThumbnail(imageLink)
@@ -201,6 +169,7 @@ class embed {
 				return message.channel.send(err.errMsg);
 			}
 		}
+		return embedMessage;
 	}
 }
 

@@ -117,3 +117,69 @@ test('Validates image correctly given incorrect input', async () => {
 		.rejects
 		.toThrow('Embed image URL not valid!');
 });
+
+test('Main function executes correctly given correct roles', async () => {
+	jest.spyOn(embed, 'getChannel').mockImplementation(jest.fn());
+	jest.spyOn(embed, 'getTitle').mockImplementation(jest.fn());
+	jest.spyOn(embed, 'getURL').mockImplementation(jest.fn());
+	jest.spyOn(embed, 'getDescription').mockImplementation(jest.fn());
+	jest.spyOn(embed, 'getSubtitle').mockImplementation(jest.fn());
+	jest.spyOn(embed, 'getBody').mockImplementation(jest.fn());
+	jest.spyOn(embed, 'getColour').mockImplementation(jest.fn());
+	jest.spyOn(embed, 'getImage').mockImplementation(jest.fn());
+
+	embed.getChannel.mockReturnValue('123123123123123123');
+	embed.getTitle.mockReturnValue('testTitle');
+	embed.getURL.mockReturnValue('https://example.com');
+	embed.getDescription.mockReturnValue('testDescription');
+	embed.getSubtitle.mockReturnValue('testSubtitle');
+	embed.getBody.mockReturnValue('testBody');
+	embed.getColour.mockReturnValue('#ffffff');
+	embed.getImage.mockReturnValue('https://example.com/image.png');
+
+	jest.mock(
+		'../../config.json',
+		() => {
+			return {
+				roles: {
+					admin: '12341234123412341234'
+				}
+			};
+		},
+		{ virtual: true }
+	);
+
+	const message = new MockMessage();
+
+	const expectedResponse = new Discord.MessageEmbed()
+		.setColor('#ffffff')
+		.setTitle('testTitle')
+		.setThumbnail('https://example.com/image.png')
+		.setURL('https://example.com')
+		.setAuthor('MockedUser', 'https://cdn.discordapp.com/avatars/123456789876543210/1123581221345589144.webp?size=128')
+		.setDescription('testDescription')
+		.addField('testSubtitle', 'testBody')
+		.setTimestamp();
+
+	const responseMessage = await embed.execute(null, message);
+	expect(responseMessage).toBe(expectedResponse);
+});
+
+test('Main function executes correctly given incorrect roles', async () => {
+	jest.mock(
+		'../../config.json',
+		() => {
+			return {
+				roles: {
+					admin: '12341234123412341234'
+				}
+			};
+		},
+		{ virtual: true }
+	);
+
+	const message = new MockMessage();
+	await embed.execute(null, message);
+	const expectedResponse = 'You do not have permission to use this command.';
+	expect(message.channel.send).toBeCalledWith(expectedResponse);
+});
