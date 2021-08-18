@@ -12,7 +12,7 @@ class profanityActions {
 		}
 
 		if (bannedWordsSQL.length == 0) {
-			return console.log('Error: No banned words found in database.');
+			return;
 		}
 
 		if (bannedWordsSQL.some((word) => message.content.toLowerCase().includes(word))) {
