@@ -15,13 +15,5 @@ module.exports = class MockMessage {
 		this.guild = {
 			name: 'KOA',
 		};
-
-		this.member = {
-			roles: {
-				cache: {
-					has: jest.fn(() => { return '12341234123412341234'; })
-				}
-			}
-		};
 	}
 };

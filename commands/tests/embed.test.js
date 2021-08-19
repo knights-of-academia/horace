@@ -150,6 +150,13 @@ test('Main function executes correctly given correct roles', async () => {
 	);
 
 	const message = new MockMessage();
+	message.member = {
+		roles: {
+			cache: {
+				has: jest.fn(() => { return '12341234123412341234'; })
+			}
+		}
+	};
 
 	const expectedResponse = new Discord.MessageEmbed()
 		.setColor('#ffffff')
@@ -162,7 +169,7 @@ test('Main function executes correctly given correct roles', async () => {
 		.setTimestamp();
 
 	const responseMessage = await embed.execute(null, message);
-	expect(responseMessage).toBe(expectedResponse);
+	expect(responseMessage).toStrictEqual(expectedResponse);
 });
 
 test('Main function executes correctly given incorrect roles', async () => {
@@ -171,7 +178,7 @@ test('Main function executes correctly given incorrect roles', async () => {
 		() => {
 			return {
 				roles: {
-					admin: '12341234123412341234'
+					admin: '12345123451234512345'
 				}
 			};
 		},
@@ -179,6 +186,13 @@ test('Main function executes correctly given incorrect roles', async () => {
 	);
 
 	const message = new MockMessage();
+	message.member = {
+		roles: {
+			cache: {
+				has: jest.fn(() => { return false; })
+			}
+		}
+	};
 	await embed.execute(null, message);
 	const expectedResponse = 'You do not have permission to use this command.';
 	expect(message.channel.send).toBeCalledWith(expectedResponse);
