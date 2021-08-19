@@ -30,9 +30,7 @@ module.exports = async (client, message) => {
 			client.commands.get(client.aliases.get(command));
 
 		if (commandFile) {
-			commandFile.execute(client, message, args).then(() => {
-				message.delete({ timeout: 1500 });
-			});
+			await commandFile.execute(client, message, args);
 		}
 	}
 
