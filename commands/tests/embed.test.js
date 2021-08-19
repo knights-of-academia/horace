@@ -6,6 +6,41 @@ beforeEach(async () => {
 	jest.resetModules().resetAllMocks();
 });
 
+test('Validates channel correctly given correct input', async () => {
+	jest.spyOn(embed, 'ask').mockImplementation(jest.fn());
+	embed.ask.mockReturnValue('<#012345678987654321>');
+	const expectedResponse = '012345678987654321';
+	const message = new MockMessage();
+	message.guild = {
+		name: 'KOA',
+		channels: {
+			cache: {
+				some: jest.fn(() => { return true; }),
+				find: jest.fn(() => { return '012345678987654321'; })
+			},
+		}
+	};
+	const responseMessage = await embed.getChannel(message);
+	expect(responseMessage).toBe(expectedResponse);
+});
+
+test('Validates channel correctly given incorrect input', async () => {
+	jest.spyOn(embed, 'ask').mockImplementation(jest.fn());
+	embed.ask.mockReturnValue('<#012345678987654321>');
+	const message = new MockMessage();
+	message.guild = {
+		name: 'KOA',
+		channels: {
+			cache: {
+				some: jest.fn(() => { return false; }),
+			},
+		}
+	};
+	await expect(embed.getChannel(message))
+		.rejects
+		.toThrow('Embed channel not valid!');
+});
+
 test('Validates title correctly given correct input', async () => {
 	jest.spyOn(embed, 'ask').mockImplementation(jest.fn());
 	embed.ask.mockReturnValue('testTitle');
