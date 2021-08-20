@@ -135,22 +135,14 @@ class Embed {
 		let embedMessage;
 
 		try {
-			let channel;
-			let title;
-			let url;
-			let description;
-			let subtitle;
-			let body;
-			let colour;
-			let imageLink;
-			channel = await this.getChannel(message);
-			title = await this.getTitle(message);
-			url = await this.getURL(message);
-			description = await this.getDescription(message);
-			subtitle = await this.getSubtitle(message);
-			body = await this.getBody(message);
-			colour = await this.getColour(message);
-			imageLink = await this.getImage(message);
+			let channel = await this.getChannel(message);
+			let title = await this.getTitle(message);
+			let url = await this.getURL(message);
+			let description = await this.getDescription(message);
+			let subtitle = await this.getSubtitle(message);
+			let body = await this.getBody(message);
+			let colour = await this.getColour(message);
+			let imageLink = await this.getImage(message);
 			embedMessage = new Discord.MessageEmbed()
 				.setColor(colour)
 				.setTitle(title)
