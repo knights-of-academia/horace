@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const config = require('../config.json');
 const errors = require('../helpers/embedErrors.js');
 
-class embed {
+class Embed {
 	static async ask(message, question) {
 		const filter = (m) => m.author.id === message.author.id;
 		await message.channel.send(question);
@@ -14,7 +14,7 @@ class embed {
 			return collected.first().content;
 		}
 		else {
-			message.channel.send('Embed creation timed out.');
+			await message.channel.send('Embed creation timed out.');
 			return null;
 		}
 	}
@@ -130,19 +130,19 @@ class embed {
 		if (!message.member.roles.cache.has(config.roles.admin) && !config.allowedEmbedCmdUsers.includes(message.member.id)) {
 			return message.channel.send('You do not have permission to use this command.');
 		}
-		message.channel.send('Welcome to Horace Embed Creator!');
+		await message.channel.send('Welcome to Horace Embed Creator!');
 
-		let channel;
-		let title;
-		let url;
-		let description;
-		let subtitle;
-		let body;
-		let colour;
-		let imageLink;
 		let embedMessage;
 
 		try {
+			let channel;
+			let title;
+			let url;
+			let description;
+			let subtitle;
+			let body;
+			let colour;
+			let imageLink;
 			channel = await this.getChannel(message);
 			title = await this.getTitle(message);
 			url = await this.getURL(message);
@@ -160,8 +160,8 @@ class embed {
 				.setDescription(description)
 				.addField(subtitle, body)
 				.setTimestamp();
-			channel.send(embedMessage);
-			message.channel.send('Your embed was sent!');
+			await channel.send(embedMessage);
+			await message.channel.send('Your embed was sent!');
 		}
 		catch (err) {
 			if (err instanceof errors.EmbedInputErr) {
@@ -173,7 +173,7 @@ class embed {
 	}
 }
 
-module.exports = embed;
+module.exports = Embed;
 
 module.exports.config = {
 	name: 'embed',
