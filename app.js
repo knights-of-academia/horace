@@ -4,6 +4,8 @@ const Discord = require('discord.js');
 const config = require('./config.json');
 const connect = require('./databaseFiles/connect.js');
 
+const env = require('./config.js');
+
 const client = new Discord.Client({
 	partials: ['USER', 'REACTION', 'MESSAGE'],
 	ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'] }
