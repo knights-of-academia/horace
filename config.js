@@ -4,7 +4,19 @@ function toArray(original) {
 	return original.split(',').map((s) => s.trim());
 }
 
-module.exports.Config = {
+function validateConfig(object, path = '') {
+	for (const [key, value] of Object.entries(object)) {
+		const currentPath = path ? `${path}.${key}` : key;
+		if (typeof value === 'object') {
+			validateConfig(value, currentPath);
+		}
+		else if (!String(value)) {
+			console.log(`[WARNING] config ${currentPath} not defined.`);
+		}
+	}
+}
+
+const config = {
 	'BOT': {
 		'TOKEN': process.env.BOT_TOKEN,
 		'PREFIX': '!',
@@ -107,3 +119,7 @@ module.exports.Config = {
 	'CHAIN_MESSAGE_CHAR_LIMIT': 40,
 	'ALLOWED_EMBED_USERS': toArray(process.env.ALLOWED_EMBED_USERS),
 };
+
+validateConfig(config);
+
+module.exports.Config = config;
