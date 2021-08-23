@@ -56,3 +56,17 @@ test('Sends right message on args Camelot', async () => {
 	const expectedResponse = 'Invite to the Camelot server: https://discord.gg/sfW7dU9';
 	expect(responseMessage).toBe(expectedResponse);
 });
+
+test('Sends right message on args ramsync', async () => {
+	const message = new MockMessage();
+	const responseMessage = await invite.execute(null, message, ['ramsync']);
+	const expectedResponse = 'Invite to the RamSync server: https://discord.gg/pF6YjCpF';
+	expect(responseMessage).toBe(expectedResponse);
+});
+
+test('Sends right message on args RamSync', async () => {
+	const message = new MockMessage();
+	const responseMessage = await invite.execute(null, message, ['RamSync']);
+	const expectedResponse = 'Invite to the RamSync server: https://discord.gg/pF6YjCpF';
+	expect(responseMessage).toBe(expectedResponse);
+});

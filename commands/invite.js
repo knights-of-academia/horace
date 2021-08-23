@@ -11,6 +11,9 @@ module.exports.execute = async (client, message, args) => {
 		if (args[0].toLowerCase() === 'camelot') {
 			inviteText = 'Invite to the Camelot server: https://discord.gg/sfW7dU9';
 		}
+		if (args[0].toLowerCase() === 'ramsync') {
+			inviteText = 'Invite to the RamSync server: https://discord.gg/pF6YjCpF';
+		}
 	}
 	return await message.channel.send(inviteText);
 };
