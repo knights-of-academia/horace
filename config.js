@@ -1,5 +1,9 @@
 require('dotenv').config();
 
+function toArray(original) {
+	return original.split(',').map((s) => s.trim());
+}
+
 module.exports.Config = {
 	'BOT': {
 		'TOKEN': process.env.BOT_TOKEN,
@@ -45,8 +49,8 @@ module.exports.Config = {
 		'STAFF_ACCOUNTABILITY': process.env.C_STAFF_ACCOUNTABILITY,
 		'COMMAND_CENTER': process.env.C_COMMAND_CENTER,
 		'CONTENT_NOTIFIER': process.env.C_CONTENT_NOTIFER,
-		'FORBIDDEN_HIGHLIGHT_CHANNELS': process.env.C_FORBIDDEN_HIGHLIGHT_CHANNELS,
-		'ERRORS': process.env.C_ERRORS
+		'ERRORS': process.env.C_ERRORS,
+		'FORBIDDEN_HIGHLIGHT_CHANNELS': toArray(process.env.C_FORBIDDEN_HIGHLIGHT_CHANNELS),
 	},
 
 	'EMOTES': {
@@ -101,5 +105,5 @@ module.exports.Config = {
 	'REFLECTION_CHECK_DEPTH': 5,
 	'REMINDER_SCAN_INTERVAL': 30000,
 	'CHAIN_MESSAGE_CHAR_LIMIT': 40,
-	'ALLOWED_EMBED_USERS': process.env.ALLOWED_EMBED_USERS,
+	'ALLOWED_EMBED_USERS': toArray(process.env.ALLOWED_EMBED_USERS),
 };
