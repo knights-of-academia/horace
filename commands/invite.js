@@ -8,6 +8,9 @@ module.exports.execute = async (client, message, args) => {
 		if (args[0].toLowerCase() === 'koai') {
 			inviteText = 'Invite to the Knights of Academia: International server: https://discord.gg/Fuvabsm';
 		}
+		if (args[0].toLowerCase() === 'camelot') {
+			inviteText = 'Invite to the Camelot server: https://discord.gg/sfW7dU9';
+		}
 	}
 	return await message.channel.send(inviteText);
 };

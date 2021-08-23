@@ -42,3 +42,17 @@ test('Sends right message on args KOAI', async () => {
 	const expectedResponse = 'Invite to the Knights of Academia: International server: https://discord.gg/Fuvabsm';
 	expect(responseMessage).toBe(expectedResponse);
 });
+
+test('Sends right message on args camelot', async () => {
+	const message = new MockMessage();
+	const responseMessage = await invite.execute(null, message, ['camelot']);
+	const expectedResponse = 'Invite to the Camelot server: https://discord.gg/sfW7dU9';
+	expect(responseMessage).toBe(expectedResponse);
+});
+
+test('Sends right message on args Camelot', async () => {
+	const message = new MockMessage();
+	const responseMessage = await invite.execute(null, message, ['Camelot']);
+	const expectedResponse = 'Invite to the Camelot server: https://discord.gg/sfW7dU9';
+	expect(responseMessage).toBe(expectedResponse);
+});
