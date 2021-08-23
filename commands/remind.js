@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 
-const config = require('../config.json');
+const { Config } = require('../config.js');
 
 const errors = require('../helpers/remindErrors.js');
 const remindUtils = require('../utils/remindUtils.js');
@@ -12,16 +12,16 @@ const monthsData = require('../data/monthsData.js');
 
 module.exports.execute = async (client, message, args) => {
 	// Restrict command usage to accountability-station and command-center channels.
-	if (!(message.channel.id === config.channels.accountability || message.channel.id === config.channels.commandcenter)) {
+	if (!(message.channel.id === Config.CHANNELS.ACCOUNTABILITY || message.channel.id === Config.CHANNELS.COMMAND_CENTER)) {
 		return await message.channel.send(
-			`Whoops, sorry, but the "remind" command is only available in <#${config.channels.accountability}> and <#${config.channels.commandcenter}>.`
+			`Whoops, sorry, but the "remind" command is only available in <#${Config.CHANNELS.ACCOUNTABILITY}> and <#${Config.CHANNELS.COMMAND_CENTER}>.`
 		);
 	}
 
 	if (args.length === 0 || args.length === 1 && (args[0] === 'help' || args[0] === 'info')) {
 		const remindHelp = new Discord.MessageEmbed()
 			.setColor('#FFEC09')
-			.setTitle(`${config.emotes.reminders} Knights of Academia Remind Help ${config.emotes.reminders}`)
+			.setTitle(`${Config.EMOTES.REMINDERS} Knights of Academia Remind Help ${Config.EMOTES.REMINDERS}`)
 			.setDescription('Here are some commands to help you out with reminders!')
 			.addField('Add a reminder',
 				`\`!remind [me to] <task> in <how many> minutes/hours/days/months\`
@@ -77,7 +77,7 @@ module.exports.execute = async (client, message, args) => {
 		if (remindersStringForEmbed) {
 			const remindList = new Discord.MessageEmbed()
 				.setColor('#FFEC09')
-				.setTitle(`${config.emotes.reminders} Your Reminders ${config.emotes.reminders}`)
+				.setTitle(`${Config.EMOTES.REMINDERS} Your Reminders ${Config.EMOTES.REMINDERS}`)
 				.setDescription('Each entry is in the form of <id>: <reminder>.')
 				.addField('Reminders', remindersStringForEmbed);
 
@@ -265,7 +265,7 @@ Do you want me to remind you to ${whatToRemind} ${whenToRemind}? React with thum
 	);
 
 	let confirm, deny;
-	[confirm, deny] = [config.emotes.confirm, config.emotes.deny];
+	[confirm, deny] = [Config.EMOTES.CONFIRM, Config.EMOTES.DENY];
 
 	confirmation_message.react(confirm).then(() => confirmation_message.react(deny));
 
@@ -316,7 +316,7 @@ async function remind(client, date, reminder, shouldCatchUp = false) {
 
 	const remindMessage = new Discord.MessageEmbed()
 		.setColor(color)
-		.setTitle(`${config.emotes.reminders} Reminder ${config.emotes.reminders}`)
+		.setTitle(`${Config.EMOTES.REMINDERS} Reminder ${Config.EMOTES.REMINDERS}`)
 		.setDescription(description);
 
 	userToRemind.send(remindMessage);
@@ -352,7 +352,7 @@ async function scanForReminders(client) {
 		let difference;
 		reminders.forEach(async (reminder) => {
 			difference = currentDate - reminder.dataValues.whenToRemind;
-			if (difference > (-1) * config.reminderScanInterval) {
+			if (difference > (-1) * Config.REMINDER_SCAN_INTERVAL) {
 				remind(client, currentDate, reminder);
 			}
 		});

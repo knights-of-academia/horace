@@ -1,4 +1,4 @@
-const config = require('../config.json');
+const { Config } = require('../config.js');
 const fs = require('fs');
 
 class cotwActions {
@@ -13,7 +13,7 @@ class cotwActions {
 		let diff = currentDate.getTime() - lastModified.getTime();
 		let minute = 1000 * 60;
 		if (diff <= minute) {
-			return await message.react(config.emotes.yes2);
+			return await message.react(Config.EMOTES.YES2);
 		}
 		else {
 			return null;
@@ -22,29 +22,29 @@ class cotwActions {
 
 	static async reactToVowAndReflections(client, message) {
 		// React to vow
-		if (message.channel.id === config.channels.cotw
+		if (message.channel.id === Config.CHANNELS.COTW
 			&& message.content.toLowerCase().includes('i vow to')) {
-			const emote = config.emotes.cotwVow;
+			const emote = Config.EMOTES.COTW_VOW;
 			await message.react(emote);
 		}
 
 		// React to reflection
-		if (message.channel.id === config.channels.cotw) {
+		if (message.channel.id === Config.CHANNELS.COTW) {
 			let arrayMatching = message.content.toLowerCase().replace(/  +/g, ' ')
 				.split(' ')
-				.slice(0, config.reflectionCheckDepth);
+				.slice(0, Config.REFLECTION_CHECK_DEPTH);
 			if (arrayMatching.some((str) => {
 				return str.includes('reflection');
 			})) {
-				const emote = config.emotes.cotwReflection;
+				const emote = Config.EMOTES.COTW_REFLECTION;
 				await message.react(emote);
 			}
 		}
 	}
 
 	static async updateCotw(client, message) {
-		if (message.channel.id === config.channels.cotw
-			&& message.member.roles.cache.has(config.roles.cotwManager)) {
+		if (message.channel.id === Config.CHANNELS.COTW
+			&& message.member.roles.cache.has(Config.ROLES.COTW_MANAGER)) {
 			const store = require('data-store')({
 				path: process.cwd() + '/data/cotw.json'
 			});
@@ -52,7 +52,7 @@ class cotwActions {
 			if (message.content.toLowerCase().includes('congratulations')
 				&& message.mentions.members) {
 				const winner = message.mentions.members.first();
-				const cotwRole = message.guild.roles.cache.get(config.roles.cotwChampion);
+				const cotwRole = message.guild.roles.cache.get(Config.ROLES.COTW_CHAMPION);
 
 				// Remove role from all previous winners
 				message.guild.members.cache.each(async (member) => {
@@ -61,7 +61,7 @@ class cotwActions {
 					}
 				});
 
-				const emote = config.emotes.congrats;
+				const emote = Config.EMOTES.CONGRATS;
 				try {
 					await winner.roles.add(cotwRole),
 					Promise.all([
@@ -85,7 +85,7 @@ class cotwActions {
 				});
 				store.set('pollActive', true);
 				store.set('pollLink', link);
-				const emote = config.emotes.acceptTOS;
+				const emote = Config.EMOTES.ACCEPT_TOS;
 				await message.react(emote);
 				return;
 			}
@@ -95,8 +95,8 @@ class cotwActions {
 				store.set('pollActive', false);
 				const Habitica = require('habitica');
 				const api = new Habitica({
-					id: config.habitica.id,
-					apiToken: config.habitica.token
+					id: Config.HABITICA.ID,
+					apiToken: Config.HABITICA.TOKEN
 				});
 				const messageContent = message.content.split(/[\s\n]+/);
 
@@ -112,12 +112,12 @@ class cotwActions {
 				let challengeName = apiResponse.data.name;
 				challengeName = challengeName.replace('Challenge of the Week: ', '');
 				store.set('challengeName', challengeName);
-				const emote = config.emotes.cotwReflection;
+				const emote = Config.EMOTES.COTW_REFLECTION;
 				await message.react(emote);
 
 				let check = await this.confirmUpdate(message);
 				if (check == null) {
-					await message.react(config.emotes.no);
+					await message.react(Config.EMOTES.NO);
 					return await message.channel.send(
 						'An error occured and the COTW was not updated.'
 					);

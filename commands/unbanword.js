@@ -1,9 +1,9 @@
-const config = require('../config.json');
+const { Config } = require('../config.js');
 const BanWordUtils = require('../utils/banwordUtils.js');
 
 module.exports.execute = async (client, message, args) => {
-	if (message.member.roles.cache.has(config.roles.guardian)
-  || message.member.roles.cache.has(config.roles.helper)) {
+	if (message.member.roles.cache.has(Config.ROLES.GUARDIAN)
+  || message.member.roles.cache.has(Config.ROLES.HELPER)) {
 		if (!args[0]) {
 			return message.channel.send('Please enter a word to unban!');
 		}

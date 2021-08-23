@@ -1,13 +1,13 @@
 const Highlights = require('../databaseFiles/highlightsTable.js');
 const Discord = require('discord.js');
-const config = require('../config.json');
+const { Config } = require('../config.js');
 
 const errHandler = (err) => {
 	console.error('Highlights sequelize error: ', err);
 };
 
 const getHelpReply = () => {
-	const highlightsEmote = config.emotes.highlights;
+	const highlightsEmote = Config.EMOTES.HIGHLIGHTS;
 	const highlightsHelp = new Discord.MessageEmbed()
 		.setColor('#FFEC09')
 		.setTitle(`${highlightsEmote} Knights of Academia Highlight Help ${highlightsEmote}`)
@@ -19,7 +19,7 @@ const getHelpReply = () => {
 };
 
 const getHiglightAdditionReplyMsg = (keywords) => {
-	const highlightsEmote = config.emotes.highlights;
+	const highlightsEmote = Config.EMOTES.HIGHLIGHTS;
 	const highlightsAddMessage = new Discord.MessageEmbed()
 		.setColor('#FFEC09')
 		.setTitle(`${highlightsEmote} Knights of Academia Highlight Addition ${highlightsEmote}`)
@@ -29,7 +29,7 @@ const getHiglightAdditionReplyMsg = (keywords) => {
 };
 
 const getHiglightRemovalReplyMsg = (keywords) => {
-	const highlightsEmote = config.emotes.highlights;
+	const highlightsEmote = Config.EMOTES.HIGHLIGHTS;
 	const highlightsRemovalMsg = new Discord.MessageEmbed()
 		.setColor('#FFEC09')
 		.setTitle(`${highlightsEmote} Knights of Academia Highlight Removal ${highlightsEmote}`)
@@ -40,7 +40,7 @@ const getHiglightRemovalReplyMsg = (keywords) => {
 };
 
 const getHighlightsListReplyMsg = (listOfWords) => {
-	const highlightsEmote = config.emotes.highlights;
+	const highlightsEmote = Config.EMOTES.HIGHLIGHTS;
 	const HighlightsListReplyMsg = new Discord.MessageEmbed()
 		.setColor('#FFEC09')
 		.setTitle(`${highlightsEmote} Knights of Academia Highlight List ${highlightsEmote}`)

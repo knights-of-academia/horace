@@ -1,11 +1,11 @@
 const Discord = require('discord.js');
-const config = require('../config.json');
+const { Config } = require('../config.js');
 const InfoTerms = require('../databaseFiles/infoTermsTable.js');
 const SearchWords = require('../databaseFiles/searchWordsTable.js');
 
 module.exports.execute = async (client, message, args) => {
 	const errHandler = (err) => {
-		client.channel.get(config.channels.errors).send(err);
+		client.channel.get(Config.CHANNELS.ERRORS).send(err);
 	};
 	const cmd = args[0];
 	const term = args[1];
@@ -13,7 +13,6 @@ module.exports.execute = async (client, message, args) => {
 	const keywords = entirePhrase.substring(entirePhrase.indexOf(' ') + 1);
 	const desc = keywords.substring(keywords.indexOf('-') + 1);
 	const user = message.author;
-	const infoEmote = config.emotes.info;
 
 	if (keywords.length === 0) {
 		// if no term or command is provided, show available search terms
@@ -31,16 +30,16 @@ module.exports.execute = async (client, message, args) => {
 		const infoMessage = '___**List of available search terms:**__\n\n' + theInfoTerms.join(delimiter);
 
 		await message.author.send(infoMessage).catch((err) => {
-			client.channel.get(config.channels.errors).send(err);
+			client.channel.get(Config.CHANNELS.ERRORS).send(err);
 		});
 		return await message.channel.send('I have sent you a private message with the list of available search terms.').catch((err) => {
-			client.channel.get(config.channels.errors).send(err);
+			client.channel.get(Config.CHANNELS.ERRORS).send(err);
 		});
 	}
 	else if (keywords.length > 1) {
 		if (cmd === 'add') { //Add a new term
-			if (message.channel.id === config.channels.commandcenter
-				&& (message.member.roles.has(config.roles.guardian) || message.member.roles.has(config.roles.helper))) {
+			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
+				&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
 				const searchTerms = args[2].split(',');
 
 				let result = await InfoTerms.findAll({
@@ -81,14 +80,14 @@ module.exports.execute = async (client, message, args) => {
 			}
 			else {
 				//Inform if user doesn't have authority to edit info
-				if (!message.member.roles.has(config.roles.guardian) || !message.member.roles.has(config.roles.helper)) {
+				if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
 					message.channel.send('You do not have the experience to complete this command');
 				}
 			}
 		}
 		else if (cmd === 'remove') {
-			if (message.channel.id === config.channels.commandcenter
-					&& (message.member.roles.has(config.roles.guardian) || message.member.roles.has(config.roles.helper))) {
+			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
+					&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
 				//Remove entries
 				let cont = true;
 				await InfoTerms.destroy({
@@ -117,14 +116,14 @@ module.exports.execute = async (client, message, args) => {
 			}
 			else {
 				//Inform if user doesn't have authority to edit info
-				if (!message.member.roles.has(config.roles.guardian) || !message.member.roles.has(config.roles.helper)) {
+				if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
 					message.channel.send('You do not have the experience to complete this command');
 				}
 			}
 		}
 		else if (cmd === 'edit') {
-			if (message.channel.id === config.channels.commandcenter
-						&& (message.member.roles.has(config.roles.guardian) || message.member.roles.has(config.roles.helper))) {
+			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
+						&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
 				//Update InfoTerms
 				let termToUpdate = await SearchWords.findAll({
 					attributes: ['term'],
@@ -147,7 +146,7 @@ module.exports.execute = async (client, message, args) => {
 			}
 			else {
 				//Inform if user doesn't have authority to edit info
-				if (!message.member.roles.has(config.roles.guardian) || !message.member.roles.has(config.roles.helper)) {
+				if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
 					message.channel.send('You do not have the experience to complete this command');
 				}
 			}
@@ -155,7 +154,7 @@ module.exports.execute = async (client, message, args) => {
 		else if (cmd === 'help') {
 			const infoHelp = new Discord.RichEmbed()
 				.setColor('#FF000')
-				.setTitle(`${infoEmote} Knights of Academia Info Help ${infoEmote}`)
+				.setTitle('Knights of Academia Info Help')
 				.setDescription('Here are some commands to help you out with info!')
 				.addField('Add info', '`!info add <term> <comma,seperated,keywords> -<description>`')
 				.addField('Remove info', '`!info remove <keyword>`')

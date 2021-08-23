@@ -1,15 +1,15 @@
-const config = require('../config.json');
+const { Config } = require('../config.js');
 
 class pinAction {
 	static async pinMessage(client, reaction) {
 		// Accountability station has its own manager
-		if (reaction.message.channel.id === config.channels.accountability) return;
+		if (reaction.message.channel.id === Config.CHANNELS.ACCOUNTABILITY) return;
 
 		// Server-wide pin feature
-		const pinLimit = config.pinLimit;
-		if (reaction._emoji.name === config.emotes.pinMessage && reaction.count >= pinLimit) {
+		const pinLimit = Config.PIN_LIMIT;
+		if (reaction._emoji.name === Config.EMOTES.PIN_MESSAGE && reaction.count >= pinLimit) {
 			return reaction.message.pin();
-		} else if (reaction._emoji.name === config.emotes.pinMessage &&
+		} else if (reaction._emoji.name === Config.EMOTES.PIN_MESSAGE &&
 			reaction.message.pinned &&
 			reaction.message < pinLimit) {
 			reaction.message.channel.send('Your message was successfully unpinned');

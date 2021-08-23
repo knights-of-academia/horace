@@ -1,4 +1,4 @@
-const config = require('../config.json');
+const { Config } = require('../config.js');
 const cotwActions = require('../eventActions/cotwActions');
 const hocActions = require('../eventActions/hocActions');
 const snapshotActions = require('../eventActions/snapshotActions');
@@ -17,10 +17,10 @@ module.exports = async (client, message) => {
 	if (!message.guild || message.author.bot) return;
 	const args = message.content.split(/\s+/g);
 	let command = '';
-	if (message.content.startsWith(config.prefix)) {
+	if (message.content.startsWith(Config.BOT.PREFIX)) {
 		command = args
 			.shift()
-			.slice(config.prefix.length)
+			.slice(Config.BOT.PREFIX.length)
 			.toLowerCase();
 	}
 

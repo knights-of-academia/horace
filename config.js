@@ -1,105 +1,105 @@
-require('dotenv').config({ debug: process.env.DEBUG });
+require('dotenv').config();
 
-module.exports = {
-	'bot': {
-		'token': process.env.BOT_TOKEN,
-		'prefix': '!',
+module.exports.Config = {
+	'BOT': {
+		'TOKEN': process.env.BOT_TOKEN,
+		'PREFIX': '!',
 	},
 
 	// User ID and token to access the Habitica API
 	// (https://habitica.com/user/settings/api) Used to access information
 	// for Challenge of the Week. Doesn't matter whose account is used.
-	'habitica': {
-		'id': process.env.HAB_ID,
-		'token': process.env.HAB_TOKEN,
+	'HABITICA': {
+		'ID': process.env.HAB_ID,
+		'TOKEN': process.env.HAB_TOKEN,
 	},
 
-	'messages': {
-		'focusedRaider': process.env.M_FOCUSED_RAIDER,
+	'MESSAGES': {
+		'FOCUSED_RAIDER': process.env.M_FOCUSED_RAIDER,
 	},
 
-	'roles': {
-		'initiate': process.env.R_INITIATE,
-		'member': process.env.R_MEMBER,
-		'focusedraider': process.env.R_FOCUSED_RAIDER,
-		'cotwChampion': process.env.R_COTW_CHAMPION,
-		'cotwManager': process.env.R_COTW_MANAGER,
-		'guardian': process.env.R_GUARDIAN,
-		'helper': process.env.R_HELPER,
+	'ROLES': {
+		'INITIATE': process.env.R_INITIATE,
+		'MEMBER': process.env.R_MEMBER,
+		'FOCUSED_RAIDER': process.env.R_FOCUSED_RAIDER,
+		'COTW_CHAMPION': process.env.R_COTW_CHAMPION,
+		'COTW_MANAGER': process.env.R_COTW_MANAGER,
+		'GUARDIAN': process.env.R_GUARDIAN,
+		'HELPER': process.env.R_HELPER,
 	},
 
-	'channels': {
-		'mapofkoa': process.env.C_MAP_OF_KOA,
-		'raidroom': process.env.C_RAID_ROOM,
-		'citadel': process.env.C_CITADEL,
-		'cotw': process.env.C_COTW,
-		'toc': process.env.C_TOC,
-		'snapshots': process.env.C_SNAPSHOTS,
-		'moderation': process.env.C_MODERATION,
-		'messagelogs': process.env.C_MESSAGE_LOGS,
-		'sleepclub': process.env.C_SLEEP_CLUB,
-		'hallofconquests': process.env.C_HALL_OF_CONQUESTS,
-		'accountability': process.env.C_ACCOUNTABILITY,
-		'chooseroles': process.env.C_CHOOSE_ROLES,
-		'gratitude': process.env.C_GRATITUDE,
-		'staffaccountability': process.env.C_STAFF_ACCOUNTABILITY,
-		'commandcenter': process.env.C_COMMAND_CENTER,
-		'contentNotifier': process.env.C_CONTENT_NOTIFER,
-		'forbiddenHighlightChannels': process.env.C_FORBIDDEN_HIGHLIGHT_CHANNELS,
-		'errors': process.env.C_ERRORS
+	'CHANNELS': {
+		'MAP_OF_KOA': process.env.C_MAP_OF_KOA,
+		'RAID_ROOM': process.env.C_RAID_ROOM,
+		'CITADEL': process.env.C_CITADEL,
+		'COTW': process.env.C_COTW,
+		'TOC': process.env.C_TOC,
+		'SNAPSHOTS': process.env.C_SNAPSHOTS,
+		'MODERATION': process.env.C_MODERATION,
+		'MESSAGE_LOGS': process.env.C_MESSAGE_LOGS,
+		'SLEEP_CLUB': process.env.C_SLEEP_CLUB,
+		'HALL_OF_CONQUESTS': process.env.C_HALL_OF_CONQUESTS,
+		'ACCOUNTABILITY': process.env.C_ACCOUNTABILITY,
+		'CHOOSE_ROLES': process.env.C_CHOOSE_ROLES,
+		'GRATITUDE': process.env.C_GRATITUDE,
+		'STAFF_ACCOUNTABILITY': process.env.C_STAFF_ACCOUNTABILITY,
+		'COMMAND_CENTER': process.env.C_COMMAND_CENTER,
+		'CONTENT_NOTIFIER': process.env.C_CONTENT_NOTIFER,
+		'FORBIDDEN_HIGHLIGHT_CHANNELS': process.env.C_FORBIDDEN_HIGHLIGHT_CHANNELS,
+		'ERRORS': process.env.C_ERRORS
 	},
 
-	'emotes': {
-		'hocReaction': process.env.E_HOC_REACTION || '🎉',
-		'focusedRaider': process.env.E_FOCUSED_RAIDER,
-		'yes2': process.env.E_YES2 || '✔',
-		'no': process.env.E_NO || '❌',
-		'conquer': process.env.E_CONQUER,
-		'welcomearrow': process.env.E_WELCOME_ARROW || '➡',
-		'horace': process.env.E_HORACE,
-		'acceptTOS': '✅',
-		'bookmark': '🔖',
-		'sleeplogReaction': '🛏️',
-		'cotwVow': '⚔',
-		'cotwReflection': '🛡',
-		'pinMessage': '📌',
-		'goodmorning': '🌞',
-		'goodnight': '🌜',
-		'accountability_emotes_array': ['💯', '👍', '🔥', '🙌', '👏', '👌', '💪'],
-		'pom': '🍅',
-		'congrats': '✔️',
-		'highlights': '☀️',
-		'wave': '👋',
-		'gratitude': '☺️',
-		'reminders': '❗',
-		'confirm': '👍',
-		'deny': '👎',
-		'heart': '❤️',
+	'EMOTES': {
+		'HOC_REACTION': process.env.E_HOC_REACTION || '🎉',
+		'FOCUSED_RAIDER': process.env.E_FOCUSED_RAIDER,
+		'YES2': process.env.E_YES2 || '✔',
+		'NO': process.env.E_NO || '❌',
+		'CONQUER': process.env.E_CONQUER,
+		'WELCOME_ARROW': process.env.E_WELCOME_ARROW || '➡',
+		'HORACE': process.env.E_HORACE,
+		'ACCEPT_TOC': '✅',
+		'BOOKMARK': '🔖',
+		'SLEEP_LOG_REACTION': '🛏️',
+		'COTW_VOW': '⚔',
+		'COTW_REFLECTION': '🛡',
+		'PIN_MESSAGE': '📌',
+		'GOOD_MORNING': '🌞',
+		'GOOD_NIGHT': '🌜',
+		'ACCOUNTABILITY_EMOTES_ARRAY': ['💯', '👍', '🔥', '🙌', '👏', '👌', '💪'],
+		'POM': '🍅',
+		'CONGRATS': '✔️',
+		'HIGHLIGHTS': '☀️',
+		'WAVE': '👋',
+		'GRATITUDE': '☺️',
+		'REMINDERS': '❗',
+		'CONFIRM': '👍',
+		'DENY': '👎',
+		'HEART': '❤️',
 	},
 
 	// Settings for determining when Horace reacts to messages in #citadel.
-	'greetings': {
+	'GREETINGS': {
 		// Determine whether or not Horace will use the strict or normal version of the regex.
-		'forceStrict': false,
-		'strict_morning_regex': 'mo*rning (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$',
-		'strict_night_regex': 'ni*ght (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$',
-		'normal_morning_regex': 'g+o{2,}d+\\s*m+o+r+n+i+n+g+',
-		'normal_night_regex': 'g+o{2,}d+\\s*n+i+g+h+t+',
+		'STRICT': false,
+		'STRICT_MORNING_REGEX': 'mo*rning (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$',
+		'STRICT_NIGHT_REGEX': 'ni*ght (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$',
+		'NORMAL_MORNING_REGEX': 'g+o{2,}d+\\s*m+o+r+n+i+n+g+',
+		'NORMAL_NIGHT_REGEX': 'g+o{2,}d+\\s*n+i+g+h+t+',
 	},
 
 	// Configure the Terms and Conditions reminder
-	'toc': {
-		'tocReminderTimer': '30000',
-		'tocRemindAfterHours': 72,
+	'TOC': {
+		'REMINDER_TIMER': 30000,
+		'REMIND_AFTER_HOURS': 72,
 	},
 
-	'colors': {
-		'koaYellow': '#FFFA4F',
+	'COLORS': {
+		'KOA_YELLOW': '#FFFA4F',
 	},
 
-	'pinLimit': 5,
-	'reflectionCheckDepth': 5,
-	'reminderScanInterval': 30000,
-	'chainMessageCharLimit': '40',
-	'allowedEmbedCmdUsers': process.env.ALLOWED_EMBED_USERS,
+	'PIN_LIMIT': 5,
+	'REFLECTION_CHECK_DEPTH': 5,
+	'REMINDER_SCAN_INTERVAL': 30000,
+	'CHAIN_MESSAGE_CHAR_LIMIT': 40,
+	'ALLOWED_EMBED_USERS': process.env.ALLOWED_EMBED_USERS,
 };

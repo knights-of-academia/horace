@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const config = require('../config.json');
+const { Config } = require('../config.js');
 const errors = require('../helpers/embedErrors.js');
 
 class Embed {
@@ -127,7 +127,7 @@ class Embed {
 	}
 
 	static async execute(client, message) {
-		if (!message.member.roles.cache.has(config.roles.admin) && !config.allowedEmbedCmdUsers.includes(message.member.id)) {
+		if (!message.member.roles.cache.has(Config.ROLES.GUARDIAN) && !Config.ALLOWED_EMBED_USERS.includes(message.member.id)) {
 			return message.channel.send('You do not have permission to use this command.');
 		}
 		await message.channel.send('Welcome to Horace Embed Creator!');
