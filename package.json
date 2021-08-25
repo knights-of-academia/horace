@@ -1,8 +1,12 @@
 {
-  "name": "aurelius",
-  "version": "0.0.1",
-  "description": "Main bot for Knights of Academia.",
+  "name": "horace",
+  "description": "Main bot for Knights of Academia",
+  "author": "Knights of Academia",
+  "license": "MIT",
   "main": "app.js",
+  "engines": {
+    "node": "^16"
+  },
   "scripts": {
     "start": "node app.js",
     "lint": "eslint --cache .",
@@ -12,12 +16,6 @@
     "posttest": "npm run lint",
     "coverage": "jest --coverage --collectCoverageFrom=commands/**/*.js"
   },
-  "keywords": [
-    "node",
-    "discord"
-  ],
-  "author": "Knights of Academia",
-  "license": "MIT",
   "dependencies": {
     "data-store": "^4.0.3",
     "discord.js": "^12.5.1",
@@ -26,9 +24,6 @@
     "rss-parser": "^3.7.2",
     "sequelize": "^5.21.3",
     "sqlite3": "^4.2.0"
-  },
-  "engines": {
-    "node": "8.10.0"
   },
   "devDependencies": {
     "eslint": "^6.5.1",
