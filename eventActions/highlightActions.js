@@ -59,7 +59,7 @@ class highlightActions {
 					}
 
 					// Check for basic punctuation
-					else if (!punctuation.includes(message.content.charAt(indexOfPhraseEnd + 1))) {
+					else if (punctuation.includes(message.content.charAt(indexOfPhraseEnd + 1))) {
 						contains = true;
 					}
 				}
