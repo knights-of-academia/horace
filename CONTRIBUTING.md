@@ -32,7 +32,7 @@ To suggest features, you can head on over to the [Issue Tracker](https://github.
 ## Getting Started With Development<a name = "development"></a>
 
 ### Setting Up Your Environment<a name = "setup"></a>
-Some setup is required in order to start contributing to Horace.
+Some setup is required in order to start contributing to Horace. Start by copying the `.env.example` file into a new file named `.env`.
 
 #### Node JS
 
@@ -42,22 +42,22 @@ Horace is based on [NodeJS](https://nodejs.org/en/), which is required to run it
 
 Horace borrows functionality from multiple dependencies. You can go ahead and install these dependencies by running `npm install` in the root directory _after installing NodeJS_.
 
-#### Discord API Usage
+#### Discord API Usage<a name = "discord-api"></a>
 
-If you haven't already noticed, Horace is a Discord bot. If you haven't already, go ahead and visit the [Discord Developers Section](https://discordapp.com/developers) in order to create an application for developing bots. This will generate an **API key** for you to use. Connect this API key into the **config.json** file. This file is created by copying the content of the example file **config.json.example** into a new file named **config.json***.  (This will be further explained in a second.)
+If you haven't already noticed, Horace is a Discord bot. If you haven't already, go ahead and visit the [Discord Developers Section](https://discordapp.com/developers) in order to create an application for developing bots. Once you've made an application, open it and go to the 'Bot' section. You will find a token, which will allow you to run your bot. Put this token into the `.env` file. As mentioned above, you should have this file after copying `.env.example` and renaming it to `.env`.
 This step is needed to connect the bot authentication to your instance of the bot.
-<br>_Friendly reminder to keep API keys secret to you. Always remove them from your code, or add them to a .gitignore, before submitting your work._
+<br>_Friendly reminder to keep your bot token secret to you. The repo is set up such that you should never need to commit your token._
 
 To test Horace, you'll need to invite the bot to your development server. Copy and paste the following link, replacing **XXXX** with the **client_id** of your bot. The client ID can be found on the [Developers Section](https://discordapp.com/developers). `https://discordapp.com/oauth2/authorize?client_id=XXXX&scope=bot`
 
-#### The configuration file explained
+#### The environment file (`.env`) explained
 
-The file named **config.json.example** contains the environment variables that should be set for the bot to work. _Make sure you have all these variables in your **config.json** with the proper values.
-It requires your Discord API token, COTW channel, Champion Role, and Manager Role. _Don't know what these are?_ Check out the [KOA Discord Server](https://discordapp.com/invite/EYX7XGG) to see how these are set up and what they're each meant to do.
+The file named `.env` (which you need to create by making a copy of `.env.example` and renaming as `.env`) contains the environment variables that should be set for the bot to work. Enviroment variables in this files will be specific to your copy of the codebase, so they are not committed into the repository; you will need to set them up for your test environment. Variables that are lists must be comma-separated, with no brackets.
 
-KOA is heavily involved in [Habitica](http://www.habitica.com/), and your Habitica API Key will be required for working on Habitica related features. You can find [your Habitica API here](https://habitica.com/user/settings/api), just don't forget you'll need to log in.
-In addition to this, it requires your Habitica token, to be able to fetch the COTW information from the Habitica API.
-<br>_Another friendly reminder to keep API keys secret to you. Always remove them from your code, or add them to a .gitignore, before submitting your work._
+- The bot token will be the token that [you created on the Discord Developer Portal](#discord-api).
+- Your Habitica API and Token are used for certain Habitica-related features. You can use your own account for this, and you can find the values in [your Habitica API settings](https://habitica.com/user/settings/api).
+- Messages, roles, and channels will be set up on your test server first. This will allow you to fill in their values in the `.env` with their IDs.
+- `ALLOWED_EMBED_USERS` is a list of user IDs for users that are allowed to use the `!embed` command.
 
 #### Ready to test your modifications to Horace?
 
@@ -65,7 +65,11 @@ In your root directory, go ahead and run ```npm start```, and you're ready to go
 
 #### We have a linter for NodeJS
 
-We use [eslinter](https://eslint.org/) for code checkups. To run the linter, go ahead and run ```npm run pretest```.
+We use [eslint](https://eslint.org/) for code checkups. To run the linter, go ahead and run ```npm run lint```.
+
+#### Running tests
+
+Use ```npm test``` to run unit tests. The tests are good for catching when you've accidentally broken a working feature. However, the tests are not comprehensive, and do not always catch everything - please test on your local server as well.
 
 #### Questions, Comments, Concerns <a name = "questions"></a>
 
