@@ -22,9 +22,6 @@ const config = {
 		'PREFIX': '!',
 	},
 
-	// User ID and token to access the Habitica API
-	// (https://habitica.com/user/settings/api) Used to access information
-	// for Challenge of the Week. Doesn't matter whose account is used.
 	'HABITICA': {
 		'ID': process.env.HAB_ID,
 		'TOKEN': process.env.HAB_TOKEN,
@@ -66,12 +63,12 @@ const config = {
 	},
 
 	'EMOTES': {
-		'HOC_REACTION': process.env.E_HOC_REACTION || '🎉',
+		'HOC_REACTION': process.env.E_HOC_REACTION,
 		'FOCUSED_RAIDER': process.env.E_FOCUSED_RAIDER,
-		'YES2': process.env.E_YES2 || '✔',
-		'NO': process.env.E_NO || '❌',
+		'YES2': process.env.E_YES2,
+		'NO': process.env.E_NO,
 		'CONQUER': process.env.E_CONQUER,
-		'WELCOME_ARROW': process.env.E_WELCOME_ARROW || '➡',
+		'WELCOME_ARROW': process.env.E_WELCOME_ARROW,
 		'HORACE': process.env.E_HORACE,
 		'ACCEPT_TOS': '✅',
 		'BOOKMARK': '🔖',
@@ -105,7 +102,10 @@ const config = {
 
 	// Configure the Terms and Conditions reminder
 	'TOS': {
+		// How periodically, in milliseconds, to catch up on TOS reminders
 		'REMINDER_TIMER': 30000,
+
+		// Number of hours to wait before reminding new users to accept TOS
 		'REMIND_AFTER_HOURS': 72,
 	},
 
