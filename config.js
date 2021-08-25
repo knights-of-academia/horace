@@ -62,6 +62,9 @@ const config = {
 		'FORBIDDEN_HIGHLIGHT_CHANNELS': toArray(process.env.C_FORBIDDEN_HIGHLIGHT_CHANNELS),
 	},
 
+	// Discord emotes. Unicode emotes can be specified in the config directly,
+	// while custom emotes should be specified in the .env as they will change
+	// across deployments. If you update .env, remember to update .env.example.
 	'EMOTES': {
 		'HOC_REACTION': process.env.E_HOC_REACTION,
 		'FOCUSED_RAIDER': process.env.E_FOCUSED_RAIDER,
@@ -104,7 +107,6 @@ const config = {
 	'TOS': {
 		// How periodically, in milliseconds, to catch up on TOS reminders
 		'REMINDER_TIMER': 30000,
-
 		// Number of hours to wait before reminding new users to accept TOS
 		'REMIND_AFTER_HOURS': 72,
 	},
