@@ -2,8 +2,8 @@
 
 require('dotenv').config();
 
-function toArray(original) {
-	return original.split(',').map((s) => s.trim());
+function commaSepToArray(original) {
+	return original ? original.split(',').map((s) => s.trim()) : [];
 }
 
 function validateConfig(object, path = '') {
@@ -61,7 +61,7 @@ const config = {
 		'COMMAND_CENTER': process.env.C_COMMAND_CENTER,
 		'CONTENT_NOTIFIER': process.env.C_CONTENT_NOTIFER,
 		'ERRORS': process.env.C_ERRORS,
-		'FORBIDDEN_HIGHLIGHT_CHANNELS': toArray(process.env.C_FORBIDDEN_HIGHLIGHT_CHANNELS),
+		'FORBIDDEN_HIGHLIGHT_CHANNELS': commaSepToArray(process.env.C_FORBIDDEN_HIGHLIGHT_CHANNELS),
 	},
 
 	// Discord emotes. Unicode emotes can be specified in the config directly,
@@ -121,7 +121,7 @@ const config = {
 	'REFLECTION_CHECK_DEPTH': 5,
 	'REMINDER_SCAN_INTERVAL': 30000,
 	'CHAIN_MESSAGE_CHAR_LIMIT': 40,
-	'ALLOWED_EMBED_USERS': toArray(process.env.ALLOWED_EMBED_USERS),
+	'ALLOWED_EMBED_USERS': commaSepToArray(process.env.ALLOWED_EMBED_USERS),
 };
 
 validateConfig(config);
