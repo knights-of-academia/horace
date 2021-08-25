@@ -1,3 +1,5 @@
+/* eslint "comma-dangle": ["error", "always-multiline"] */
+
 require('dotenv').config();
 
 function toArray(original) {
