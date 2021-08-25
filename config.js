@@ -9,7 +9,7 @@ function commaSepToArray(original) {
 function validateConfig(object, path = '') {
 	for (const [key, value] of Object.entries(object)) {
 		const currentPath = path ? `${path}.${key}` : key;
-		if (typeof value === 'object') {
+		if (typeof value === 'object' && !Array.isArray(value)) {
 			validateConfig(value, currentPath);
 		}
 		else if (!String(value)) {
