@@ -9,7 +9,7 @@ module.exports = async (client) => {
 	await chainMessageAction.loadChainMessageTracker(client);
 	await remind.catchUp(client);
 	setInterval(remind.scanForReminders, Config.REMINDER_SCAN_INTERVAL, client);
-	setInterval(tosRemind.tosRemind, Config.TOC.REMINDER_TIMER, client);
+	setInterval(tosRemind.tosRemind, Config.TOS.REMINDER_TIMER, client);
 	await client.user.setActivity('Ready to !help');
 	console.log(`Running on ${client.channels.cache.size} channels on ${client.guilds.cache.size} servers.`);
 };

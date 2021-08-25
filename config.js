@@ -49,7 +49,7 @@ const config = {
 		'RAID_ROOM': process.env.C_RAID_ROOM,
 		'CITADEL': process.env.C_CITADEL,
 		'COTW': process.env.C_COTW,
-		'TOC': process.env.C_TOC,
+		'TOS': process.env.C_TOS,
 		'SNAPSHOTS': process.env.C_SNAPSHOTS,
 		'MODERATION': process.env.C_MODERATION,
 		'MESSAGE_LOGS': process.env.C_MESSAGE_LOGS,
@@ -73,7 +73,7 @@ const config = {
 		'CONQUER': process.env.E_CONQUER,
 		'WELCOME_ARROW': process.env.E_WELCOME_ARROW || '➡',
 		'HORACE': process.env.E_HORACE,
-		'ACCEPT_TOC': '✅',
+		'ACCEPT_TOS': '✅',
 		'BOOKMARK': '🔖',
 		'SLEEP_LOG_REACTION': '🛏️',
 		'COTW_VOW': '⚔',
@@ -104,7 +104,7 @@ const config = {
 	},
 
 	// Configure the Terms and Conditions reminder
-	'TOC': {
+	'TOS': {
 		'REMINDER_TIMER': 30000,
 		'REMIND_AFTER_HOURS': 72,
 	},

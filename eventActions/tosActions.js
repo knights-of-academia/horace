@@ -4,8 +4,8 @@ const tosReminder = require('../eventActions/tosReminderAction');
 
 class tosActions {
 	static userAcceptsTOS(reaction, user, client) {
-		if (reaction.message.channel.id === Config.CHANNELS.TOC
-            && reaction._emoji.name === Config.EMOTES.ACCEPT_TOC) {
+		if (reaction.message.channel.id === Config.CHANNELS.TOS
+            && reaction._emoji.name === Config.EMOTES.ACCEPT_TOS) {
 			reaction.message.guild.members.fetch(user.id).then((guildMember) => {
 				if (guildMember.roles.cache.has(Config.ROLES.INITIATE)) {
 					const initiateRole = reaction.message.guild.roles.cache.find((r) => r.id === Config.ROLES.INITIATE);
