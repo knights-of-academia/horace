@@ -1,9 +1,9 @@
-const config = require('../config.json');
+const { Config } = require('../config.js');
 const Discord = require('discord.js');
 
 class bookmarkActions {
 	static async bookmarkMessage(client, user, reaction) {
-		if (reaction._emoji.name === config.emotes.bookmark) {
+		if (reaction._emoji.name === Config.EMOTES.BOOKMARK) {
 			const workingMessage = reaction.message;
 			const swordsEmote = '⚔';
 			const bookmarkEmbed = new Discord.MessageEmbed()

@@ -1,4 +1,4 @@
-const config = require('../config.json');
+const { Config } = require('../config.js');
 
 // Helper method to loop through pins. I was getting mad when I named it...
 function isMessagePinnedAtAll(messageToCheck, setOfPinnedMessages) {
@@ -15,8 +15,8 @@ function isMessagePinnedAtAll(messageToCheck, setOfPinnedMessages) {
 class accountabilityActions {
 	static async userPinsMessage(reaction, user) {
 		// Check if we are in the accountability channel and the reaction emote is the proper emote
-		if (reaction.message.channel.id == config.channels.accountability
-            && reaction._emoji.name == config.emotes.pinMessage) {
+		if (reaction.message.channel.id == Config.CHANNELS.ACCOUNTABILITY
+            && reaction._emoji.name == Config.EMOTES.PIN_MESSAGE) {
 			const sentMessage = reaction.message;
 			const currentChannel = sentMessage.channel;
 
@@ -52,7 +52,7 @@ class accountabilityActions {
 
 					// Pin the message
 					sentMessage.reactions.removeAll();
-					sentMessage.react(config.emotes.pinMessage);
+					sentMessage.react(Config.EMOTES.PIN_MESSAGE);
 					sentMessage.pin();
 
 					// If they have other pinned messages, give them a good 'ol reminder.
@@ -70,7 +70,7 @@ class accountabilityActions {
 
 	// Unpin message via command
 	static async userUnpinsMessage(message, user) {
-		if (message.channel.id === config.channels.accountability) {
+		if (message.channel.id === Config.CHANNELS.ACCOUNTABILITY) {
 			const currentChannel = message.channel;
 
 			let hasPinnedMessage = false;
@@ -100,7 +100,7 @@ class accountabilityActions {
 
 	// Removes all pinned messages by a user
 	static async userUnpinsAllMessages(message, user) {
-		if (message.channel.id === config.channels.accountability) {
+		if (message.channel.id === Config.CHANNELS.ACCOUNTABILITY) {
 			await message.channel.messages.fetchPinned().then((fetchedPins) => {
 				// We're essentially doing the same thing as unpin message, but we don't stop upon finding their most recent pin.
 				const pinMsgIterator = fetchedPins.values();
@@ -125,10 +125,10 @@ class accountabilityActions {
 
 	// Add a random reaction to a message sent
 	static async addReaction(client, message) {
-		if (message.channel.id != config.channels.accountability) return;
+		if (message.channel.id != Config.CHANNELS.ACCOUNTABILITY) return;
 		if (message.content.toLowerCase().includes('!unpin')) return;
 		// Define an array of emojis to pull from
-		const random_emotes = config.emotes.accountability_emotes_array;
+		const random_emotes = Config.EMOTES.ACCOUNTABILITY_EMOTES_ARRAY;
 
 		// Flag emotes
 		const length = random_emotes.length;
@@ -139,7 +139,7 @@ class accountabilityActions {
 		];
 
 		// Define special emotes (I didn't want to put all of them in the configuration...)
-		const pomEmote = config.emotes.pom;
+		const pomEmote = Config.EMOTES.POM;
 
 		// Check for languages
 		flags.forEach(function(langName) {

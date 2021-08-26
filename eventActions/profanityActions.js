@@ -1,13 +1,13 @@
 const Discord = require('discord.js');
 const BanWordUtils = require('../utils/banwordUtils.js');
-const config = require('../config.json');
+const { Config } = require('../config.js');
 
 class profanityActions {
 	static async checkForProfanity(client, message) {
 		const bannedWordsSQL = await BanWordUtils.getBannedWords();
 
 		// check that moderation channelID is valid before attempting profanity check
-		if (client.channels.cache.get(config.channels.moderation) === undefined) {
+		if (client.channels.cache.get(Config.CHANNELS.MODERATION) === undefined) {
 			return console.log('Error! Moderation Channel ID in Config in likely invalid. Please verify!');
 		}
 
@@ -28,7 +28,7 @@ class profanityActions {
 					message.author.avatarURL,
 				);
 			return client.channels.cache
-				.get(config.channels.moderation)
+				.get(Config.CHANNELS.MODERATION)
 				.send(embedMessage);
 		}
 	}

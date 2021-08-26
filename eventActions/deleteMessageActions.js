@@ -1,13 +1,13 @@
-const config = require('../config.json');
+const { Config } = require('../config.js');
 const Discord = require('discord.js');
 
 class deleteMessageActions {
 	static async sendMessageToModeration(client, message) {
 		const isHoraceBot = message.author.id === client.user.id;
 
-		const isCommand = message.content.startsWith(config.prefix);
+		const isCommand = message.content.startsWith(Config.BOT.PREFIX);
 
-		const isStaffAccountability = message.channel.id == config.channels.staffaccountability;
+		const isStaffAccountability = message.channel.id == Config.CHANNELS.STAFF_ACCOUNTABILITY;
 
 		if (!(isHoraceBot || isCommand || isStaffAccountability)) {
 			let embed = new Discord.MessageEmbed()
@@ -25,7 +25,7 @@ class deleteMessageActions {
 			}
 
 
-			client.channels.cache.get(config.channels.messagelogs).send(embed);
+			client.channels.cache.get(Config.CHANNELS.MESSAGE_LOGS).send(embed);
 		}
 	}
 }

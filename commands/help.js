@@ -1,11 +1,5 @@
-const fs = require('fs');
 const Discord = require('discord.js');
-let prefix;
-if (fs.existsSync('../config.json')) {
-	prefix = require('../config.json').prefix;
-} else {
-	prefix = '!';
-}
+const { Config: { BOT: { PREFIX } } } = require('../config.js');
 
 module.exports.execute = async (client, message, args) => {
 	let commands = client.commands;
@@ -17,7 +11,7 @@ module.exports.execute = async (client, message, args) => {
 			.setTitle('List of available commands')
 			.setDescription('Commands available in ' + message.guild.name);
 		commands.forEach((command) => {
-			helpMessage.addField(`**${prefix}${command.config.name}**`, `${command.config.description}`);
+			helpMessage.addField(`**${PREFIX}${command.config.name}**`, `${command.config.description}`);
 		});
 		try {
 			await message.author.send(helpMessage);
@@ -35,8 +29,8 @@ module.exports.execute = async (client, message, args) => {
 		if (command) {
 			let helpMessage = new Discord.MessageEmbed()
 				.setColor('#ff0000')
-				.setTitle(`${prefix}${command.config.name}`)
-				.setDescription(`You asked for information on ${prefix}${command.config.name}`);
+				.setTitle(`${PREFIX}${command.config.name}`)
+				.setDescription(`You asked for information on ${PREFIX}${command.config.name}`);
 			helpMessage.addField('Description:', command.config.description);
 			helpMessage.addField('Aliases:', command.config.aliases);
 			helpMessage.addField('Usage:', command.config.usage);
@@ -82,9 +76,9 @@ async function didYouMean(commands, search, message) {
 					}
 				}
 			}
-			return await message.channel.send(`Did you mean \`${prefix}help ${str[score.indexOf(Math.max(...score))]}\`?`).catch((err) => console.log(err));
+			return await message.channel.send(`Did you mean \`${PREFIX}help ${str[score.indexOf(Math.max(...score))]}\`?`).catch((err) => console.log(err));
 		} else {
-			return await message.channel.send(`Did you mean \`${prefix}help ${str[0]}\`?`).catch((err) => console.log(err));
+			return await message.channel.send(`Did you mean \`${PREFIX}help ${str[0]}\`?`).catch((err) => console.log(err));
 		}
 	}
 }

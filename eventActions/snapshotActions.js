@@ -1,18 +1,18 @@
-const config = require('../config.json');
+const { Config } = require('../config.js');
 const Discord = require('discord.js');
 
 class snapshotActions {
 	static async userPostsImage(client, message) {
-		if (message.channel.id === config.channels.snapshots
+		if (message.channel.id === Config.CHANNELS.SNAPSHOTS
             && message.attachments.size === 0) {
 			await message.delete();
 
-			await message.author.send(`Hey! I noticed you sent a message in <#${config.channels.snapshots}> that wasn't a picture. To help maintain the integrity of the channel, the staff team has made the decision to only allow pictures, captions and reactions there. As a result of this, your message has been removed. Thanks for understanding! 😄`);
+			await message.author.send(`Hey! I noticed you sent a message in <#${Config.CHANNELS.SNAPSHOTS}> that wasn't a picture. To help maintain the integrity of the channel, the staff team has made the decision to only allow pictures, captions and reactions there. As a result of this, your message has been removed. Thanks for understanding! 😄`);
 
 			const embedMessage = new Discord.MessageEmbed()
 				.setColor('#ff0000')
 				.setTitle('🚩 Warning: Snapshots message 🚩')
-				.setDescription(`An unapproved message was sent in <#${config.channels.snapshots}>`)
+				.setDescription(`An unapproved message was sent in <#${Config.CHANNELS.SNAPSHOTS}>`)
 				.addField('User', message.author, true);
 
 			// Split message into multiple, in case takes up more space than
@@ -23,10 +23,10 @@ class snapshotActions {
 				embedMessage.addField('Message', chunk);
 			}
 			// Send message to moderation log
-			client.channels.cache.get(config.channels.moderation).send(embedMessage);
+			client.channels.cache.get(Config.CHANNELS.MODERATION).send(embedMessage);
 		}
-		else if (message.channel.id === config.channels.snapshots) {
-			return message.react(config.emotes.heart);
+		else if (message.channel.id === Config.CHANNELS.SNAPSHOTS) {
+			return message.react(Config.EMOTES.HEART);
 		}
 	}
 }

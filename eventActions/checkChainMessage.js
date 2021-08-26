@@ -1,4 +1,4 @@
-const config = require('../config.json');
+const { Config } = require('../config.js');
 
 let trackerObject = {
 	msgContents: [],
@@ -41,7 +41,7 @@ class CheckChainMessage {
 		const messageContent = message.content;
 
 		// If the message length is greater than limit set in configuration, forgettaboutit
-		if (messageContent.length >= config.chainMessageCharLimit) {
+		if (messageContent.length >= Config.CHAIN_MESSAGE_CHAR_LIMIT) {
 			this.resetChannelChain(channelId);
 		}
 

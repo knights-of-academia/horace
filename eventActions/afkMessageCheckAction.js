@@ -1,11 +1,11 @@
 // Get the afk Table stored in the SQLite database
 const Afks = require('../databaseFiles/afkTable.js');
 const Discord = require('discord.js');
-const config = require('../config.json');
+const { Config } = require('../config.js');
 
 class afkMessageCheckAction {
 	static async checkIfUserIsAFK(message) {
-		if (message.content.startsWith(config.prefix)) {
+		if (message.content.startsWith(Config.BOT.PREFIX)) {
 			return;
 		}
 
@@ -28,7 +28,7 @@ class afkMessageCheckAction {
 			try {
 				await message.author.send(new Discord.MessageEmbed()
 					.setTitle(`You are currently AFK, ${name}`)
-					.addField('Are you back?', `Go to <#${config.channels.citadel}> and run \`!afk\` again to turn off AFK!`, true)
+					.addField('Are you back?', `Go to <#${Config.CHANNELS.CITADEL}> and run \`!afk\` again to turn off AFK!`, true)
 					.addField('If you are not back!', 'Ignore this message.', true)
 					.setColor('#FFEC09'));
 				await Afks.update(

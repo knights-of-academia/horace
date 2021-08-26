@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 const embed = require('../embed.js');
 const MockMessage = require('../../stub/MockMessage.js');
 
+jest.useFakeTimers();
+
 beforeEach(async () => {
 	jest.resetModules().resetAllMocks();
 });
@@ -173,15 +175,16 @@ test('Main function executes correctly given correct roles', async () => {
 	embed.getImage.mockReturnValue('https://example.com/image.png');
 
 	jest.mock(
-		'../../config.json',
+		'../../config.js',
 		() => {
 			return {
-				roles: {
-					admin: '12341234123412341234'
+				Config: {
+					ROLES: {
+						ADMIN: '12341234123412341234'
+					}
 				}
 			};
 		},
-		{ virtual: true }
 	);
 
 	const message = new MockMessage();
@@ -209,15 +212,16 @@ test('Main function executes correctly given correct roles', async () => {
 
 test('Main function executes correctly given incorrect roles', async () => {
 	jest.mock(
-		'../../config.json',
+		'../../config.js',
 		() => {
 			return {
-				roles: {
-					admin: '12345123451234512345'
+				Config: {
+					ROLES: {
+						ADMIN: '12345123451234512345'
+					}
 				}
 			};
 		},
-		{ virtual: true }
 	);
 
 	const message = new MockMessage();
