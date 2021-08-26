@@ -39,6 +39,7 @@ const config = {
 		'FOCUSED_RAIDER': process.env.R_FOCUSED_RAIDER,
 		'COTW_CHAMPION': process.env.R_COTW_CHAMPION,
 		'COTW_MANAGER': process.env.R_COTW_MANAGER,
+		'ADMIN': process.env.R_ADMIN,
 		'GUARDIAN': process.env.R_GUARDIAN,
 		'HELPER': process.env.R_HELPER,
 	},

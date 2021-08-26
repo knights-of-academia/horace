@@ -127,7 +127,7 @@ class Embed {
 	}
 
 	static async execute(client, message) {
-		if (!message.member.roles.cache.has(Config.ROLES.GUARDIAN) && !Config.ALLOWED_EMBED_USERS.includes(message.member.id)) {
+		if (!message.member.roles.cache.has(Config.ROLES.ADMIN) && !Config.ALLOWED_EMBED_USERS.includes(message.member.id)) {
 			return message.channel.send('You do not have permission to use this command.');
 		}
 		await message.channel.send('Welcome to Horace Embed Creator!');
