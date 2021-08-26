@@ -1,40 +1,40 @@
-const config = require('../config.json');
+const { Config } = require('../config.js');
 const Discord = require('discord.js');
 const tosReminder = require('../eventActions/tosReminderAction');
 
 class tosActions {
 	static userAcceptsTOS(reaction, user, client) {
-		if (reaction.message.channel.id === config.channels.tos
-            && reaction._emoji.name === config.emotes.acceptTOS) {
+		if (reaction.message.channel.id === Config.CHANNELS.TOS
+            && reaction._emoji.name === Config.EMOTES.ACCEPT_TOS) {
 			reaction.message.guild.members.fetch(user.id).then((guildMember) => {
-				if (guildMember.roles.cache.has(config.roles.initiate)) {
-					const initiateRole = reaction.message.guild.roles.cache.find((r) => r.id === config.roles.initiate);
+				if (guildMember.roles.cache.has(Config.ROLES.INITIATE)) {
+					const initiateRole = reaction.message.guild.roles.cache.find((r) => r.id === Config.ROLES.INITIATE);
 					guildMember.roles.remove(initiateRole);
-					const memberRole = reaction.message.guild.roles.cache.find((r) => r.id === config.roles.member);
+					const memberRole = reaction.message.guild.roles.cache.find((r) => r.id === Config.ROLES.MEMBER);
 					guildMember.roles.add(memberRole);
 					tosReminder.removeFromDatabase(user);
 					// Send welcome message to the Citadel
-					client.channels.cache.get(config.channels.citadel).send(`🎉 **A new member has arrived!** 🎉\nWelcome to Knights of Academia <@${user.id}>!`)
+					client.channels.cache.get(Config.CHANNELS.CITADEL).send(`🎉 **A new member has arrived!** 🎉\nWelcome to Knights of Academia <@${user.id}>!`)
 						.then((message) => {
-							message.react(config.emotes.wave);
+							message.react(Config.EMOTES.WAVE);
 						});
 				}
 
 				const embed = new Discord.MessageEmbed()
-					.setTitle(`**Welcome to KOA! — You’re All Set** ${config.emotes.yes2}`)
+					.setTitle(`**Welcome to KOA! — You’re All Set** ${Config.EMOTES.YES2}`)
 					.setDescription(`
 						I’m a bot built by the engineering team here at [KOA](<https://knightsofacademia.org>).\
 						Whether you’re here to learn, meet new people, or get more done; you’ve come to the right place :)
 
 						\`Quick Suggestions:\`
-						${config.emotes.welcomearrow} <#${config.channels.mapofkoa}> learn about useful features
-						${config.emotes.welcomearrow} <#${config.channels.raidroom}> work alongside others
-						${config.emotes.welcomearrow} <#${config.channels.hallofconquests}> share your victories
-						${config.emotes.welcomearrow} <#${config.channels.chooseroles}> personalize your experience with your very own roles
+						${Config.EMOTES.WELCOME_ARROW} <#${Config.CHANNELS.MAP_OF_KOA}> learn about useful features
+						${Config.EMOTES.WELCOME_ARROW} <#${Config.CHANNELS.RAID_ROOM}> work alongside others
+						${Config.EMOTES.WELCOME_ARROW} <#${Config.CHANNELS.HALL_OF_CONQUESTS}> share your victories
+						${Config.EMOTES.WELCOME_ARROW} <#${Config.CHANNELS.CHOOSE_ROLES}> personalize your experience with your very own roles
 
-						${config.emotes.horace}  Summon me anytime by typing \`!faq\` in a channel that looks interesting.
+						${Config.EMOTES.HORACE}  Summon me anytime by typing \`!faq\` in a channel that looks interesting.
 					`)
-					.setColor(config.colors.koaYellow);
+					.setColor(Config.COLORS.KOA_YELLOW);
 
 				return user.send(embed);
 			});

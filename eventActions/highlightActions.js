@@ -1,14 +1,14 @@
 const Highlights = require('../databaseFiles/highlightsTable.js');
 const Discord = require('discord.js');
-const config = require('../config.json');
+const { Config } = require('../config.js');
 
 class highlightActions {
 	// Method to call to check a message for a highlighted message
 	static async checkForHighlight(client, message) {
 		// Ensure commands aren't caught
-		const cmdPrefix = config.prefix;
+		const cmdPrefix = Config.BOT.PREFIX;
 		if (message.content.substring(0, cmdPrefix.length) === cmdPrefix) return;
-		if (config.forbiddenHighlightChannels.includes(message.channel.id)) return; // Ensure people can't "spy" on channels
+		if (Config.CHANNELS.FORBIDDEN_HIGHLIGHT_CHANNELS.includes(message.channel.id)) return; // Ensure people can't "spy" on channels
 		Highlights.findAll({
 			attributes: ['phrase', 'users']
 		}).then((result) => {
@@ -19,11 +19,9 @@ class highlightActions {
 				// Check if the message and the phrase are the same
 				if (message.content.toLowerCase() == currentPhrase.toLowerCase()) {
 					contains = true;
-					console.log('its the same');
 				}
 				// Check if the message contains the phrase, allowing for start and end of messages
 				else if (message.content.toLowerCase().includes(' ' + currentPhrase + ' ')) {
-					console.log('surrounded by spaces');
 					contains = true;
 				}
 				else if (message.content.toLowerCase().includes(currentPhrase + ' ') || message.content.toLowerCase().includes(' ' + currentPhrase)) {
@@ -32,8 +30,6 @@ class highlightActions {
 					const indexOfPhraseEnd = indexOfPhraseStart + currentPhrase.length - 1;
 					// Go ahead and check if it is a part of a word at all or has surrounding punctuation
 					const punctuation = [' ', '.', ',', '?', '!', ':', ';', ''];
-					console.log(indexOfPhraseEnd);
-					console.log(message.content.length);
 					// If it's at the start, check for containment within a word (i.e. may in mayflower)
 					if (indexOfPhraseStart == 0) {
 						if (message.content.charAt(indexOfPhraseEnd + 1) == ' ') {
@@ -63,7 +59,7 @@ class highlightActions {
 					}
 
 					// Check for basic punctuation
-					else if (!punctuation.includes(message.content.charAt(indexOfPhraseEnd + 1))) {
+					else if (punctuation.includes(message.content.charAt(indexOfPhraseEnd + 1))) {
 						contains = true;
 					}
 				}
@@ -80,10 +76,7 @@ class highlightActions {
 	// Method to call that DMs a user about a message containing a highlighted phrase
 	static async sendHighlightDM(client, user, message, highlightedPhrase) {
 		const highlightsEmote = '☀️';
-		if (message.author == user) {
-			return console.log('no DM to same user');
-		}
-		else {
+		if (message.author != user) {
 			const highlightNotification = new Discord.MessageEmbed()
 				.setColor('#FFEC09')
 				.setTitle(`${highlightsEmote} Knights of Academia Highlight Alert ${highlightsEmote}`)

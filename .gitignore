@@ -3,8 +3,8 @@
 .eslintcache
 coverage
 
-# Config file
-config.json
+# Environment file
+.env
 
 # node
 node_modules/

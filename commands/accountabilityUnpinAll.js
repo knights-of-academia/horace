@@ -1,8 +1,8 @@
 const accountabilityActions = require('../eventActions/accountabilityActions');
-const config = require('../config.json');
+const { Config } = require('../config.js');
 
 module.exports.execute = async (client, message) => {
-	if (message.channel.id === config.channels.accountability) {
+	if (message.channel.id === Config.CHANNELS.ACCOUNTABILITY) {
 		accountabilityActions.userUnpinsAllMessages(message, message.author);
 	}
 };

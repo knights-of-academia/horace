@@ -1,7 +1,7 @@
 // Load dependencies
 const fs = require('fs');
 const Discord = require('discord.js');
-const config = require('./config.json');
+const { Config } = require('./config.js');
 const connect = require('./databaseFiles/connect.js');
 
 const client = new Discord.Client({
@@ -43,4 +43,4 @@ fs.readdir('./commands/', (err, files) => {
 });
 
 connect.instantiateConnection();
-client.login(config.token);
+client.login(Config.BOT.TOKEN);
