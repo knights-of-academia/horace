@@ -4,10 +4,6 @@ module.exports = [
 		names: ['trt', 'theroundtable', 'the round table', 'hard mode']
 	},
 	{
-		formUrl: 'https://knightsofacademia.org/bards-of-academia/',
-		names: ['bards', 'the bards', 'music']
-	},
-	{
 		formUrl: 'https://knightsofacademia.org/fiction-faction/',
 		names: [
 			'thefictionfaction',
@@ -17,10 +13,6 @@ module.exports = [
 			'tff',
 			'writing'
 		]
-	},
-	{
-		formUrl: 'https://knightsofacademia.org/wolf-pack/',
-		names: ['thewolfpack', 'the wolf pack', 'wp', 'twp', 'stem']
 	},
 	{
 		formUrl: 'https://knightsofacademia.org/the-gathering/',
@@ -48,5 +40,9 @@ module.exports = [
 	{
 		formUrl: 'https://knightsofacademia.org/the-students/',
 		names: ['thestudents', 'the students', 'students', 'study']
-	}
+	},
+	{
+		formUrl: 'https://knightsofacademia.org/wolf-pack/',
+		names: ['thewolfpack', 'the wolf pack', 'wp', 'twp', 'stem']
+	},
 ];
