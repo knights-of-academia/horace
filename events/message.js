@@ -8,7 +8,6 @@ const citadelActions = require('../eventActions/citadelActions');
 const accountabilityActions = require('../eventActions/accountabilityActions');
 const chainMessageAction = require('../eventActions/checkChainMessage');
 const highlightActions = require('../eventActions/highlightActions');
-const afkAction = require('../eventActions/afkMessageCheckAction');
 const gratitudeActions = require('../eventActions/gratitudeActions');
 const staffAccountabilityActions = require('../eventActions/staffAcountabilityActions');
 const contentActions = require('../eventActions/contentActions');
@@ -55,9 +54,6 @@ module.exports = async (client, message) => {
 	chainMessageAction.chainMessageCheck(message);
 	// Check for highlights
 	highlightActions.checkForHighlight(client, message);
-	// Check afk status and mentions
-	afkAction.checkIfUserIsAFK(message);
-	afkAction.checkForMention(message);
 	// Handle reacting to gratitude messages
 	gratitudeActions.reactToGratitude(client, message);
 	// Staff accountability messages

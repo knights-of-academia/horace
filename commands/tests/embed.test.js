@@ -2,10 +2,10 @@ const Discord = require('discord.js');
 const embed = require('../embed.js');
 const MockMessage = require('../../stub/MockMessage.js');
 
-jest.useFakeTimers();
-
 beforeEach(async () => {
 	jest.resetModules().resetAllMocks();
+	jest.useFakeTimers();
+	jest.setSystemTime(new Date('2017-01-01'));
 });
 
 test('Validates channel correctly given correct input', async () => {

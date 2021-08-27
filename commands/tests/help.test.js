@@ -8,7 +8,7 @@ const message = new MockMessage();
 beforeAll(() => {
 	client.commands = new Discord.Collection();
 	client.aliases = new Discord.Collection();
-	['help', 'facebook','invite','coinflip'].forEach((name) =>
+	['help', 'invite', 'highlight'].forEach((name) =>
 		client.commands.set(name, require(`../${name}`))
 	);
 });
@@ -29,9 +29,8 @@ test('Sends default help message when no argument is provided', async () => {
 		.setTitle('List of available commands')
 		.setDescription('Commands available in KOA')
 		.addField('**!help**', 'I will send you this message, or the usage of a specific command.')
-		.addField('**!facebook**', 'I will send you the link to our Facebook group.')
 		.addField('**!invite**', 'Want to invite a friend to the server? This will get you the invite link.')
-		.addField('**!coinflip**', 'We will flip a coin together. Heads or tails?');
+		.addField('**!highlights**', 'Highlight a word or phrase you want to keep track of!');
 	expect(message.author.send).toHaveBeenCalledWith(expectedEmbed);
 	expect(message.author.send).toHaveBeenCalledTimes(1);
 

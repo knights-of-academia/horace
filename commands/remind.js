@@ -11,7 +11,6 @@ const monthsData = require('../data/monthsData.js');
 
 
 module.exports.execute = async (client, message, args) => {
-	// Restrict command usage to accountability-station and command-center channels.
 	if (!(message.channel.id === Config.CHANNELS.ACCOUNTABILITY || message.channel.id === Config.CHANNELS.COMMAND_CENTER)) {
 		return await message.channel.send(
 			`Whoops, sorry, but the "remind" command is only available in <#${Config.CHANNELS.ACCOUNTABILITY}> and <#${Config.CHANNELS.COMMAND_CENTER}>.`
