@@ -9,68 +9,69 @@ class highlightActions {
 		const cmdPrefix = Config.BOT.PREFIX;
 		if (message.content.substring(0, cmdPrefix.length) === cmdPrefix) return;
 		if (Config.CHANNELS.FORBIDDEN_HIGHLIGHT_CHANNELS.includes(message.channel.id)) return; // Ensure people can't "spy" on channels
-		Highlights.findAll({
+
+		const result = await Highlights.findAll({
 			attributes: ['phrase', 'users']
-		}).then((result) => {
-			for (let i = 0; i < result.length; i++) {
-				let currentPhrase = result[i].phrase;
-				let currentId = result[i].users;
-				let contains = false;
-				// Check if the message and the phrase are the same
-				if (message.content.toLowerCase() == currentPhrase.toLowerCase()) {
-					contains = true;
-				}
-				// Check if the message contains the phrase, allowing for start and end of messages
-				else if (message.content.toLowerCase().includes(' ' + currentPhrase + ' ')) {
-					contains = true;
-				}
-				else if (message.content.toLowerCase().includes(currentPhrase + ' ') || message.content.toLowerCase().includes(' ' + currentPhrase)) {
-					// Ensure the message isn't part of another phrase
-					const indexOfPhraseStart = message.content.indexOf(currentPhrase);
-					const indexOfPhraseEnd = indexOfPhraseStart + currentPhrase.length - 1;
-					// Go ahead and check if it is a part of a word at all or has surrounding punctuation
-					const punctuation = [' ', '.', ',', '?', '!', ':', ';', ''];
-					// If it's at the start, check for containment within a word (i.e. may in mayflower)
-					if (indexOfPhraseStart == 0) {
-						if (message.content.charAt(indexOfPhraseEnd + 1) == ' ') {
-							contains = true;
-						}
-					}
-					// If it's at the end, check for containment within a word
-					else if (indexOfPhraseEnd == message.content.length - 1) {
-						if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
-							contains = true;
-						}
-					}
+		});
+		for (let i = 0; i < result.length; i++) {
+			let currentPhrase = result[i].phrase;
+			let currentId = result[i].users;
+			// Verify that user is still in the server
+			const user = client.users.cache.get(currentId);
+			if (!user) continue;
+			let contains = false;
 
-					// Check if within word with space before (-1 because we already checked for the beginning of a message)
-					else if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
-						// Separated from below check because of potential following punctuation
-						if (punctuation.includes(message.content.charAt(indexOfPhraseEnd + 1))) {
-							contains = true;
-						}
-					}
-
-					// Check if within word with space after, including a check for punctuation (which is why it's separate from above)
-					else if (message.content.charAt(indexOfPhraseEnd + 1) == ' ') {
-						if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
-							contains = true;
-						}
-					}
-
-					// Check for basic punctuation
-					else if (punctuation.includes(message.content.charAt(indexOfPhraseEnd + 1))) {
+			// Check if the message and the phrase are the same
+			if (message.content.toLowerCase() == currentPhrase.toLowerCase()) {
+				contains = true;
+			}
+			// Check if the message contains the phrase, allowing for start and end of messages
+			else if (message.content.toLowerCase().includes(' ' + currentPhrase + ' ')) {
+				contains = true;
+			}
+			else if (message.content.toLowerCase().includes(currentPhrase + ' ') || message.content.toLowerCase().includes(' ' + currentPhrase)) {
+				// Ensure the message isn't part of another phrase
+				const indexOfPhraseStart = message.content.indexOf(currentPhrase);
+				const indexOfPhraseEnd = indexOfPhraseStart + currentPhrase.length - 1;
+				// Go ahead and check if it is a part of a word at all or has surrounding punctuation
+				const punctuation = [' ', '.', ',', '?', '!', ':', ';', ''];
+				// If it's at the start, check for containment within a word (i.e. may in mayflower)
+				if (indexOfPhraseStart == 0) {
+					if (message.content.charAt(indexOfPhraseEnd + 1) == ' ') {
 						contains = true;
 					}
 				}
-				if (contains) {
-					const user = client.users.cache.get(currentId);
-					this.sendHighlightDM(client, user, message, currentPhrase);
+				// If it's at the end, check for containment within a word
+				else if (indexOfPhraseEnd == message.content.length - 1) {
+					if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
+						contains = true;
+					}
+				}
+
+				// Check if within word with space before (-1 because we already checked for the beginning of a message)
+				else if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
+					// Separated from below check because of potential following punctuation
+					if (punctuation.includes(message.content.charAt(indexOfPhraseEnd + 1))) {
+						contains = true;
+					}
+				}
+
+				// Check if within word with space after, including a check for punctuation (which is why it's separate from above)
+				else if (message.content.charAt(indexOfPhraseEnd + 1) == ' ') {
+					if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
+						contains = true;
+					}
+				}
+
+				// Check for basic punctuation
+				else if (punctuation.includes(message.content.charAt(indexOfPhraseEnd + 1))) {
+					contains = true;
 				}
 			}
-		});
-
-		// If it does, sendHighlightDM(client, user, message, highlightedPhrase)
+			if (contains) {
+				this.sendHighlightDM(client, user, message, currentPhrase);
+			}
+		}
 	}
 
 	// Method to call that DMs a user about a message containing a highlighted phrase
@@ -87,7 +88,7 @@ class highlightActions {
 				.addField('Link to Message', `[Jump to Message](${message.url})`, true)
 				.addField('Channel', message.channel);
 
-			user.send(highlightNotification);
+			await user.send(highlightNotification);
 		}
 	}
 }
