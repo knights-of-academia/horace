@@ -33,31 +33,25 @@ module.exports = async (client, message) => {
 		}
 	}
 
-	// Check the message for profanity
-	profanityActions.checkForProfanity(client, message);
-	// Handle greetings
-	citadelActions.greetMorningOrNight(client, message);
-	// Handle holiday reactions
-	citadelActions.holidayReacts(client, message);
-	// Handle hall of conquests
-	hocActions.reactWithLetsGo(client, message);
-	// Handle snapshots
-	snapshotActions.userPostsImage(client, message);
-	// Handle sleep club case
-	sleepClubActions.reactToSleepLog(client, message);
-	// Handle COTW case
-	cotwActions.reactToVowAndReflections(client, message);
-	cotwActions.updateCotw(client, message);
-	// Handle accountability reactions
-	accountabilityActions.addReaction(client, message);
-	// Handle chain messages
-	chainMessageAction.chainMessageCheck(message);
-	// Check for highlights
-	highlightActions.checkForHighlight(client, message);
-	// Handle reacting to gratitude messages
-	gratitudeActions.reactToGratitude(client, message);
-	// Staff accountability messages
-	staffAccountabilityActions.checkForMessages(client, message);
-	// WP Content Notifier reactions
-	contentActions.reactToPost(client, message);
+	try {
+		await Promise.all([
+			profanityActions.checkForProfanity(client, message),
+			citadelActions.greetMorningOrNight(client, message),
+			citadelActions.holidayReacts(client, message),
+			hocActions.reactWithLetsGo(client, message),
+			snapshotActions.userPostsImage(client, message),
+			sleepClubActions.reactToSleepLog(client, message),
+			cotwActions.reactToVowAndReflections(client, message),
+			cotwActions.updateCotw(client, message),
+			accountabilityActions.addReaction(client, message),
+			chainMessageAction.chainMessageCheck(message),
+			highlightActions.checkForHighlight(client, message),
+			gratitudeActions.reactToGratitude(client, message),
+			staffAccountabilityActions.checkForMessages(client, message),
+			contentActions.reactToPost(client, message)
+		]);
+	}
+	catch (error) {
+		console.log(error);
+	}
 };

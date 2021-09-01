@@ -6,19 +6,23 @@ class highlightActions {
 	// Method to call to check a message for a highlighted message
 	static async checkForHighlight(client, message) {
 		// Ensure commands aren't caught
-		const cmdPrefix = Config.BOT.PREFIX;
-		if (message.content.substring(0, cmdPrefix.length) === cmdPrefix) return;
-		if (Config.CHANNELS.FORBIDDEN_HIGHLIGHT_CHANNELS.includes(message.channel.id)) return; // Ensure people can't "spy" on channels
+		if (message.content.substring(0, Config.BOT.PREFIX.length) === Config.BOT.PREFIX) return;
 
-		const result = await Highlights.findAll({
+		// Ensure people can't "spy" on channels
+		if (Config.CHANNELS.FORBIDDEN_HIGHLIGHT_CHANNELS.includes(message.channel.id)) return;
+
+		let idsToDelete = [];
+		const results = await Highlights.findAll({
 			attributes: ['phrase', 'users']
 		});
-		for (let i = 0; i < result.length; i++) {
-			let currentPhrase = result[i].phrase;
-			let currentId = result[i].users;
+		for (let { phrase: currentPhrase, users: currentId } in results) {
 			// Verify that user is still in the server
 			const user = client.users.cache.get(currentId);
-			if (!user) continue;
+			if (!user) {
+				idsToDelete += currentId;
+				continue;
+			}
+
 			let contains = false;
 
 			// Check if the message and the phrase are the same
@@ -71,6 +75,15 @@ class highlightActions {
 			if (contains) {
 				this.sendHighlightDM(client, user, message, currentPhrase);
 			}
+		}
+
+		// Delete ids that could not be found, they are no longer in the server
+		if (idsToDelete) {
+			await Highlights.destroy({
+				where: {
+					users: idsToDelete
+				},
+			});
 		}
 	}
 
