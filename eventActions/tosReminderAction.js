@@ -61,7 +61,7 @@ const tosRemind = async (client) => {
 				await user.send(messageEmbed);
 			}
 			catch (err) {
-				console.error('TosReminder error: ',err);
+				console.error('TosReminder error: ', err);
 			}
 
 			try {

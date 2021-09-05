@@ -31,6 +31,7 @@
         "space-before-blocks": "error",
         "space-infix-ops": "error",
         "newline-per-chained-call": "error",
+        "comma-spacing": "error",
         "comma-style": "error",
         "dot-notation": "error",
         "no-shadow": "error",

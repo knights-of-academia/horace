@@ -13,5 +13,5 @@ module.exports.config = {
 	name: 'spoiler',
 	aliases: ['spoiler', 'censor'],
 	description: 'Easily have Horace to spoiler your message!',
-	usage: ['spoiler [text]','censor [text]'],
+	usage: ['spoiler [text]', 'censor [text]'],
 };
