@@ -33,26 +33,22 @@ module.exports = async (client, message) => {
 		}
 	}
 
-	// TODO: how to get these to run independently?
-	try {
-		await Promise.all([
-			profanityActions.checkForProfanity(client, message),
-			citadelActions.greetMorningOrNight(client, message),
-			citadelActions.holidayReacts(client, message),
-			hocActions.reactWithLetsGo(client, message),
-			snapshotActions.userPostsImage(client, message),
-			sleepClubActions.reactToSleepLog(client, message),
-			cotwActions.reactToVowAndReflections(client, message),
-			cotwActions.updateCotw(client, message),
-			accountabilityActions.addReaction(client, message),
-			chainMessageAction.chainMessageCheck(message),
-			highlightActions.checkForHighlight(client, message),
-			gratitudeActions.reactToGratitude(client, message),
-			staffAccountabilityActions.checkForMessages(client, message),
-			contentActions.reactToPost(client, message)
-		]);
-	}
-	catch (error) {
-		console.log(error);
-	}
+	const handlers = [
+		profanityActions.checkForProfanity(client, message),
+		citadelActions.greetMorningOrNight(client, message),
+		citadelActions.holidayReacts(client, message),
+		hocActions.reactWithLetsGo(client, message),
+		snapshotActions.userPostsImage(client, message),
+		sleepClubActions.reactToSleepLog(client, message),
+		cotwActions.reactToVowAndReflections(client, message),
+		cotwActions.updateCotw(client, message),
+		accountabilityActions.addReaction(client, message),
+		chainMessageAction.chainMessageCheck(message),
+		highlightActions.checkForHighlight(client, message),
+		gratitudeActions.reactToGratitude(client, message),
+		staffAccountabilityActions.checkForMessages(client, message),
+		contentActions.reactToPost(client, message)
+	].map((p) => p.catch((e) => console.log(e)));
+
+	await Promise.all(handlers);
 };

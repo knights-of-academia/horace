@@ -11,15 +11,24 @@ class highlightActions {
 		// Ensure people can't "spy" on channels
 		if (Config.CHANNELS.FORBIDDEN_HIGHLIGHT_CHANNELS.includes(message.channel.id)) return;
 
-		let idsToDelete = [];
+		let idsToDelete = new Set();
 		const results = await Highlights.findAll({
 			attributes: ['phrase', 'users']
 		});
-		for (let { phrase: currentPhrase, users: currentId } in results) {
+
+		// Fetch all of the users first to ensure they are in the cache
+		const allUsers = [...new Set(results.map((model) => model.users))];
+		await Promise.all(
+			allUsers.map((id) =>
+				client.users.fetch(id).catch((e) => console.log(e))
+			)
+		);
+
+		for (let { phrase: currentPhrase, users: currentId } of results) {
 			// Verify that user is still in the server
 			const user = client.users.cache.get(currentId);
 			if (!user) {
-				idsToDelete += currentId;
+				idsToDelete.add(currentId);
 				continue;
 			}
 
@@ -78,10 +87,10 @@ class highlightActions {
 		}
 
 		// Delete ids that could not be found, they are no longer in the server
-		if (idsToDelete) {
+		if (idsToDelete.size) {
 			await Highlights.destroy({
 				where: {
-					users: idsToDelete
+					users: [...idsToDelete]
 				},
 			});
 		}
