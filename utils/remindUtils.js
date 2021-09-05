@@ -1,5 +1,3 @@
-// TODO Documentation.
-
 const errors = require('../helpers/remindErrors.js');
 
 const monthsData = require('../data/monthsData.js');

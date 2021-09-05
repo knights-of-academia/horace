@@ -21,6 +21,7 @@
         "dot-location": ["error", "property"],
         "padded-blocks": ["error", "never"],
         "object-curly-spacing": ["error", "always"],
+        "no-warning-comments": "error",
         "eol-last": "error",
         "block-spacing": "error",
         "arrow-spacing": "error",

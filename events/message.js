@@ -33,6 +33,7 @@ module.exports = async (client, message) => {
 		}
 	}
 
+	// TODO: how to get these to run independently?
 	try {
 		await Promise.all([
 			profanityActions.checkForProfanity(client, message),
