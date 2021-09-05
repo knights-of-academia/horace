@@ -21,6 +21,6 @@ module.exports = [
 	},
 	{
 		formUrl: 'https://knightsofacademia.org/koai-keeper-application/',
-		names: ['koai keeper','koai keepers','koaikeeper','koaikeepers' 'keeper']
+		names: ['koai keeper','koai keepers','koaikeeper','koaikeepers' ,'keeper']
 	}
 ];
