@@ -85,7 +85,6 @@ const removeHighlight = async (keywords, user) => {
 		}
 	}).then((result) => {
 		if (result == 0) {
-			// TODO: If the highlight doesn't exist, say so.
 			user.send('You tried to remove a highlight, `' + keywords + '`, but it doesn\'t seem to exist.');
 			exists = false;
 		}
