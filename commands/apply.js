@@ -12,8 +12,8 @@ module.exports.execute = async (client, message, args) => {
 
 	let clan = clans.find((c) => c.names.includes(searchTerm));
 	let position = positions.find((p) => p.names.includes(searchTerm));
-    if (!position && !clan) {
-	return await message.channel.send(
+	if (!position && !clan) {
+		return await message.channel.send(
 			`❌ The clan or staff position \`${searchTerm}\` couldn't be found.
 			
 			Here is our list of KOA Clans!
@@ -32,7 +32,6 @@ module.exports.execute = async (client, message, args) => {
 				🔸 **Engineers**
 				🔸 **Content Crafters**
 				🔸 **KOAI Keepers**`
-				
 		);
 	}
 
@@ -41,13 +40,11 @@ module.exports.execute = async (client, message, args) => {
 		response = `✔ **Fill out your user ID to receive an invite!**
 *Average Response Time: 24 hours or less*
 ${clan.formUrl}`;
-    } else if (position) {
+	} else if (position) {
 		response = `✔ **Fill out your user ID to receive an invite!**
 *Average Response Time: 24 hours or less*
 ${position.formUrl}`;
-		}
-	
-
+	}
 	return await message.channel.send(response);
 };
 
