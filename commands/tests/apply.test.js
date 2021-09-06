@@ -12,7 +12,7 @@ test('Returns the correct message when no argument is passed', async () => {
 test('Returns the correct message when an invalid clan is passed', async () => {
 	const message = new MockMessage();
 	const responseMessage = await apply.execute(null, message, ['Teh', 'Rounde', 'Table']);
-	const expectedResponse = `❌ The clan or staff position \`teh rounde table\` couldn\'t be found.
+	const expectedResponse = `❌ The clan or staff position \`teh rounde table\` couldn't be found.
 			
 			Here is our list of KOA Clans!
 				🔸 **The Round Table**: All things Hard Mode
