@@ -34,7 +34,6 @@ module.exports = async (client, message) => {
 		handleReactions(client, message),
 		profanityActions.checkForProfanity(client, message),
 		citadelActions.greetMorningOrNight(client, message),
-		citadelActions.holidayReacts(client, message),
 		snapshotActions.userPostsImage(client, message),
 		cotwActions.reactToVowAndReflections(client, message),
 		cotwActions.updateCotw(client, message),
