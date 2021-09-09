@@ -2,7 +2,6 @@ const { Config } = require('../config.js');
 const cotwActions = require('../eventActions/cotwActions');
 const hocActions = require('../eventActions/hocActions');
 const snapshotActions = require('../eventActions/snapshotActions');
-const sleepClubActions = require('../eventActions/sleepClubActions');
 const profanityActions = require('../eventActions/profanityActions');
 const citadelActions = require('../eventActions/citadelActions');
 const accountabilityActions = require('../eventActions/accountabilityActions');
@@ -39,7 +38,6 @@ module.exports = async (client, message) => {
 		citadelActions.holidayReacts(client, message),
 		hocActions.reactWithLetsGo(client, message),
 		snapshotActions.userPostsImage(client, message),
-		sleepClubActions.reactToSleepLog(client, message),
 		cotwActions.reactToVowAndReflections(client, message),
 		cotwActions.updateCotw(client, message),
 		accountabilityActions.addReaction(client, message),
