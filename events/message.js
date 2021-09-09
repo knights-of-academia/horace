@@ -30,7 +30,7 @@ module.exports = async (client, message) => {
 	}
 
 	const handlers = [
-		handleReactions(client, message),
+		handleReactions(message),
 		profanityActions.checkForProfanity(client, message),
 		snapshotActions.userPostsImage(client, message),
 		cotwActions.updateCotw(client, message),

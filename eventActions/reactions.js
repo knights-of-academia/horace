@@ -21,8 +21,8 @@ const addReaction = async function(
 	}
 };
 
-const handleReactions = async function(client, message) {
-	// TODO: run these together
+const handleReactions = async function(message) {
+	// TODO: run these together. make a convenience function for this promise pattern
 	await addReaction(message, Config.EMOTES.HEART, Config.CHANNELS.CONTENT_NOTIFIER);
 	await addReaction(message, Config.EMOTES.GRATITUDE, Config.CHANNELS.GRATITUDE, new RegExp('today +i +am +grateful +for', 'i'));
 	await addReaction(message, Config.EMOTES.SLEEP_LOG_REACTION, Config.CHANNELS.SLEEP_CLUB, new RegExp('sleep log', 'gi'));
@@ -41,17 +41,17 @@ const handleReactions = async function(client, message) {
 		message,
 		Config.EMOTES.GOOD_MORNING,
 		Config.CHANNELS.CITADEL,
-		Config.GREETINGS.STRICT
-			? Config.GREETINGS.STRICT_MORNING_REGEX
-			: Config.GREETINGS.NORMAL_MORNING_REGEX
+		Config.STRICT_GREETINGS
+			? new RegExp('mo*rning (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$')
+			: new RegExp('g+o{2,}d+\\s*m+o+r+n+i+n+g+')
 	);
 	await addReaction(
 		message,
 		Config.EMOTES.GOOD_NIGHT,
 		Config.CHANNELS.CITADEL,
-		Config.GREETINGS.STRICT
-			? Config.GREETINGS.STRICT_NIGHT_REGEX
-			: Config.GREETINGS.NORMAL_NIGHT_REGEX
+		Config.STRICT_GREETINGS
+			? new RegExp('ni*ght (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$')
+			: new RegExp('g+o{2,}d+\\s*n+i+g+h+t+')
 	);
 };
 
