@@ -18,14 +18,8 @@ class cotwActions {
 		}
 	}
 
+	// TODO: get rid of this function
 	static async reactToVowAndReflections(client, message) {
-		// React to vow
-		if (message.channel.id === Config.CHANNELS.COTW
-			&& message.content.toLowerCase().includes('i vow to')) {
-			const emote = Config.EMOTES.COTW_VOW;
-			await message.react(emote);
-		}
-
 		// React to reflection
 		if (message.channel.id === Config.CHANNELS.COTW) {
 			let arrayMatching = message.content.toLowerCase().replace(/  +/g, ' ')

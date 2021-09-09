@@ -1,5 +1,6 @@
 const { Config } = require('../config');
 
+// TODO: name this function better
 const addReaction = async function(
 	message,
 	emoteToAdd,
@@ -21,11 +22,13 @@ const addReaction = async function(
 };
 
 const handleReactions = async function(client, message) {
+	// TODO: run these together
 	await addReaction(message, Config.EMOTES.HEART, Config.CHANNELS.CONTENT_NOTIFIER);
 	await addReaction(message, Config.EMOTES.GRATITUDE, Config.CHANNELS.GRATITUDE, new RegExp('today +i +am +grateful +for', 'i'));
 	await addReaction(message, Config.EMOTES.SLEEP_LOG_REACTION, Config.CHANNELS.SLEEP_CLUB, new RegExp('sleep log', 'gi'));
 	await addReaction(message, Config.EMOTES.HOC_REACTION, Config.CHANNELS.HALL_OF_CONQUESTS);
 	await addReaction(message, ['🎄', '☃️', '❄️'], Config.CHANNELS.CITADEL, new RegExp('merry|christmas', 'gi'));
+	await addReaction(message, Config.EMOTES.COTW_VOW, Config.CHANNELS.COTW, new RegExp('i vow to', 'gi'));
 	await addReaction(
 		message,
 		Config.EMOTES.GOOD_MORNING,
