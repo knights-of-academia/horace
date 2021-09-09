@@ -122,43 +122,6 @@ class accountabilityActions {
 			});
 		}
 	}
-
-	// Add a random reaction to a message sent
-	static async addReaction(client, message) {
-		if (message.channel.id != Config.CHANNELS.ACCOUNTABILITY) return;
-		if (message.content.toLowerCase().includes('!unpin')) return;
-		// Define an array of emojis to pull from
-		const random_emotes = Config.EMOTES.ACCOUNTABILITY_EMOTES_ARRAY;
-
-		// Flag emotes
-		const length = random_emotes.length;
-		const flags = [
-			{ language: 'french', emote: '🇫🇷' },
-			{ language: 'spanish', emote: '🇪🇸' },
-			{ language: 'italian', emote: '🇮🇹' }
-		];
-
-		// Define special emotes (I didn't want to put all of them in the configuration...)
-		const pomEmote = Config.EMOTES.POM;
-
-		// Check for languages
-		flags.forEach(function(langName) {
-			if (message.content.toLowerCase().includes(' ' + langName.language)) {
-				message.react(langName.emote);
-			}
-		});
-
-		// Check for emotes
-		if (message.content.toLowerCase().includes(':yes:') || message.content.toLowerCase().includes(':v_:') || message.content.toLowerCase().includes(':white_check_mark:')) {
-			// Pull a random reaction from the common emotes for and add to post (personally I like the separation of variables, let me know if that's not preferred style)
-			const rand = Math.floor(Math.random() * length);
-			const selectedEmote = random_emotes[rand];
-			message.react(selectedEmote.toString());
-		}
-		if (message.content.toLowerCase().includes(' pom')) {
-			message.react(pomEmote);
-		}
-	}
 }
 
 module.exports = accountabilityActions;

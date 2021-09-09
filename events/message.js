@@ -2,7 +2,6 @@ const { Config } = require('../config.js');
 const cotwActions = require('../eventActions/cotwActions');
 const snapshotActions = require('../eventActions/snapshotActions');
 const profanityActions = require('../eventActions/profanityActions');
-const accountabilityActions = require('../eventActions/accountabilityActions');
 const chainMessageAction = require('../eventActions/checkChainMessage');
 const highlightActions = require('../eventActions/highlightActions');
 const staffAccountabilityActions = require('../eventActions/staffAcountabilityActions');
@@ -30,12 +29,10 @@ module.exports = async (client, message) => {
 	}
 
 	const handlers = [
-		// todo: don't react to commands.
-		handleReactions(message),
+		handleReactions(message, !!command),
 		profanityActions.checkForProfanity(client, message),
 		snapshotActions.userPostsImage(client, message),
 		cotwActions.updateCotw(client, message),
-		accountabilityActions.addReaction(client, message),
 		chainMessageAction.chainMessageCheck(message),
 		highlightActions.checkForHighlight(client, message),
 		staffAccountabilityActions.checkForMessages(client, message),
