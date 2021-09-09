@@ -33,7 +33,6 @@ module.exports = async (client, message) => {
 		handleReactions(client, message),
 		profanityActions.checkForProfanity(client, message),
 		snapshotActions.userPostsImage(client, message),
-		cotwActions.reactToVowAndReflections(client, message),
 		cotwActions.updateCotw(client, message),
 		accountabilityActions.addReaction(client, message),
 		chainMessageAction.chainMessageCheck(message),

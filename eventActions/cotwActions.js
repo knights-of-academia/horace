@@ -18,22 +18,6 @@ class cotwActions {
 		}
 	}
 
-	// TODO: get rid of this function
-	static async reactToVowAndReflections(client, message) {
-		// React to reflection
-		if (message.channel.id === Config.CHANNELS.COTW) {
-			let arrayMatching = message.content.toLowerCase().replace(/  +/g, ' ')
-				.split(' ')
-				.slice(0, Config.REFLECTION_CHECK_DEPTH);
-			if (arrayMatching.some((str) => {
-				return str.includes('reflection');
-			})) {
-				const emote = Config.EMOTES.COTW_REFLECTION;
-				await message.react(emote);
-			}
-		}
-	}
-
 	static async updateCotw(client, message) {
 		if (message.channel.id === Config.CHANNELS.COTW
 			&& message.member.roles.cache.has(Config.ROLES.COTW_MANAGER)) {

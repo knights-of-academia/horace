@@ -31,6 +31,14 @@ const handleReactions = async function(client, message) {
 	await addReaction(message, Config.EMOTES.COTW_VOW, Config.CHANNELS.COTW, new RegExp('i vow to', 'gi'));
 	await addReaction(
 		message,
+		Config.EMOTES.COTW_REFLECTION,
+		Config.CHANNELS.COTW,
+		// Match 0 - n instances of a word followed by space, followed by "reflection".
+		// This tests if "reflection" is present in the first n words of the string.
+		new RegExp(`^(\\w+\\s+){0,${Config.REFLECTION_CHECK_DEPTH - 1}}(reflection)`, 'i')
+	);
+	await addReaction(
+		message,
 		Config.EMOTES.GOOD_MORNING,
 		Config.CHANNELS.CITADEL,
 		Config.GREETINGS.STRICT
