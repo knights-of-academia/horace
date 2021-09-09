@@ -1,6 +1,7 @@
 const { Config } = require('../config');
 
 // TODO: name this function better
+// TODO: order should be channel, emote - switch these two
 const addReaction = async function(
 	message,
 	emoteToAdd,
@@ -23,6 +24,7 @@ const addReaction = async function(
 
 const handleReactions = async function(message) {
 	// TODO: run these together. make a convenience function for this promise pattern
+	// TODO: avoid repeated code: build an object? some functional programming?
 	await addReaction(message, Config.EMOTES.HEART, Config.CHANNELS.CONTENT_NOTIFIER);
 	await addReaction(message, Config.EMOTES.GRATITUDE, Config.CHANNELS.GRATITUDE, new RegExp('today +i +am +grateful +for', 'i'));
 	await addReaction(message, Config.EMOTES.SLEEP_LOG_REACTION, Config.CHANNELS.SLEEP_CLUB, new RegExp('sleep log', 'gi'));

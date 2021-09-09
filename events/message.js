@@ -30,6 +30,7 @@ module.exports = async (client, message) => {
 	}
 
 	const handlers = [
+		// todo: don't react to commands.
 		handleReactions(message),
 		profanityActions.checkForProfanity(client, message),
 		snapshotActions.userPostsImage(client, message),
