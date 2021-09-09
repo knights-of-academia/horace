@@ -100,10 +100,18 @@ const config = {
 	'GREETINGS': {
 		// Determine whether or not Horace will use the strict or normal version of the regex.
 		'STRICT': false,
-		'STRICT_MORNING_REGEX': 'mo*rning (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$',
-		'STRICT_NIGHT_REGEX': 'ni*ght (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$',
-		'NORMAL_MORNING_REGEX': 'g+o{2,}d+\\s*m+o+r+n+i+n+g+',
-		'NORMAL_NIGHT_REGEX': 'g+o{2,}d+\\s*n+i+g+h+t+',
+		'STRICT_MORNING_REGEX': new RegExp(
+			'mo*rning (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$'
+		),
+		'STRICT_NIGHT_REGEX': new RegExp(
+			'ni*ght (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$'
+		),
+		'NORMAL_MORNING_REGEX': new RegExp(
+			'g+o{2,}d+\\s*m+o+r+n+i+n+g+'
+		),
+		'NORMAL_NIGHT_REGEX': new RegExp(
+			'g+o{2,}d+\\s*n+i+g+h+t+'
+		),
 	},
 
 	// Configure the Terms and Conditions reminder
