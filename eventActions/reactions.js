@@ -20,6 +20,7 @@ const handleReactions = async function(client, message) {
 	await addReaction(message, Config.EMOTES.HEART, Config.CHANNELS.CONTENT_NOTIFIER);
 	await addReaction(message, Config.EMOTES.GRATITUDE, Config.CHANNELS.GRATITUDE, new RegExp('today +i +am +grateful +for', 'i'));
 	await addReaction(message, Config.EMOTES.SLEEP_LOG_REACTION, Config.CHANNELS.SLEEP_CLUB, new RegExp('sleep log', 'gi'));
+	await addReaction(message, Config.EMOTES.HOC_REACTION, Config.CHANNELS.HALL_OF_CONQUESTS);
 };
 
 module.exports = handleReactions;
