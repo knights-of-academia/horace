@@ -8,12 +8,8 @@ const { promiseErrorHandler } = require('../helpers/promiseErrors');
  * emoteToAdd specifies which emote to add for the reaction.
  * regex is an optional RegEx pattern to test against before reacting.
  */
-const react = async function(
-	message,
-	channelId,
-	emoteToAdd,
-	regex = new RegExp()
-) {
+const react = async function(message, channelId, emoteToAdd, regex = new RegExp())
+{
 	const conditions = [
 		channelId === message.channel.id,
 		regex.test(message)
@@ -58,7 +54,6 @@ const handleReactions = async function(client, message, isCommand) {
 			// This tests if "reflection" is present in the first n words of the string.
 			new RegExp(`^(\\w+\\s+){0,${Config.REFLECTION_CHECK_DEPTH - 1}}(reflection)`, 'i')
 		),
-
 
 		react(
 			message,
