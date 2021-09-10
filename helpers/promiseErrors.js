@@ -1,7 +1,7 @@
 const { Config } = require('../config');
 
 const promiseErrorHandler = async function(client, err) {
-	console.err(err);
+	console.error(err);
 	const errChannel = await client.channels.fetch(Config.CHANNELS.ERRORS);
 	if (errChannel) {
 		let errMessage = `Error: \`${err.message}\``;
@@ -9,4 +9,4 @@ const promiseErrorHandler = async function(client, err) {
 	}
 };
 
-module.exports = promiseErrorHandler;
+module.exports.promiseErrorHandler = promiseErrorHandler;

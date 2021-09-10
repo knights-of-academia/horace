@@ -1,5 +1,5 @@
 const { Config } = require('../config');
-const promiseErrorHandler = require('../helpers/promiseErrors');
+const { promiseErrorHandler } = require('../helpers/promiseErrors');
 
 /**
  * Add a reaction to a message if it fulfills the given conditions.

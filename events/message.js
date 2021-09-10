@@ -1,5 +1,5 @@
 const { Config } = require('../config.js');
-const promiseErrorHandler = require('../helpers/promiseErrors');
+const { promiseErrorHandler } = require('../helpers/promiseErrors');
 const cotwActions = require('../eventActions/cotwActions');
 const snapshotActions = require('../eventActions/snapshotActions');
 const profanityActions = require('../eventActions/profanityActions');
