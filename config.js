@@ -96,16 +96,6 @@ const config = {
 		'HEART': '❤️',
 	},
 
-	// Settings for determining when Horace reacts to messages in #citadel.
-	'GREETINGS': {
-		// Determine whether or not Horace will use the strict or normal version of the regex.
-		'STRICT': false,
-		'STRICT_MORNING_REGEX': 'mo*rning (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$',
-		'STRICT_NIGHT_REGEX': 'ni*ght (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$',
-		'NORMAL_MORNING_REGEX': 'g+o{2,}d+\\s*m+o+r+n+i+n+g+',
-		'NORMAL_NIGHT_REGEX': 'g+o{2,}d+\\s*n+i+g+h+t+',
-	},
-
 	// Configure the Terms and Conditions reminder
 	'TOS': {
 		// How periodically, in milliseconds, to catch up on TOS reminders
@@ -118,6 +108,7 @@ const config = {
 		'KOA_YELLOW': '#FFFA4F',
 	},
 
+	'STRICT_GREETINGS': true,
 	'PIN_LIMIT': 5,
 	'REFLECTION_CHECK_DEPTH': 5,
 	'REMINDER_SCAN_INTERVAL': 30000,

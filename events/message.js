@@ -1,16 +1,12 @@
 const { Config } = require('../config.js');
+const { promiseErrorHandler } = require('../helpers/promiseErrors');
 const cotwActions = require('../eventActions/cotwActions');
-const hocActions = require('../eventActions/hocActions');
 const snapshotActions = require('../eventActions/snapshotActions');
-const sleepClubActions = require('../eventActions/sleepClubActions');
 const profanityActions = require('../eventActions/profanityActions');
-const citadelActions = require('../eventActions/citadelActions');
-const accountabilityActions = require('../eventActions/accountabilityActions');
 const chainMessageAction = require('../eventActions/checkChainMessage');
 const highlightActions = require('../eventActions/highlightActions');
-const gratitudeActions = require('../eventActions/gratitudeActions');
 const staffAccountabilityActions = require('../eventActions/staffAcountabilityActions');
-const contentActions = require('../eventActions/contentActions');
+const handleReactions = require('../eventActions/reactions');
 
 module.exports = async (client, message) => {
 	if (!message.guild || message.author.bot) return;
@@ -34,21 +30,14 @@ module.exports = async (client, message) => {
 	}
 
 	const handlers = [
+		handleReactions(client, message, !!command),
 		profanityActions.checkForProfanity(client, message),
-		citadelActions.greetMorningOrNight(client, message),
-		citadelActions.holidayReacts(client, message),
-		hocActions.reactWithLetsGo(client, message),
 		snapshotActions.userPostsImage(client, message),
-		sleepClubActions.reactToSleepLog(client, message),
-		cotwActions.reactToVowAndReflections(client, message),
 		cotwActions.updateCotw(client, message),
-		accountabilityActions.addReaction(client, message),
 		chainMessageAction.chainMessageCheck(message),
 		highlightActions.checkForHighlight(client, message),
-		gratitudeActions.reactToGratitude(client, message),
 		staffAccountabilityActions.checkForMessages(client, message),
-		contentActions.reactToPost(client, message)
-	].map((p) => p.catch((e) => console.log(e)));
+	].map((p) => p.catch((err) => promiseErrorHandler(client, err)));
 
 	await Promise.all(handlers);
 };
