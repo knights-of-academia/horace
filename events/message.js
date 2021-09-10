@@ -1,4 +1,5 @@
 const { Config } = require('../config.js');
+const promiseErrorHandler = require('../helpers/promiseErrors');
 const cotwActions = require('../eventActions/cotwActions');
 const snapshotActions = require('../eventActions/snapshotActions');
 const profanityActions = require('../eventActions/profanityActions');
@@ -29,14 +30,14 @@ module.exports = async (client, message) => {
 	}
 
 	const handlers = [
-		handleReactions(message, !!command),
+		handleReactions(client, message, !!command),
 		profanityActions.checkForProfanity(client, message),
 		snapshotActions.userPostsImage(client, message),
 		cotwActions.updateCotw(client, message),
 		chainMessageAction.chainMessageCheck(message),
 		highlightActions.checkForHighlight(client, message),
 		staffAccountabilityActions.checkForMessages(client, message),
-	].map((p) => p.catch((e) => console.log(e)));
+	].map((p) => p.catch((err) => promiseErrorHandler(client, err)));
 
 	await Promise.all(handlers);
 };
