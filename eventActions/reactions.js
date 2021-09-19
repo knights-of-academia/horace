@@ -60,8 +60,8 @@ const handleReactions = async function(client, message, isCommand) {
 			Config.CHANNELS.CITADEL,
 			Config.EMOTES.GOOD_MORNING,
 			Config.STRICT_GREETINGS
-				? new RegExp('mo*rning (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$')
-				: new RegExp('g+o{2,}d+\\s*m+o+r+n+i+n+g+')
+				? new RegExp('mo*rning (koa|knights|friends|everyone)\\W*$', 'i')
+				: new RegExp('g+o{2,}d+\\s*m+o+r+n+i+n+g+', 'gi')
 		),
 
 		react(
@@ -69,8 +69,8 @@ const handleReactions = async function(client, message, isCommand) {
 			Config.CHANNELS.CITADEL,
 			Config.EMOTES.GOOD_NIGHT,
 			Config.STRICT_GREETINGS
-				? new RegExp('ni*ght (koa[^a-z]*|knights[^a-z]*|friends[^a-z]*|everyone[^a-z]*)$')
-				: new RegExp('g+o{2,}d+\\s*n+i+g+h+t+')
+				? new RegExp('ni*ght (koa|knights|friends|everyone)\\W*$', 'i')
+				: new RegExp('g+o{2,}d+\\s*n+i+g+h+t+', 'gi')
 		),
 	].map((p) => p.catch((err) => promiseErrorHandler(client, err)));
 
