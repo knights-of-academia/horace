@@ -1,6 +1,7 @@
 const Highlights = require('../databaseFiles/highlightsTable.js');
 const Discord = require('discord.js');
 const { Config } = require('../config.js');
+const discordDMWrapper = require('../helpers/discordDirectMessageWrapper');
 
 const errHandler = (err) => {
 	console.error('Highlights sequelize error: ', err);
@@ -58,7 +59,7 @@ const addHighlight = async (keywords, user) => {
 		}
 	}).then((count) => {
 		if (count != 0) {
-			user.send('Attempted to add **`' + keywords + '`** to your highlights, but it\'s already there!');
+			discordDMWrapper.sendMessage(user, `Attempted to add '${keywords}' to your highlights, but it's already there!`).catch(() => {});
 		} else {
 			exists = false;
 		}
@@ -71,7 +72,7 @@ const addHighlight = async (keywords, user) => {
 		}).catch(errHandler);
 
 		const highlightsHelp = getHiglightAdditionReplyMsg(keywords);
-		return user.send(highlightsHelp);
+		return discordDMWrapper.sendMessage(user, highlightsHelp).catch(() => {});
 	}
 };
 
@@ -85,7 +86,7 @@ const removeHighlight = async (keywords, user) => {
 		}
 	}).then((result) => {
 		if (result == 0) {
-			user.send('You tried to remove a highlight, `' + keywords + '`, but it doesn\'t seem to exist.');
+			discordDMWrapper.sendMessage(user, `You tried to remove a highlight, '${keywords}', but it doesn't seem to exist.`).catch(() => {});
 			exists = false;
 		}
 	});
@@ -95,7 +96,7 @@ const removeHighlight = async (keywords, user) => {
 	}
 
 	const highlightsRemovalMsg = getHiglightRemovalReplyMsg(keywords);
-	return await user.send(highlightsRemovalMsg);
+	return await discordDMWrapper.sendMessage(user, highlightsRemovalMsg).catch(() => {});
 };
 
 const listHighlights = async (user) => {
@@ -106,7 +107,7 @@ const listHighlights = async (user) => {
 		}
 	}).then((result) => {
 		if (result.length == 0) {
-			user.send('_You don\'t have any highlights._ Add some with `!highlights add <keywords>`');
+			discordDMWrapper.sendMessage(user, '_You don\'t have any highlights._ Add some with `!highlights add <keywords>`').catch(() => {});
 			return;
 		}
 		for (let i = 0; i < result.length; i++) {
@@ -114,7 +115,7 @@ const listHighlights = async (user) => {
 		}
 
 		const HighlightsListMsg = getHighlightsListReplyMsg(listOfWords);
-		user.send(HighlightsListMsg);
+		discordDMWrapper.sendMessage(user, HighlightsListMsg).catch(() => {});
 	});
 };
 
@@ -126,7 +127,7 @@ module.exports.execute = async (client, message, args) => {
 
 	if (keywords.length === 0) {
 		const highlightsHelp = getHelpReply();
-		return await user.send(highlightsHelp);
+		return await discordDMWrapper.sendMessage(user, highlightsHelp).catch(() => {});
 	}
 	else if (keywords.length > 1) {
 		if (cmd === 'add') {
@@ -139,7 +140,7 @@ module.exports.execute = async (client, message, args) => {
 			return await listHighlights(user);
 		}
 		else {
-			return await user.send('Please use `!highlight add <word/phrase>` to add a new highlight. (case insensitive)');
+			return discordDMWrapper.sendMessage(user, 'Please use `!highlight add <word/phrase>` to add a new highlight. (case insensitive)').catch(() => {});
 		}
 	}
 };
