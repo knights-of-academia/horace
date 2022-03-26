@@ -18,3 +18,7 @@ module.exports.sendMessage = async (user, message) => {
 		}
 	}
 };
+
+module.exports.sendBlockedDMsWarning = async (channel, reason) => {
+	await channel.send(`I tried to let you know ${reason}. \nI was not able to send you a message, because your DMs were disabled`);
+};

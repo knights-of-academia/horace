@@ -111,7 +111,11 @@ class highlightActions {
 				.addField('Link to Message', `[Jump to Message](${message.url})`, true)
 				.addField('Channel', message.channel);
 
-			await discordDMWrapper.sendMessage(user, highlightNotification).catch(() => {});
+			await discordDMWrapper.sendMessage(user, highlightNotification)
+				.catch(() => {
+					// logging a message to console as this is a fire-and-forget reminder, not a reply to a command
+					console.log(`A reminder was meant for ${user.username}, but their DMs were disabled`);
+				});
 		}
 	}
 }

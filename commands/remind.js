@@ -319,7 +319,11 @@ async function remind(client, date, reminder, shouldCatchUp = false) {
 		.setTitle(`${Config.EMOTES.REMINDERS} Reminder ${Config.EMOTES.REMINDERS}`)
 		.setDescription(description);
 
-	discordDMWrapper.sendMessage(userToRemind, remindMessage).catch(() => {});
+	discordDMWrapper.sendMessage(userToRemind, remindMessage)
+		.catch(() => {
+			// logging a message to console as this is a fire-and-forget reminder, not a reply to a command
+			console.log(`A reminder was meant for ${userToRemind.username}, but their DMs were disabled`);
+		});
 
 	if (!reminder.dataValues.recurring) {
 		await Reminder.destroy({

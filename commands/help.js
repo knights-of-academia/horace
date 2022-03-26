@@ -17,9 +17,9 @@ module.exports.execute = async (client, message, args) => {
 		await discordDMWrapper.sendMessage(message.author, helpMessage).then(async () => {
 			await message.channel.send('I have sent you a private message with the command list.');
 		})
-			.catch(async (reason) => {
+			.catch((reason) => {
 				if (reason === 'DMs not allowed') {
-					await message.channel.send('I was not able to send you a message, because your DMs were disabled');
+					discordDMWrapper.sendBlockedDMsWarning(message.channel, 'the bot commands.');
 				}
 			});
 	} else if (args.length === 1) {
