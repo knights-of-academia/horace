@@ -1,6 +1,7 @@
 const Highlights = require('../databaseFiles/highlightsTable.js');
 const Discord = require('discord.js');
 const { Config } = require('../config.js');
+const discordDMWrapper = require('../helpers/discordDirectMessageWrapper');
 
 const errHandler = (err) => {
 	console.error('Highlights sequelize error: ', err);
@@ -49,7 +50,7 @@ const getHighlightsListReplyMsg = (listOfWords) => {
 	return HighlightsListReplyMsg;
 };
 
-const addHighlight = async (keywords, user) => {
+const addHighlight = async (keywords, user, channel) => {
 	const userID = user.id;
 	let exists = true;
 	await Highlights.count({
@@ -58,7 +59,8 @@ const addHighlight = async (keywords, user) => {
 		}
 	}).then((count) => {
 		if (count != 0) {
-			user.send('Attempted to add **`' + keywords + '`** to your highlights, but it\'s already there!');
+			discordDMWrapper.sendMessage(user, `Attempted to add '${keywords}' to your highlights, but it's already there!`)
+				.catch(() => { discordDMWrapper.sendBlockedDMsWarning(channel, 'that the requested highlight is already in my list.'); });
 		} else {
 			exists = false;
 		}
@@ -71,11 +73,12 @@ const addHighlight = async (keywords, user) => {
 		}).catch(errHandler);
 
 		const highlightsHelp = getHiglightAdditionReplyMsg(keywords);
-		return user.send(highlightsHelp);
+		return discordDMWrapper.sendMessage(user, highlightsHelp)
+			.catch(() => { discordDMWrapper.sendBlockedDMsWarning(channel, 'that I have added the requested word to the list of highlights I have for you.'); });
 	}
 };
 
-const removeHighlight = async (keywords, user) => {
+const removeHighlight = async (keywords, user, channel) => {
 	const userID = user.id;
 	let exists = true;
 	await Highlights.destroy({
@@ -85,7 +88,8 @@ const removeHighlight = async (keywords, user) => {
 		}
 	}).then((result) => {
 		if (result == 0) {
-			user.send('You tried to remove a highlight, `' + keywords + '`, but it doesn\'t seem to exist.');
+			discordDMWrapper.sendMessage(user, `You tried to remove a highlight, '${keywords}', but it doesn't seem to exist.`)
+				.catch(() => { discordDMWrapper.sendBlockedDMsWarning(channel, 'that I can\'t find the highlight in my list.'); });
 			exists = false;
 		}
 	});
@@ -95,10 +99,11 @@ const removeHighlight = async (keywords, user) => {
 	}
 
 	const highlightsRemovalMsg = getHiglightRemovalReplyMsg(keywords);
-	return await user.send(highlightsRemovalMsg);
+	return await discordDMWrapper.sendMessage(user, highlightsRemovalMsg)
+		.catch(() => { discordDMWrapper.sendBlockedDMsWarning(channel, 'that I have removed the highlight from my list.'); });
 };
 
-const listHighlights = async (user) => {
+const listHighlights = async (user, channel) => {
 	let listOfWords = new Array();
 	await Highlights.findAll({
 		where: {
@@ -106,7 +111,8 @@ const listHighlights = async (user) => {
 		}
 	}).then((result) => {
 		if (result.length == 0) {
-			user.send('_You don\'t have any highlights._ Add some with `!highlights add <keywords>`');
+			discordDMWrapper.sendMessage(user, '_You don\'t have any highlights._ Add some with `!highlights add <keywords>`')
+				.catch(() => { discordDMWrapper.sendBlockedDMsWarning(channel, 'that you do not have any highlights.'); });
 			return;
 		}
 		for (let i = 0; i < result.length; i++) {
@@ -114,7 +120,8 @@ const listHighlights = async (user) => {
 		}
 
 		const HighlightsListMsg = getHighlightsListReplyMsg(listOfWords);
-		user.send(HighlightsListMsg);
+		discordDMWrapper.sendMessage(user, HighlightsListMsg)
+			.catch(() => { discordDMWrapper.sendBlockedDMsWarning(channel, 'the highlights I have for you in my list.'); });
 	});
 };
 
@@ -126,20 +133,24 @@ module.exports.execute = async (client, message, args) => {
 
 	if (keywords.length === 0) {
 		const highlightsHelp = getHelpReply();
-		return await user.send(highlightsHelp);
+		return await discordDMWrapper.sendMessage(user, highlightsHelp)
+			.catch(() => { discordDMWrapper.sendBlockedDMsWarning(message.channel, 'how highlights work.'); });
 	}
 	else if (keywords.length > 1) {
 		if (cmd === 'add') {
-			return await addHighlight(keywords, user);
+			return await addHighlight(keywords, user, message.channel);
 		}
 		else if (cmd === 'remove' || cmd === 'delete') {
-			return await removeHighlight(keywords, user);
+			return await removeHighlight(keywords, user, message.channel);
 		}
 		else if (cmd === 'list') {
-			return await listHighlights(user);
+			return await listHighlights(user, message.channel);
 		}
 		else {
-			return await user.send('Please use `!highlight add <word/phrase>` to add a new highlight. (case insensitive)');
+			return discordDMWrapper.sendMessage(user, 'Please use `!highlight add <word/phrase>` to add a new highlight. (case insensitive)')
+				.catch(async () => {
+					await message.channel.send('I was not able to send you a message, because your DMs were disabled');
+				});
 		}
 	}
 };

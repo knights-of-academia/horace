@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const discordDMWrapper = require ('../helpers/discordDirectMessageWrapper');
 const { Config: { BOT: { PREFIX } } } = require('../config.js');
 
 module.exports.execute = async (client, message, args) => {
@@ -13,13 +14,14 @@ module.exports.execute = async (client, message, args) => {
 		commands.forEach((command) => {
 			helpMessage.addField(`**${PREFIX}${command.config.name}**`, `${command.config.description}`);
 		});
-		try {
-			await message.author.send(helpMessage);
+		await discordDMWrapper.sendMessage(message.author, helpMessage).then(async () => {
 			await message.channel.send('I have sent you a private message with the command list.');
-		}
-		catch (err) {
-			console.log(err);
-		}
+		})
+			.catch((reason) => {
+				if (reason === 'DMs not allowed') {
+					discordDMWrapper.sendBlockedDMsWarning(message.channel, 'the bot commands.');
+				}
+			});
 	} else if (args.length === 1) {
 		let command = commands.find((theCommand) =>
 			theCommand.config.name === args[0].toLowerCase() ||

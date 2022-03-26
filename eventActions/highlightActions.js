@@ -1,6 +1,7 @@
 const Highlights = require('../databaseFiles/highlightsTable.js');
 const Discord = require('discord.js');
 const { Config } = require('../config.js');
+const discordDMWrapper = require('../helpers/discordDirectMessageWrapper');
 
 class highlightActions {
 	// Method to call to check a message for a highlighted message
@@ -110,7 +111,11 @@ class highlightActions {
 				.addField('Link to Message', `[Jump to Message](${message.url})`, true)
 				.addField('Channel', message.channel);
 
-			await user.send(highlightNotification);
+			await discordDMWrapper.sendMessage(user, highlightNotification)
+				.catch(() => {
+					// logging a message to console as this is a fire-and-forget reminder, not a reply to a command
+					console.log(`A reminder was meant for ${user.username}, but their DMs were disabled`);
+				});
 		}
 	}
 }
