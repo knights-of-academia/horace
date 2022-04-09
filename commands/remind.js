@@ -12,11 +12,11 @@ const monthsData = require('../data/monthsData.js');
 
 
 module.exports.execute = async (client, message, args) => {
-	if (!(message.channel.id === Config.CHANNELS.ACCOUNTABILITY || message.channel.id === Config.CHANNELS.COMMAND_CENTER)) {
-		return await message.channel.send(
-			`Whoops, sorry, but the "remind" command is only available in <#${Config.CHANNELS.ACCOUNTABILITY}> and <#${Config.CHANNELS.COMMAND_CENTER}>.`
-		);
-	}
+	// if (!(message.channel.id === Config.CHANNELS.ACCOUNTABILITY || message.channel.id === Config.CHANNELS.COMMAND_CENTER)) {
+	// 	return await message.channel.send(
+	// 		`Whoops, sorry, but the "remind" command is only available in <#${Config.CHANNELS.ACCOUNTABILITY}> and <#${Config.CHANNELS.COMMAND_CENTER}>.`
+	// 	);
+	// }
 
 	if (args.length === 0 || args.length === 1 && (args[0] === 'help' || args[0] === 'info')) {
 		const remindHelp = new Discord.MessageEmbed()
@@ -44,7 +44,7 @@ module.exports.execute = async (client, message, args) => {
 			.addField('Remove a reminder',
 				`\`!remind (remove/delete) <reminder ID to remove>/(all)\`
 			You can find out the ID of the reminder by using \`!remind list\``);
-		return await message.author.send(remindHelp);
+		return await message.author.send({ embeds: [remindHelp] });
 	} else if (args.length === 1 && args[0] === 'list') {
 		const userReminders = await Reminder.findAll({
 			where: {
@@ -81,7 +81,7 @@ module.exports.execute = async (client, message, args) => {
 				.setDescription('Each entry is in the form of <id>: <reminder>.')
 				.addField('Reminders', remindersStringForEmbed);
 
-			return await message.author.send(remindList);
+			return await message.author.send({ embeds: [ remindList ] });
 		} else {
 			return await message.reply('you don\'t have any saved reminders!');
 		}
@@ -319,7 +319,7 @@ async function remind(client, date, reminder, shouldCatchUp = false) {
 		.setTitle(`${Config.EMOTES.REMINDERS} Reminder ${Config.EMOTES.REMINDERS}`)
 		.setDescription(description);
 
-	discordDMWrapper.sendMessage(userToRemind, remindMessage)
+	discordDMWrapper.sendMessage(userToRemind, { embeds: [ remindMessage ] })
 		.catch(() => {
 			// logging a message to console as this is a fire-and-forget reminder, not a reply to a command
 			console.log(`A reminder was meant for ${userToRemind.username}, but their DMs were disabled`);
