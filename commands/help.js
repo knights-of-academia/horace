@@ -14,7 +14,7 @@ module.exports.execute = async (client, message, args) => {
 		commands.forEach((command) => {
 			helpMessage.addField(`**${PREFIX}${command.config.name}**`, `${command.config.description}`);
 		});
-		await discordDMWrapper.sendMessage(message.author, helpMessage).then(async () => {
+		await discordDMWrapper.sendMessage(message.author, { embeds: [ helpMessage ] }).then(async () => {
 			await message.channel.send('I have sent you a private message with the command list.');
 		})
 			.catch((reason) => {

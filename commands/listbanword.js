@@ -17,7 +17,7 @@ module.exports.execute = async (client, message) => {
 	embedMessage.setFooter('To ban more words use the !banword <word> command and to unban words use the !unbanword <word> command.');
 
 	const sourceMember = await message.member;
-	return sourceMember.send(embedMessage);
+	return sourceMember.send({ embeds: [embedMessage] });
 };
 
 module.exports.config = {

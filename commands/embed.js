@@ -152,7 +152,7 @@ class Embed {
 				.setDescription(description)
 				.addField(subtitle, body)
 				.setTimestamp();
-			await channel.send(embedMessage);
+			await channel.send({ embeds: [embedMessage] });
 			await message.channel.send('Your embed was sent!');
 		}
 		catch (err) {
