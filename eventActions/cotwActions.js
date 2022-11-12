@@ -39,10 +39,12 @@ class cotwActions {
 
 				const emote = Config.EMOTES.CONGRATS;
 				try {
+                    const highestRolePosition = winner.roles.highest.position
 					await winner.roles.add(cotwRole),
 					Promise.all([
 						message.react(emote),
-						message.channel.send(`Congratulations <@${winner.id}>!`)
+						message.channel.send(`Congratulations <@${winner.id}>!`),
+                        cotwRole.setPosition(highestRolePosition + 1)
 					]);
 				}
 				catch (err) {
