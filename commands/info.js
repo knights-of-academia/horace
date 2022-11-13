@@ -3,6 +3,36 @@ const { Config } = require('../config.js');
 const InfoTerms = require('../databaseFiles/infoTermsTable.js');
 const SearchWords = require('../databaseFiles/searchWordsTable.js');
 
+const sendSearchTerms = async (client, message) => {
+	const delimiter = ',';
+	let theInfoTerms = new Array();
+	await InfoTerms.findAll({
+		attributes: ['term'],
+		raw: true
+	}).then((result) => {
+		for (let i = 0; i < result.length; i++) {
+			theInfoTerms.push(result[i].term);
+		}
+	});
+
+	if (theInfoTerms.length === 0) {
+		return await message.channel.send('No search terms available').catch((err) => {
+			client.channel.get(Config.CHANNELS.ERRORS).send(err);
+		});
+	}
+	else if (theInfoTerms.length > 0) {
+		const infoMessage = '__**List of available search terms:**__\n\n' + theInfoTerms.join(delimiter);
+
+		await message.author.send(infoMessage).catch((err) => {
+			client.channel.get(Config.CHANNELS.ERRORS).send(err);
+		});
+
+		return await message.channel.send('I have sent you a private message with the list of available search terms.').catch((err) => {
+			client.channel.get(Config.CHANNELS.ERRORS).send(err);
+		});
+	}
+};
+
 module.exports.execute = async (client, message, args) => {
 	const errHandler = (err) => {
 		client.channel.get(Config.CHANNELS.ERRORS).send(err);
@@ -16,36 +46,11 @@ module.exports.execute = async (client, message, args) => {
 
 	if (keywords.length === 0) {
 		// if no term or command is provided, show available search terms
-		const delimiter = ',';
-		let theInfoTerms = new Array();
-		await InfoTerms.findAll({
-			attributes: ['term'],
-			raw: true
-		}).then((result) => {
-			for (let i = 0; i < result.length; i++) {
-				theInfoTerms.push(result[i].term);
-			}
-		});
-
-		if (theInfoTerms.length === 0) {
-			return await message.channel.send('No search terms available').catch((err) => {
-				client.channel.get(Config.CHANNELS.ERRORS).send(err);
-			});
-		}
-		else if (theInfoTerms.length > 0) {
-			const infoMessage = '__**List of available search terms:**__\n\n' + theInfoTerms.join(delimiter);
-
-			await message.author.send(infoMessage).catch((err) => {
-				client.channel.get(Config.CHANNELS.ERRORS).send(err);
-			});
-
-			return await message.channel.send('I have sent you a private message with the list of available search terms.').catch((err) => {
-				client.channel.get(Config.CHANNELS.ERRORS).send(err);
-			});
-		}
+		return await sendSearchTerms(client, message);
 	}
 	else if (keywords.length > 1) {
 		if (cmd === 'add') { //Add a new term
+			// TODO: reafctor into addSearchTerm
 			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
 				&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
 				const searchTerms = args[2].split(',');
@@ -94,6 +99,7 @@ module.exports.execute = async (client, message, args) => {
 			}
 		}
 		else if (cmd === 'remove') {
+			// TODO: reafctor into removeSearchTerm
 			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
 					&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
 				//Remove entries
@@ -130,6 +136,7 @@ module.exports.execute = async (client, message, args) => {
 			}
 		}
 		else if (cmd === 'edit') {
+			// TODO: reafctor into editSearchTerm
 			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
 						&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
 				//Update InfoTerms
@@ -160,6 +167,7 @@ module.exports.execute = async (client, message, args) => {
 			}
 		}
 		else if (cmd === 'help') {
+			// TODO: reafctor into helpWithSearchTerms
 			const infoHelp = new Discord.RichEmbed()
 				.setColor('#FF000')
 				.setTitle('Knights of Academia Info Help')
