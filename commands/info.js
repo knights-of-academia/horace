@@ -27,7 +27,7 @@ module.exports.execute = async (client, message, args) => {
 			}
 		});
 
-		const infoMessage = '___**List of available search terms:**__\n\n' + theInfoTerms.join(delimiter);
+		const infoMessage = '__**List of available search terms:**__\n\n' + theInfoTerms.join(delimiter);
 
 		await message.author.send(infoMessage).catch((err) => {
 			client.channel.get(Config.CHANNELS.ERRORS).send(err);
