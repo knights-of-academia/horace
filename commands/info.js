@@ -27,14 +27,22 @@ module.exports.execute = async (client, message, args) => {
 			}
 		});
 
-		const infoMessage = '__**List of available search terms:**__\n\n' + theInfoTerms.join(delimiter);
+		if (theInfoTerms.length === 0) {
+			return await message.channel.send('No search terms available').catch((err) => {
+				client.channel.get(Config.CHANNELS.ERRORS).send(err);
+			});
+		}
+		else if (theInfoTerms.length > 0) {
+			const infoMessage = '__**List of available search terms:**__\n\n' + theInfoTerms.join(delimiter);
 
-		await message.author.send(infoMessage).catch((err) => {
-			client.channel.get(Config.CHANNELS.ERRORS).send(err);
-		});
-		return await message.channel.send('I have sent you a private message with the list of available search terms.').catch((err) => {
-			client.channel.get(Config.CHANNELS.ERRORS).send(err);
-		});
+			await message.author.send(infoMessage).catch((err) => {
+				client.channel.get(Config.CHANNELS.ERRORS).send(err);
+			});
+
+			return await message.channel.send('I have sent you a private message with the list of available search terms.').catch((err) => {
+				client.channel.get(Config.CHANNELS.ERRORS).send(err);
+			});
+		}
 	}
 	else if (keywords.length > 1) {
 		if (cmd === 'add') { //Add a new term
