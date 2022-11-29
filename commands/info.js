@@ -82,6 +82,43 @@ const addSearchTerm = async (message, args, term) => {
     }
 }
 
+const removeSearchTerm = async (message, term) => {
+    if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
+            && (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
+        //Remove entries
+        let cont = true;
+        await InfoTerms.destroy({
+            where: {
+                term: term
+            }
+        }).then((result) => {
+            if (result == 0) {
+                user.send('You tried to remove info `' + term + '`, but it doesn\'t exist.');
+                cont = false;
+            }
+        });
+
+        await SearchWords.destroy({
+            where: {
+                term: term
+            }
+        }).catch(errHandler);
+
+        if (!cont) {
+            return;
+        }
+
+        //Confirm removal
+        return await message.channel.send(term + ' has been removed from the database');
+    }
+    else {
+        //Inform if user doesn't have authority to edit info
+        if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
+            message.channel.send('You do not have the experience to complete this command');
+        }
+    }
+}
+
 module.exports.execute = async (client, message, args) => {
 	const errHandler = (err) => {
 		client.channel.get(Config.CHANNELS.ERRORS).send(err);
@@ -102,41 +139,7 @@ module.exports.execute = async (client, message, args) => {
             return await addSearchTerm(message, args, term);
 		}
 		else if (cmd === 'remove') {
-			// TODO: reafctor into removeSearchTerm
-			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
-					&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
-				//Remove entries
-				let cont = true;
-				await InfoTerms.destroy({
-					where: {
-						term: term
-					}
-				}).then((result) => {
-					if (result == 0) {
-						user.send('You tried to remove info `' + term + '`, but it doesn\'t exist.');
-						cont = false;
-					}
-				});
-
-				await SearchWords.destroy({
-					where: {
-						term: term
-					}
-				}).catch(errHandler);
-
-				if (!cont) {
-					return;
-				}
-
-				//Confirm removal
-				return await message.channel.send(term + ' has been removed from the database');
-			}
-			else {
-				//Inform if user doesn't have authority to edit info
-				if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
-					message.channel.send('You do not have the experience to complete this command');
-				}
-			}
+            return await removeSearchTerm(message, term);
 		}
 		else if (cmd === 'edit') {
 			// TODO: reafctor into editSearchTerm
