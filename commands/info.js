@@ -76,9 +76,11 @@ const addSearchTerm = async (message, args, term) => {
     }
     else {
         //Inform if user doesn't have authority to edit info
-        console.log(typeof message.member.roles.cache);
-        if (!message.member.roles.cache.has(Config.ROLES.GUARDIAN) || !message.member.roles.cache.has(Config.ROLES.HELPER)) {
+        if (!message.member.roles.cache.has(Config.ROLES.GUARDIAN) && !message.member.roles.cache.has(Config.ROLES.HELPER)) {
             message.channel.send('You do not have the experience to complete this command');
+        }
+        else {
+            message.channel.send('You are using the command in the wrong channel. Please use the command center for using the `!info` command');
         }
     }
 }
