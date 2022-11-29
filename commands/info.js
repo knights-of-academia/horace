@@ -33,6 +33,55 @@ const sendSearchTerms = async (client, message) => {
 	}
 };
 
+const addSearchTerm = async (message, args, term) => {
+    if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
+        && (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
+        const searchTerms = args[2].split(',');
+
+        let result = await InfoTerms.findAll({
+            attributes: ['term', 'description'],
+            where: {
+                term: term
+            },
+            raw: true
+        }).catch(errHandler);
+
+        console.log(result);
+
+        if (result.length > 0) {
+            return await message.channel.send(`${term} already exists. Did you mean to type !info edit?`);
+        }
+
+        //Add entry to InfoTerm Table
+        await InfoTerms.create({
+            term: term,
+            description: desc
+        }).catch(errHandler);
+
+        //Add keywords to SearchWords Table
+        let databaseCalls = [];
+        for (const keyword of searchTerms) {
+            databaseCalls.push(
+                SearchWords.create({
+                    term: term,
+                    keyword: keyword
+                })
+            );
+        }
+
+        await Promise.all(databaseCalls).catch(errHandler);
+
+        //Confirm Info Addition
+        return await message.channel.send(`New term, ${term}, added!`);
+    }
+    else {
+        //Inform if user doesn't have authority to edit info
+        if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
+            message.channel.send('You do not have the experience to complete this command');
+        }
+    }
+}
+
 module.exports.execute = async (client, message, args) => {
 	const errHandler = (err) => {
 		client.channel.get(Config.CHANNELS.ERRORS).send(err);
@@ -50,53 +99,7 @@ module.exports.execute = async (client, message, args) => {
 	}
 	else if (keywords.length > 1) {
 		if (cmd === 'add') { //Add a new term
-			// TODO: reafctor into addSearchTerm
-			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
-				&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
-				const searchTerms = args[2].split(',');
-
-				let result = await InfoTerms.findAll({
-					attributes: ['term', 'description'],
-					where: {
-						term: term
-					},
-					raw: true
-				}).catch(errHandler);
-
-				console.log(result);
-
-				if (result.length > 0) {
-					return await message.channel.send(`${term} already exists. Did you mean to type !info edit?`);
-				}
-
-				//Add entry to InfoTerm Table
-				await InfoTerms.create({
-					term: term,
-					description: desc
-				}).catch(errHandler);
-
-				//Add keywords to SearchWords Table
-				let databaseCalls = [];
-				for (const keyword of searchTerms) {
-					databaseCalls.push(
-						SearchWords.create({
-							term: term,
-							keyword: keyword
-						})
-					);
-				}
-
-				await Promise.all(databaseCalls).catch(errHandler);
-
-				//Confirm Info Addition
-				return await message.channel.send(`New term, ${term}, added!`);
-			}
-			else {
-				//Inform if user doesn't have authority to edit info
-				if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
-					message.channel.send('You do not have the experience to complete this command');
-				}
-			}
+            return await addSearchTerm(message, args, term);
 		}
 		else if (cmd === 'remove') {
 			// TODO: reafctor into removeSearchTerm
