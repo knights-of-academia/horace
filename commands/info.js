@@ -119,6 +119,37 @@ const removeSearchTerm = async (message, term) => {
     }
 }
 
+const editSearchTerm = async (message, term) => {
+    if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
+                && (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
+        //Update InfoTerms
+        let termToUpdate = await SearchWords.findAll({
+            attributes: ['term'],
+            where: {
+                keyword: term
+            },
+            raw: true
+        }).catch(errHandler);
+
+        await InfoTerms.update({
+            description: desc
+        }, {
+            where: {
+                term: termToUpdate[0].term
+            }
+        }).catch(errHandler);
+
+        //Confirm edit
+        return await message.channel.send(`The info term ${termToUpdate[0].term} has been updated!`);
+    }
+    else {
+        //Inform if user doesn't have authority to edit info
+        if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
+            message.channel.send('You do not have the experience to complete this command');
+        }
+    }
+}
+
 module.exports.execute = async (client, message, args) => {
 	const errHandler = (err) => {
 		client.channel.get(Config.CHANNELS.ERRORS).send(err);
@@ -142,35 +173,7 @@ module.exports.execute = async (client, message, args) => {
             return await removeSearchTerm(message, term);
 		}
 		else if (cmd === 'edit') {
-			// TODO: reafctor into editSearchTerm
-			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
-						&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
-				//Update InfoTerms
-				let termToUpdate = await SearchWords.findAll({
-					attributes: ['term'],
-					where: {
-						keyword: term
-					},
-					raw: true
-				}).catch(errHandler);
-
-				await InfoTerms.update({
-					description: desc
-				}, {
-					where: {
-						term: termToUpdate[0].term
-					}
-				}).catch(errHandler);
-
-				//Confirm edit
-				return await message.channel.send(`The info term ${termToUpdate[0].term} has been updated!`);
-			}
-			else {
-				//Inform if user doesn't have authority to edit info
-				if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
-					message.channel.send('You do not have the experience to complete this command');
-				}
-			}
+            return await removeSearchTerm(message, term);
 		}
 		else if (cmd === 'help') {
 			// TODO: reafctor into helpWithSearchTerms
