@@ -35,7 +35,7 @@ const sendSearchTerms = async (client, message) => {
 
 const addSearchTerm = async (message, args, term) => {
     if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
-        && (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
+        && (message.member.roles.cache.has(Config.ROLES.GUARDIAN) || message.member.roles.cache.has(Config.ROLES.HELPER))) {
         const searchTerms = args[2].split(',');
 
         let result = await InfoTerms.findAll({
@@ -76,7 +76,8 @@ const addSearchTerm = async (message, args, term) => {
     }
     else {
         //Inform if user doesn't have authority to edit info
-        if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
+        console.log(typeof message.member.roles.cache);
+        if (!message.member.roles.cache.has(Config.ROLES.GUARDIAN) || !message.member.roles.cache.has(Config.ROLES.HELPER)) {
             message.channel.send('You do not have the experience to complete this command');
         }
     }
@@ -84,7 +85,7 @@ const addSearchTerm = async (message, args, term) => {
 
 const removeSearchTerm = async (message, term, user) => {
     if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
-            && (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
+            && (message.member.roles.cache.has(Config.ROLES.GUARDIAN) || message.member.roles.cache.has(Config.ROLES.HELPER))) {
         //Remove entries
         let cont = true;
         await InfoTerms.destroy({
@@ -113,7 +114,7 @@ const removeSearchTerm = async (message, term, user) => {
     }
     else {
         //Inform if user doesn't have authority to edit info
-        if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
+        if (!message.member.roles.cache.has(Config.ROLES.GUARDIAN) || !message.member.roles.cache.has(Config.ROLES.HELPER)) {
             message.channel.send('You do not have the experience to complete this command');
         }
     }
@@ -121,7 +122,7 @@ const removeSearchTerm = async (message, term, user) => {
 
 const editSearchTerm = async (message, term) => {
     if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
-                && (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
+                && (message.member.roles.cache.has(Config.ROLES.GUARDIAN) || message.member.roles.cache.has(Config.ROLES.HELPER))) {
         //Update InfoTerms
         let termToUpdate = await SearchWords.findAll({
             attributes: ['term'],
@@ -144,7 +145,7 @@ const editSearchTerm = async (message, term) => {
     }
     else {
         //Inform if user doesn't have authority to edit info
-        if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
+        if (!message.member.roles.cache.has(Config.ROLES.GUARDIAN) || !message.member.roles.cache.has(Config.ROLES.HELPER)) {
             message.channel.send('You do not have the experience to complete this command');
         }
     }
