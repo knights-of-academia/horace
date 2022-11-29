@@ -82,7 +82,7 @@ const addSearchTerm = async (message, args, term) => {
     }
 }
 
-const removeSearchTerm = async (message, term) => {
+const removeSearchTerm = async (message, term, user) => {
     if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
             && (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
         //Remove entries
@@ -150,6 +150,18 @@ const editSearchTerm = async (message, term) => {
     }
 }
 
+const helpWithSearchTerms = async (user) => {
+    const infoHelp = new Discord.RichEmbed()
+        .setColor('#FF000')
+        .setTitle('Knights of Academia Info Help')
+        .setDescription('Here are some commands to help you out with info!')
+        .addField('Add info', '`!info add <term> <comma,seperated,keywords> -<description>`')
+        .addField('Remove info', '`!info remove <keyword>`')
+        .addField('Edit info description', '`!info edit <keyword> -<new description>`')
+        .addField('List info terms', '`!info`');
+    return await user.send(infoHelp);
+}
+
 module.exports.execute = async (client, message, args) => {
 	const errHandler = (err) => {
 		client.channel.get(Config.CHANNELS.ERRORS).send(err);
@@ -173,19 +185,10 @@ module.exports.execute = async (client, message, args) => {
             return await removeSearchTerm(message, term);
 		}
 		else if (cmd === 'edit') {
-            return await removeSearchTerm(message, term);
+            return await removeSearchTerm(message, term, user);
 		}
 		else if (cmd === 'help') {
-			// TODO: reafctor into helpWithSearchTerms
-			const infoHelp = new Discord.RichEmbed()
-				.setColor('#FF000')
-				.setTitle('Knights of Academia Info Help')
-				.setDescription('Here are some commands to help you out with info!')
-				.addField('Add info', '`!info add <term> <comma,seperated,keywords> -<description>`')
-				.addField('Remove info', '`!info remove <keyword>`')
-				.addField('Edit info description', '`!info edit <keyword> -<new description>`')
-				.addField('List info terms', '`!info`');
-			return await user.send(infoHelp);
+            return await helpWithSearchTerms(user);
 		}
 		else {
 			let inputWord = await SearchWords.findAll({
