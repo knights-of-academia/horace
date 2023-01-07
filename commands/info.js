@@ -154,6 +154,7 @@ const editSearchTerm = async (message, term) => {
 }
 
 const helpWithSearchTerms = async (user) => {
+    // TODO: TypeError: Discord.RichEmbed is not a constructor
     const infoHelp = new Discord.RichEmbed()
         .setColor('#FF000')
         .setTitle('Knights of Academia Info Help')
