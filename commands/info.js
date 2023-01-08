@@ -33,7 +33,7 @@ const sendSearchTerms = async (client, message) => {
 	}
 };
 
-const addSearchTerm = async (message, args, term) => {
+const addSearchTerm = async (message, args, term, desc, errHandler) => {
     if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
         && (message.member.roles.cache.has(Config.ROLES.GUARDIAN) || message.member.roles.cache.has(Config.ROLES.HELPER))) {
         const searchTerms = args[2].split(',');
@@ -85,7 +85,7 @@ const addSearchTerm = async (message, args, term) => {
     }
 }
 
-const removeSearchTerm = async (message, term, user) => {
+const removeSearchTerm = async (message, term, user, errHandler) => {
     if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
             && (message.member.roles.cache.has(Config.ROLES.GUARDIAN) || message.member.roles.cache.has(Config.ROLES.HELPER))) {
         //Remove entries
@@ -122,7 +122,7 @@ const removeSearchTerm = async (message, term, user) => {
     }
 }
 
-const editSearchTerm = async (message, term) => {
+const editSearchTerm = async (message, term, errHandler) => {
     if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
                 && (message.member.roles.cache.has(Config.ROLES.GUARDIAN) || message.member.roles.cache.has(Config.ROLES.HELPER))) {
         //Update InfoTerms
@@ -183,13 +183,13 @@ module.exports.execute = async (client, message, args) => {
 	}
 	else if (keywords.length > 1) {
 		if (cmd === 'add') { //Add a new term
-            return await addSearchTerm(message, args, term);
+            return await addSearchTerm(message, args, term, desc, errHandler);
 		}
 		else if (cmd === 'remove') {
-            return await removeSearchTerm(message, term);
+            return await removeSearchTerm(message, term, errHandler);
 		}
 		else if (cmd === 'edit') {
-            return await removeSearchTerm(message, term, user);
+            return await removeSearchTerm(message, term, user, errHandler);
 		}
 		else if (cmd === 'help') {
             return await helpWithSearchTerms(user);
