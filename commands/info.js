@@ -122,7 +122,7 @@ const removeSearchTerm = async (message, term, user, errHandler) => {
     }
 }
 
-const editSearchTerm = async (message, term, errHandler) => {
+const editSearchTerm = async (message, term, desc, errHandler) => {
     if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
                 && (message.member.roles.cache.has(Config.ROLES.GUARDIAN) || message.member.roles.cache.has(Config.ROLES.HELPER))) {
         //Update InfoTerms
@@ -154,7 +154,6 @@ const editSearchTerm = async (message, term, errHandler) => {
 }
 
 const helpWithSearchTerms = async (user) => {
-    // TODO: TypeError: Discord.RichEmbed is not a constructor
     const infoHelp = new Discord.MessageEmbed()
         .setColor('#FF000')
         .setTitle('Knights of Academia Info Help')
@@ -189,7 +188,7 @@ module.exports.execute = async (client, message, args) => {
             return await removeSearchTerm(message, term, errHandler);
 		}
 		else if (cmd === 'edit') {
-            return await removeSearchTerm(message, term, user, errHandler);
+            return await editSearchTerm(message, term, desc, errHandler);
 		}
 		else if (cmd === 'help') {
             return await helpWithSearchTerms(user);
