@@ -155,7 +155,7 @@ const editSearchTerm = async (message, term) => {
 
 const helpWithSearchTerms = async (user) => {
     // TODO: TypeError: Discord.RichEmbed is not a constructor
-    const infoHelp = new Discord.RichEmbed()
+    const infoHelp = new Discord.MessageEmbed()
         .setColor('#FF000')
         .setTitle('Knights of Academia Info Help')
         .setDescription('Here are some commands to help you out with info!')
@@ -215,7 +215,7 @@ module.exports.execute = async (client, message, args) => {
 				return await message.channel.send(`I dont know about ${cmd} yet, can you teach me?`);
 			}
 
-			const response = new Discord.RichEmbed()
+			const response = new Discord.MessageEmbed()
 				.setTitle(result[0].term)
 				.setDescription(result[0].description);
 			return await message.channel.send(response);
