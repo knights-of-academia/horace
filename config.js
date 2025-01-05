@@ -63,6 +63,7 @@ const config = {
 		'CONTENT_NOTIFIER': process.env.C_CONTENT_NOTIFER,
 		'ERRORS': process.env.C_ERRORS,
 		'FORBIDDEN_HIGHLIGHT_CHANNELS': commaSepToArray(process.env.C_FORBIDDEN_HIGHLIGHT_CHANNELS),
+		'POM_BANK': process.env.C_POM_BANK,
 	},
 
 	// Discord emotes. Unicode emotes can be specified in the config directly,

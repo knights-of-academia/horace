@@ -21,8 +21,8 @@
     "discord.js": "^12.5.1",
     "dotenv": "^10.0.0",
     "habitica": "^4.0.0",
-    "rss-parser": "^3.7.2",
-    "sequelize": "^6.17.0",
+    "rss-parser": "^3.13.0",
+    "sequelize": "^6.29.0",
     "sqlite3": "^4.2.0"
   },
   "devDependencies": {
