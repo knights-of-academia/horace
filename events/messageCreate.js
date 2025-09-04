@@ -1,12 +1,12 @@
 const { Config } = require('../config.js');
-const { promiseErrorHandler } = require('../helpers/promiseErrors');
-const cotwActions = require('../eventActions/cotwActions');
-const snapshotActions = require('../eventActions/snapshotActions');
-const profanityActions = require('../eventActions/profanityActions');
-const chainMessageAction = require('../eventActions/checkChainMessage');
-const highlightActions = require('../eventActions/highlightActions');
-const staffAccountabilityActions = require('../eventActions/staffAcountabilityActions');
-const handleReactions = require('../eventActions/reactions');
+const { promiseErrorHandler } = require('../helpers/promiseErrors.js');
+const cotwActions = require('../eventActions/cotwActions.js');
+const snapshotActions = require('../eventActions/snapshotActions.js');
+const profanityActions = require('../eventActions/profanityActions.js');
+const chainMessageAction = require('../eventActions/checkChainMessage.js');
+const highlightActions = require('../eventActions/highlightActions.js');
+const staffAccountabilityActions = require('../eventActions/staffAcountabilityActions.js');
+const handleReactions = require('../eventActions/reactions.js');
 
 module.exports = async (client, message) => {
 	if (!message.guild || message.author.bot) return;
