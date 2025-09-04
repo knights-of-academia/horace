@@ -7,7 +7,7 @@ class staffaccountability {
 			message.react(Config.EMOTES.CONQUER);
 			const filterBy = message.author.id;
 			const originalChannel = message.channel;
-			message.channel.fetchMessages({
+			message.channel.messages.fetch({
 				limit: 100,
 			}).then((messages) => {
 				const userMessages = messages.filter((m) => m.author.id === filterBy).array();
