@@ -12,7 +12,7 @@ const react = async function(message, channelId, emoteToAdd, regex = new RegExp(
 {
 	const conditions = [
 		channelId === message.channel.id,
-		regex.test(message)
+		regex.test(message.content)
 	];
 
 	if (conditions.every(Boolean)) {

@@ -10,7 +10,7 @@ class staffaccountability {
 			message.channel.messages.fetch({
 				limit: 100,
 			}).then((messages) => {
-				const userMessages = messages.filter((m) => m.author.id === filterBy).array();
+				const userMessages = messages.filter((m) => m.author.id === filterBy);
 				if (userMessages) {
 					message.author.send(`Hey, you have extra messages in ${message.channel}, should I remove them?`)
 						.then((sentMessage) => {

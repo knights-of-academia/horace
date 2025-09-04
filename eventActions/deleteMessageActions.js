@@ -3,8 +3,11 @@ const Discord = require('discord.js');
 
 class deleteMessageActions {
 	static async sendMessageToModeration(client, message) {
-		const isHoraceBot = message.author.id === client.user.id;
+		if (!message.author){
+			return;
+		}
 
+		const isHoraceBot = message.author.id === client.user.id;
 		const isCommand = message.content.startsWith(Config.BOT.PREFIX);
 
 		const isStaffAccountability = message.channel.id == Config.CHANNELS.STAFF_ACCOUNTABILITY;
