@@ -4,6 +4,7 @@ let trackerObject = {
 	msgContents: [],
 	msgCounts: []
 };
+
 class CheckChainMessage {
 	// "Load" tracker object with necessary data.
 	static async loadChainMessageTracker(client) {
@@ -26,11 +27,14 @@ class CheckChainMessage {
 	static async makeChainMessage(channelId, channelInst) {
 		// Send a message randomly on message number 3 or 4
 		const rand = Math.round(Math.random(3) + 3);
-		if (trackerObject.msgCounts[channelId] == rand) {
+		if (trackerObject.msgCounts[channelId] == rand && 
+			trackerObject.msgContents[channelId] != '')
+		{
 			channelInst.send('' + trackerObject.msgContents[channelId]);
 		}
 		// Worst case, send it on 6
-		else if (trackerObject.msgCounts[channelId] == 6) {
+		else if (trackerObject.msgCounts[channelId] == 6 &&
+			trackerObject.msgContents[channelId] != '') {
 			channelInst.send('' + trackerObject.msgContents[channelId]);
 		}
 	}
@@ -39,6 +43,16 @@ class CheckChainMessage {
 	static async chainMessageCheck(message) {
 		const channelId = message.channel.id;
 		const messageContent = message.content;
+		const isBot = message.author.bot;
+
+		if (isBot) {
+			return;
+		}
+
+		if (trackerObject.msgContents[channelId] === undefined) {
+			trackerObject.msgContents[channelId] = 'NIL';
+			trackerObject.msgCounts[channelId] = 1;
+    	}
 
 		// If the message length is greater than limit set in configuration, forgettaboutit
 		if (messageContent.length >= Config.CHAIN_MESSAGE_CHAR_LIMIT) {
