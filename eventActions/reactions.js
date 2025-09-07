@@ -43,7 +43,7 @@ const handleReactions = async function(client, message, isCommand) {
 			message,
 			Config.CHANNELS.ACCOUNTABILITY,
 			Config.EMOTES.ACCOUNTABILITY_EMOTES_ARRAY,
-			new RegExp(`${Config.EMOTES.YES2}|:✅:`, 'gi')
+			new RegExp(`${Config.EMOTES.YES2}|✅`, 'gi')
 		),
 
 		react(
