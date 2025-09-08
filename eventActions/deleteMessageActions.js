@@ -16,19 +16,27 @@ class deleteMessageActions {
 			let embed = new Discord.MessageEmbed()
 				.setTitle('🟡 Warning: Message deleted 🟡')
 				.setColor('#ffae42')
-				.addField('Author', message.author, true)
-				.addField('Channel', message.channel, true);
+				.addFields(
+					{ name: 'Author', value: `${message.author}`, inline: true},
+					{ name: 'Channel', value: `${message.channel}`, inline: true},
+				)
 
 			if (message.content.length > 0) {
-				embed.addField('Message', message.content);
+				embed.addFields(
+					{ name: 'Message', value: message.content }
+				);
 			}
 
 			if (message.attachments.size > 0) {
-				embed.addField('Files attached to message:', message.attachments.values().next().value.filename);
+				embed.addFields(
+					{ name: 'Files attached to message:', value: message.attachments.values().next().value.filename } 
+				);
 			}
 
 
-			client.channels.cache.get(Config.CHANNELS.MESSAGE_LOGS).send(embed);
+			client.channels.cache.get(Config.CHANNELS.MESSAGE_LOGS).send({
+                embeds: [embed],
+            });
 		}
 	}
 }
