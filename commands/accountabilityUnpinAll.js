@@ -3,7 +3,7 @@ const { Config } = require('../config.js');
 
 module.exports.execute = async (client, message) => {
 	if (message.channel.id === Config.CHANNELS.ACCOUNTABILITY) {
-		accountabilityActions.userUnpinsAllMessages(message, message.author);
+		await accountabilityActions.userUnpinsAllMessages(message, message.author);
 	}
 };
 

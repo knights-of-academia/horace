@@ -10,5 +10,6 @@ module.exports = async (client, channel) => {
 		else if (numOfPins >= 3) {
 			currentChannel.send('**Heads up!** This channel is almost at its pin limit! There are currently ' + numOfPins + ' pinned messages.');
 		}
-	}).catch(console.error);
+	})
+		.catch(console.error);
 };

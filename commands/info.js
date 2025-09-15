@@ -17,7 +17,7 @@ module.exports.execute = async (client, message, args) => {
 	if (keywords.length === 0) {
 		// if no term or command is provided, show available search terms
 		const delimiter = ',';
-		let theInfoTerms = new Array();
+		let theInfoTerms = [];
 		await InfoTerms.findAll({
 			attributes: ['term'],
 			raw: true
@@ -39,7 +39,7 @@ module.exports.execute = async (client, message, args) => {
 	else if (keywords.length > 1) {
 		if (cmd === 'add') { //Add a new term
 			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
-				&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
+				&& (message.member.roles.cache.hasAny(Config.ROLES.GUARDIAN, Config.ROLES.HELPER))) {
 				const searchTerms = args[2].split(',');
 
 				let result = await InfoTerms.findAll({
@@ -52,7 +52,7 @@ module.exports.execute = async (client, message, args) => {
 
 				console.log(result);
 
-				if (result.length > 0) {
+				if (Array.isArray(result) && result.length > 0) {
 					return await message.channel.send(`${term} already exists. Did you mean to type !info edit?`);
 				}
 
@@ -80,14 +80,14 @@ module.exports.execute = async (client, message, args) => {
 			}
 			else {
 				//Inform if user doesn't have authority to edit info
-				if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
+				if (!message.member.roles.cache.hasAny(Config.ROLES.GUARDIAN, Config.ROLES.HELPER)) {
 					message.channel.send('You do not have the experience to complete this command');
 				}
 			}
 		}
 		else if (cmd === 'remove') {
 			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
-					&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
+					&& message.member.roles.cache.hasAny(Config.ROLES.GUARDIAN, Config.ROLES.HELPER)) {
 				//Remove entries
 				let cont = true;
 				await InfoTerms.destroy({
@@ -95,7 +95,7 @@ module.exports.execute = async (client, message, args) => {
 						term: term
 					}
 				}).then((result) => {
-					if (result == 0) {
+					if (result === 0) {
 						user.send('You tried to remove info `' + term + '`, but it doesn\'t exist.');
 						cont = false;
 					}
@@ -116,14 +116,14 @@ module.exports.execute = async (client, message, args) => {
 			}
 			else {
 				//Inform if user doesn't have authority to edit info
-				if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
+				if (!message.member.roles.cache.hasAny(Config.ROLES.GUARDIAN, Config.ROLES.HELPER)) {
 					message.channel.send('You do not have the experience to complete this command');
 				}
 			}
 		}
 		else if (cmd === 'edit') {
 			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
-						&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
+						&& message.member.roles.cache.hasAny(Config.ROLES.GUARDIAN, Config.ROLES.HELPER)) {
 				//Update InfoTerms
 				let termToUpdate = await SearchWords.findAll({
 					attributes: ['term'],
@@ -151,6 +151,7 @@ module.exports.execute = async (client, message, args) => {
 				}
 			}
 		}
+		//todo: fix RichEmbed - deprecated
 		else if (cmd === 'help') {
 			const infoHelp = new Discord.RichEmbed()
 				.setColor('#FF000')

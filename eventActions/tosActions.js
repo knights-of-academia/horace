@@ -5,16 +5,21 @@ const tosReminder = require('../eventActions/tosReminderAction');
 class tosActions {
 	static userAcceptsTOS(reaction, user, client) {
 		if (reaction.message.channel.id === Config.CHANNELS.TOS
-            && reaction._emoji.name === Config.EMOTES.ACCEPT_TOS) {
+            && reaction.emoji.name === Config.EMOTES.ACCEPT_TOS) {
 			reaction.message.guild.members.fetch(user.id).then((guildMember) => {
 				if (guildMember.roles.cache.has(Config.ROLES.INITIATE)) {
 					const initiateRole = reaction.message.guild.roles.cache.find((r) => r.id === Config.ROLES.INITIATE);
 					guildMember.roles.remove(initiateRole);
 					const memberRole = reaction.message.guild.roles.cache.find((r) => r.id === Config.ROLES.MEMBER);
 					guildMember.roles.add(memberRole);
-					tosReminder.removeFromDatabase(user);
+					tosReminder.removeFromDatabase(user).catch((error) => {
+						console.error(error);
+					});
 					// Send welcome message to the Citadel
-					client.channels.cache.get(Config.CHANNELS.CITADEL).send(`🎉 **A new member has arrived!** 🎉\nWelcome to Knights of Academia <@${user.id}>!`)
+					client.channels.cache.get(Config.CHANNELS.CITADEL).send(
+						{
+							content: `🎉 **A new member has arrived!** 🎉\nWelcome to Knights of Academia <@${user.id}>!`
+						})
 						.then((message) => {
 							message.react(Config.EMOTES.WAVE);
 						});
@@ -36,7 +41,9 @@ class tosActions {
 					`)
 					.setColor(Config.COLORS.KOA_YELLOW);
 
-				return user.send(embed);
+				return user.send({
+					embeds: [embed],
+				});
 			});
 		}
 	}
