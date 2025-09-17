@@ -1,6 +1,7 @@
 # Developer tooling
 .vscode
 .eslintcache
+.idea
 coverage
 
 # Environment file
