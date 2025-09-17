@@ -1,10 +1,15 @@
 const Discord = require('discord.js');
 const discordDMWrapper = require ('../helpers/discordDirectMessageWrapper');
 const { Config: { BOT: { PREFIX } } } = require('../config.js');
+const { Config: { CHANNELS: { POM_BANK } } } = require('../config.js');
 
 module.exports.execute = async (client, message, args) => {
 	let commands = client.commands;
 	let commandNames = [];
+
+	if (message.channel.id == POM_BANK) {
+		return;
+	}
 
 	if (!args || args.length === 0) {
 		let helpMessage = new Discord.MessageEmbed()

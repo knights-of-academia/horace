@@ -23,13 +23,13 @@
     "habitica": "^4.0.0",
     "rss-parser": "^3.13.0",
     "sequelize": "^6.29.0",
-    "sqlite3": "^4.2.0"
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
-    "eslint": "^6.5.1",
-    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint": "8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^23.20.0",
-    "jest": "^27.0.6"
+    "jest": "^27.5.1"
   }
 }
