@@ -146,22 +146,23 @@ module.exports.execute = async (client, message, args) => {
 			}
 			else {
 				//Inform if user doesn't have authority to edit info
-				if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
+				if (!message.member.roles.cache.has(Config.ROLES.GUARDIAN) || !message.member.roles.cache.has(Config.ROLES.HELPER)) {
 					message.channel.send('You do not have the experience to complete this command');
 				}
 			}
 		}
-		//todo: fix RichEmbed - deprecated
 		else if (cmd === 'help') {
-			const infoHelp = new Discord.RichEmbed()
-				.setColor('#FF000')
+			const infoHelp = new Discord.MessageEmbed()
+				.setColor('#FF0000')
 				.setTitle('Knights of Academia Info Help')
 				.setDescription('Here are some commands to help you out with info!')
-				.addField('Add info', '`!info add <term> <comma,seperated,keywords> -<description>`')
-				.addField('Remove info', '`!info remove <keyword>`')
-				.addField('Edit info description', '`!info edit <keyword> -<new description>`')
-				.addField('List info terms', '`!info`');
-			return await user.send(infoHelp);
+				.addFields(
+					{ name: 'Add info', value: '`!info add <term> <comma,seperated,keywords> -<description>`' },
+					{ name: 'Remove info', value: '`!info remove <keyword>`' },
+					{ name: 'Edit info description', value: '`!info edit <keyword> -<new description>`' },
+					{ name: 'List info terms', value: '`!info`' }
+				);
+			return await user.send({ embeds: infoHelp });
 		}
 		else {
 			let inputWord = await SearchWords.findAll({
@@ -184,10 +185,10 @@ module.exports.execute = async (client, message, args) => {
 				return await message.channel.send(`I dont know about ${cmd} yet, can you teach me?`);
 			}
 
-			const response = new Discord.RichEmbed()
+			const response = new Discord.MessageEmbed()
 				.setTitle(result[0].term)
 				.setDescription(result[0].description);
-			return await message.channel.send(response);
+			return await message.channel.send({ embeds: response });
 		}
 	}
 };
