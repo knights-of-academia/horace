@@ -11,13 +11,13 @@ module.exports.execute = async (client, message) => {
 	for (const element of bannedWords) {
 		const user = client.users.cache.get(element.userID);
 		const username = user.username;
-		embedMessage.addField(`${element.word}`, `added by ${username}`);
+		embedMessage.addFields({ name: `${element.word}`, value: `added by ${username}` });
 	}
 
-	embedMessage.setFooter('To ban more words use the !banword <word> command and to unban words use the !unbanword <word> command.');
+	embedMessage.setFooter({ text: 'To ban more words use the !banword <word> command and to unban words use the !unbanword <word> command.' });
 
 	const sourceMember = await message.member;
-	return sourceMember.send(embedMessage);
+	return sourceMember.send({ embeds: [embedMessage] });
 };
 
 module.exports.config = {
