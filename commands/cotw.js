@@ -7,11 +7,11 @@ module.exports.execute = async (client, message) => {
 
 	let response = '';
 
-	if (challengeId != undefined && challengeName != undefined) {
+	if (challengeId !== undefined && challengeName !== undefined) {
 		response += `⚔  Challenge of the Week ⚔\n\n🔸 The current challenge, **${challengeName}**, can be found here: https://habitica.com/challenges/${challengeId}`;
 	}
 
-	if (pollActive && pollLink != undefined) {
+	if (pollActive && pollLink !== undefined) {
 		response += `\n🔸 The poll for next week's challenge can be found here: ${pollLink}`;
 	}
 
