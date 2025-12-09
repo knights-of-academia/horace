@@ -23,7 +23,7 @@ module.exports.execute = async (client, message, args) => {
 			.setColor('#FFEC09')
 			.setTitle(`${Config.EMOTES.REMINDERS} Knights of Academia Remind Help ${Config.EMOTES.REMINDERS}`)
 			.setDescription('Here are some commands to help you out with reminders!')
-			.addField('Add a reminder',
+			.addFields({ name: 'Add a reminder', value:
 				`\`!remind [me to] <task> in <how many> minutes/hours/days/months\`
 				Example: \`!remind me to do laundry in 2 hours\`
 				
@@ -39,12 +39,13 @@ module.exports.execute = async (client, message, args) => {
 				
 				=================================================
 				
-				*Note: the parts in the square brackets are optional.*`)
-			.addField('List your reminders', '`!remind list`')
-			.addField('Remove a reminder',
-				`\`!remind (remove/delete) <reminder ID to remove>/(all)\`
-			You can find out the ID of the reminder by using \`!remind list\``);
-		return await message.author.send(remindHelp);
+				*Note: the parts in the square brackets are optional.*` },
+			{ name: 'List your reminders', value: '`!remind list`' },
+			{ name: 'Remove a reminder',
+				value: `\`!remind (remove/delete) <reminder ID to remove>/(all)\`
+			You can find out the ID of the reminder by using \`!remind list\``
+			});
+		return await message.author.send({ embeds: [remindHelp] });
 	} else if (args.length === 1 && args[0] === 'list') {
 		const userReminders = await Reminder.findAll({
 			where: {
@@ -79,15 +80,16 @@ module.exports.execute = async (client, message, args) => {
 				.setColor('#FFEC09')
 				.setTitle(`${Config.EMOTES.REMINDERS} Your Reminders ${Config.EMOTES.REMINDERS}`)
 				.setDescription('Each entry is in the form of <id>: <reminder>.')
-				.addField('Reminders', remindersStringForEmbed);
+				.addFields({ name: 'Reminders', value: remindersStringForEmbed });
 
-			return await message.author.send(remindList);
+			return await message.author.send({ embeds: [remindList] });
 		} else {
 			return await message.reply('you don\'t have any saved reminders!');
 		}
 	} else if (args.length === 2 && (args[0] === 'remove' || args[0] === 'delete')) {
+		let destroyed = null;
 		if (args[1] === 'all') {
-			var destroyed = await Reminder.destroy({
+			destroyed = await Reminder.destroy({
 				where: {
 					whoToRemind: message.author.id
 				}

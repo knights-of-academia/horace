@@ -28,9 +28,11 @@ test('Sends default help message when no argument is provided', async () => {
 		.setColor('#ff0000')
 		.setTitle('List of available commands')
 		.setDescription('Commands available in KOA')
-		.addField('**!help**', 'I will send you this message, or the usage of a specific command.')
-		.addField('**!invite**', 'Want to invite a friend to the server? This will get you the invite link.')
-		.addField('**!highlights**', 'Highlight a word or phrase you want to keep track of!');
+		.addFields(
+			{ name: '**!help**', value: 'I will send you this message, or the usage of a specific command.' },
+			{ name: '**!invite**', value: 'Want to invite a friend to the server? This will get you the invite link.' },
+			{ name: '**!highlights**', value: 'Highlight a word or phrase you want to keep track of!' },
+		);
 	expect(message.author.send).toHaveBeenCalledWith(expectedEmbed);
 	expect(message.author.send).toHaveBeenCalledTimes(1);
 
@@ -45,9 +47,11 @@ test('Sends default help message when an argument is provided', async () => {
 		.setColor('#ff0000')
 		.setTitle('!help')
 		.setDescription('You asked for information on !help')
-		.addField('Description:', 'I will send you this message, or the usage of a specific command.')
-		.addField('Aliases:', 'help')
-		.addField('Usage:', 'help\nhelp command');
+		.addFields(
+			{ name: 'Description:', value: 'I will send you this message, or the usage of a specific command.' },
+			{ name: 'Aliases:', value: 'help' },
+			{ name: 'Usage:', value: 'help\nhelp command' }
+		);
 	expect(message.channel.send).toHaveBeenCalledWith(expectedResponse);
 });
 

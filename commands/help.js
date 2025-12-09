@@ -7,7 +7,7 @@ module.exports.execute = async (client, message, args) => {
 	let commands = client.commands;
 	let commandNames = [];
 
-	if (message.channel.id == POM_BANK) {
+	if (message.channel.id === POM_BANK) {
 		return;
 	}
 
@@ -17,7 +17,7 @@ module.exports.execute = async (client, message, args) => {
 			.setTitle('List of available commands')
 			.setDescription('Commands available in ' + message.guild.name);
 		commands.forEach((command) => {
-			helpMessage.addField(`**${PREFIX}${command.config.name}**`, `${command.config.description}`);
+			helpMessage.addFields({ name: `**${PREFIX}${command.config.name}**`, value: `${command.config.description}` });
 		});
 		await discordDMWrapper.sendMessage(message.author, helpMessage).then(async () => {
 			await message.channel.send('I have sent you a private message with the command list.');
@@ -37,13 +37,15 @@ module.exports.execute = async (client, message, args) => {
 			let helpMessage = new Discord.MessageEmbed()
 				.setColor('#ff0000')
 				.setTitle(`${PREFIX}${command.config.name}`)
-				.setDescription(`You asked for information on ${PREFIX}${command.config.name}`);
-			helpMessage.addField('Description:', command.config.description);
-			helpMessage.addField('Aliases:', command.config.aliases);
-			helpMessage.addField('Usage:', command.config.usage);
+				.setDescription(`You asked for information on ${PREFIX}${command.config.name}`)
+				.addFields(
+					{ name: 'Description:', value: command.config.description },
+					{ name: 'Aliases:', value: command.config.aliases },
+					{ name: 'Usage:', value: command.config.usage }
+				);
 
 			try {
-				await message.channel.send(helpMessage);
+				await message.channel.send({ embeds: [helpMessage] });
 			}
 			catch (err) {
 				console.log(err);

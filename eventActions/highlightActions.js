@@ -36,7 +36,7 @@ class highlightActions {
 			let contains = false;
 
 			// Check if the message and the phrase are the same
-			if (message.content.toLowerCase() == currentPhrase.toLowerCase()) {
+			if (message.content.toLowerCase() === currentPhrase.toLowerCase()) {
 				contains = true;
 			}
 			// Check if the message contains the phrase, allowing for start and end of messages
@@ -50,20 +50,20 @@ class highlightActions {
 				// Go ahead and check if it is a part of a word at all or has surrounding punctuation
 				const punctuation = [' ', '.', ',', '?', '!', ':', ';', ''];
 				// If it's at the start, check for containment within a word (i.e. may in mayflower)
-				if (indexOfPhraseStart == 0) {
-					if (message.content.charAt(indexOfPhraseEnd + 1) == ' ') {
+				if (indexOfPhraseStart === 0) {
+					if (message.content.charAt(indexOfPhraseEnd + 1) === ' ') {
 						contains = true;
 					}
 				}
 				// If it's at the end, check for containment within a word
-				else if (indexOfPhraseEnd == message.content.length - 1) {
-					if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
+				else if (indexOfPhraseEnd === message.content.length - 1) {
+					if (message.content.charAt(indexOfPhraseStart - 1) === ' ') {
 						contains = true;
 					}
 				}
 
 				// Check if within word with space before (-1 because we already checked for the beginning of a message)
-				else if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
+				else if (message.content.charAt(indexOfPhraseStart - 1) === ' ') {
 					// Separated from below check because of potential following punctuation
 					if (punctuation.includes(message.content.charAt(indexOfPhraseEnd + 1))) {
 						contains = true;
@@ -71,8 +71,8 @@ class highlightActions {
 				}
 
 				// Check if within word with space after, including a check for punctuation (which is why it's separate from above)
-				else if (message.content.charAt(indexOfPhraseEnd + 1) == ' ') {
-					if (message.content.charAt(indexOfPhraseStart - 1) == ' ') {
+				else if (message.content.charAt(indexOfPhraseEnd + 1) === ' ') {
+					if (message.content.charAt(indexOfPhraseStart - 1) === ' ') {
 						contains = true;
 					}
 				}
@@ -100,16 +100,18 @@ class highlightActions {
 	// Method to call that DMs a user about a message containing a highlighted phrase
 	static async sendHighlightDM(client, user, message, highlightedPhrase) {
 		const highlightsEmote = '☀️';
-		if (message.author != user) {
+		if (message.author !== user) {
 			const highlightNotification = new Discord.MessageEmbed()
 				.setColor('#FFEC09')
 				.setTitle(`${highlightsEmote} Knights of Academia Highlight Alert ${highlightsEmote}`)
 				.setDescription('One of your highlights has been triggered!')
-				.addField('Highlighted Phrase', highlightedPhrase)
-				.addField('Full Message', message)
-				.addField('From', message.author, true)
-				.addField('Link to Message', `[Jump to Message](${message.url})`, true)
-				.addField('Channel', message.channel);
+				.addFields(
+					{ name: 'Highlighted Phrase', value: highlightedPhrase },
+					{ name: 'Full Message', value: message },
+					{ name: 'From', value: message.author, inline: true },
+					{ name: 'Link to Message', value: `[Jump to Message](${message.url})`, inline: true },
+					{ name: 'Channel', value: message.channel }
+				);
 
 			await discordDMWrapper.sendMessage(user, highlightNotification)
 				.catch(() => {

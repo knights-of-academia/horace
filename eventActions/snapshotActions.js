@@ -13,17 +13,17 @@ class snapshotActions {
 				.setColor('#ff0000')
 				.setTitle('🚩 Warning: Snapshots message 🚩')
 				.setDescription(`An unapproved message was sent in <#${Config.CHANNELS.SNAPSHOTS}>`)
-				.addField('User', message.author, true);
+				.addFields({ name: 'User', value: message.author, inline: true });
 
 			// Split message into multiple, in case takes up more space than
 			// what discordjs allows for a field.
 			const messageChunks = message.content.match(/[\s\S]{1,1024}/g);
 
 			for (let chunk of messageChunks) {
-				embedMessage.addField('Message', chunk);
+				embedMessage.addFields({ name: 'Message', value: chunk });
 			}
 			// Send message to moderation log
-			client.channels.cache.get(Config.CHANNELS.MODERATION).send(embedMessage);
+			client.channels.cache.get(Config.CHANNELS.MODERATION).send({ embeds: [embedMessage] });
 		}
 		else if (message.channel.id === Config.CHANNELS.SNAPSHOTS) {
 			return message.react(Config.EMOTES.HEART);

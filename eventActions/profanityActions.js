@@ -11,7 +11,7 @@ class profanityActions {
 			return console.log('Error! Moderation Channel ID in Config in likely invalid. Please verify!');
 		}
 
-		if (bannedWordsSQL.length == 0) {
+		if (bannedWordsSQL.length === 0) {
 			return;
 		}
 
@@ -20,16 +20,17 @@ class profanityActions {
 				.setColor('#ff0000')
 				.setTitle('🚩 Warning: Profanity detected 🚩')
 				.setDescription(`Profanity detected in ${message.channel}`)
-				.addField('User', message.author, true)
-				.addField('Link', `[Go to message](${message.url})`, true)
-				.addField('Message', `**${message.content}**`, true)
+				.addFields(
+					{ name: 'User', value: message.author.username, inline: true },
+					{ name: 'Link', value: `[Go to message](${message.url})`, inline: true },
+					{ name: 'Message', value: `**${message.content}**`, inline: true },
+				)
 				.setFooter(
-					`${message.author.username}#${message.author.discriminator}`,
-					message.author.avatarURL,
+					{ text: `${message.author.username}#${message.author.discriminator}`, iconURL: message.author.avatarURL }
 				);
 			return client.channels.cache
 				.get(Config.CHANNELS.MODERATION)
-				.send(embedMessage);
+				.send({ embeds: [embedMessage] });
 		}
 	}
 }

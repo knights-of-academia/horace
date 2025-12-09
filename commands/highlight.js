@@ -13,9 +13,11 @@ const getHelpReply = () => {
 		.setColor('#FFEC09')
 		.setTitle(`${highlightsEmote} Knights of Academia Highlight Help ${highlightsEmote}`)
 		.setDescription('Here are some commands to help you out with highlights!')
-		.addField('Add a highlight', '`!highlight add <word/phrase>`')
-		.addField('Remove a highlight', '`!highlight remove <word/phrase>`')
-		.addField('List your highlights', '`!highlight list`');
+		.addFields(
+			{ name: 'Add a highlight', value: '`!highlight add <word/phrase>`' },
+			{ name: 'Remove a highlight', value: '`!highlight remove <word/phrase>`' },
+			{ name: 'List your highlights', value: '`!highlight list`' }
+		);
 	return highlightsHelp;
 };
 
@@ -25,7 +27,7 @@ const getHiglightAdditionReplyMsg = (keywords) => {
 		.setColor('#FFEC09')
 		.setTitle(`${highlightsEmote} Knights of Academia Highlight Addition ${highlightsEmote}`)
 		.setDescription('I have added the following highlight as requested!')
-		.addField('Recently added highlight', `${keywords}`);
+		.addFields({ name: 'Recently added highlight', value: `${keywords}` });
 	return highlightsAddMessage;
 };
 
@@ -35,7 +37,7 @@ const getHiglightRemovalReplyMsg = (keywords) => {
 		.setColor('#FFEC09')
 		.setTitle(`${highlightsEmote} Knights of Academia Highlight Removal ${highlightsEmote}`)
 		.setDescription('I have removed the following highlight as requested!')
-		.addField('Recently removed highlight', `${keywords}`);
+		.addFields({ name: 'Recently removed highlight', value: `${keywords}` });
 		// Maybe send them the remaining highlights (if any)?
 	return highlightsRemovalMsg;
 };
@@ -46,7 +48,7 @@ const getHighlightsListReplyMsg = (listOfWords) => {
 		.setColor('#FFEC09')
 		.setTitle(`${highlightsEmote} Knights of Academia Highlight List ${highlightsEmote}`)
 		.setDescription('Here are your current highlights!')
-		.addField('Highlighted words and phrases', `${listOfWords}`);
+		.addFields({ name: 'Highlighted words and phrases', value: `${listOfWords}` });
 	return HighlightsListReplyMsg;
 };
 
@@ -58,7 +60,7 @@ const addHighlight = async (keywords, user, channel) => {
 			phrase: keywords
 		}
 	}).then((count) => {
-		if (count != 0) {
+		if (count !== 0) {
 			discordDMWrapper.sendMessage(user, `Attempted to add '${keywords}' to your highlights, but it's already there!`)
 				.catch(() => { discordDMWrapper.sendBlockedDMsWarning(channel, 'that the requested highlight is already in my list.'); });
 		} else {
@@ -87,7 +89,7 @@ const removeHighlight = async (keywords, user, channel) => {
 			users: userID
 		}
 	}).then((result) => {
-		if (result == 0) {
+		if (result === 0) {
 			discordDMWrapper.sendMessage(user, `You tried to remove a highlight, '${keywords}', but it doesn't seem to exist.`)
 				.catch(() => { discordDMWrapper.sendBlockedDMsWarning(channel, 'that I can\'t find the highlight in my list.'); });
 			exists = false;
@@ -104,13 +106,13 @@ const removeHighlight = async (keywords, user, channel) => {
 };
 
 const listHighlights = async (user, channel) => {
-	let listOfWords = new Array();
+	let listOfWords = [];
 	await Highlights.findAll({
 		where: {
 			users: user.id
 		}
 	}).then((result) => {
-		if (result.length == 0) {
+		if (result.length === 0) {
 			discordDMWrapper.sendMessage(user, '_You don\'t have any highlights._ Add some with `!highlights add <keywords>`')
 				.catch(() => { discordDMWrapper.sendBlockedDMsWarning(channel, 'that you do not have any highlights.'); });
 			return;
