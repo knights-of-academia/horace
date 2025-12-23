@@ -9,7 +9,7 @@ module.exports.execute = async (client, message) => {
 
 module.exports.config = {
 	name: 'accountabilityUnpin',
-	aliases: ['accountabilityUnpin', 'unpin'],
+	aliases: ['accountabilityunpin', 'unpin'],
 	description: 'This command has me remove your latest pinned message!',
 	usage: ['unpin']
 };

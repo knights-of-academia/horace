@@ -173,7 +173,7 @@ module.exports = Embed;
 
 module.exports.config = {
 	name: 'embed',
-	aliases: ['createEmbed'],
+	aliases: ['createembed'],
 	description: 'Create an embed (admins only)',
 	usage: ['embed <header> <body>'],
 };
