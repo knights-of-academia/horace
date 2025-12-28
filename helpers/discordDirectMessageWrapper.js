@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 /**
  * Attempts to send a message to the user. Logs if user does not allow DMs.
  * @param {*} user - User to which the message is to be sent
@@ -7,7 +7,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports.sendMessage = async (user, message) => {
 	let payload = message;
 
-	if (message instanceof EmbedBuilder) {
+	if (message instanceof MessageEmbed) {
 		payload = { embeds: [message] };
 	}
 

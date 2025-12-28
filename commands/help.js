@@ -40,8 +40,8 @@ module.exports.execute = async (client, message, args) => {
 				.setDescription(`You asked for information on ${PREFIX}${command.config.name}`)
 				.addFields(
 					{ name: 'Description:', value: command.config.description },
-					{ name: 'Aliases:', value: command.config.aliases },
-					{ name: 'Usage:', value: command.config.usage }
+					{ name: 'Aliases:', value: command.config.aliases.join(', ') },
+					{ name: 'Usage:', value: command.config.usage.join(', ') }
 				);
 
 			try {
