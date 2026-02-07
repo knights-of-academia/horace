@@ -23,7 +23,7 @@ module.exports.execute = async (client, message, args) => {
 			.setColor('#FFEC09')
 			.setTitle(`${Config.EMOTES.REMINDERS} Knights of Academia Remind Help ${Config.EMOTES.REMINDERS}`)
 			.setDescription('Here are some commands to help you out with reminders!')
-			.addFields({ name: 'Add a reminder', value:
+			.addFields([{ name: 'Add a reminder', value:
 				`\`!remind [me to] <task> in <how many> minutes/hours/days/months\`
 				Example: \`!remind me to do laundry in 2 hours\`
 				
@@ -44,7 +44,7 @@ module.exports.execute = async (client, message, args) => {
 			{ name: 'Remove a reminder',
 				value: `\`!remind (remove/delete) <reminder ID to remove>/(all)\`
 			You can find out the ID of the reminder by using \`!remind list\``
-			});
+			}]);
 		return await message.author.send({ embeds: [remindHelp] });
 	} else if (args.length === 1 && args[0] === 'list') {
 		const userReminders = await Reminder.findAll({
@@ -80,7 +80,7 @@ module.exports.execute = async (client, message, args) => {
 				.setColor('#FFEC09')
 				.setTitle(`${Config.EMOTES.REMINDERS} Your Reminders ${Config.EMOTES.REMINDERS}`)
 				.setDescription('Each entry is in the form of <id>: <reminder>.')
-				.addFields({ name: 'Reminders', value: remindersStringForEmbed });
+				.addFields([{ name: 'Reminders', value: remindersStringForEmbed }]);
 
 			return await message.author.send({ embeds: [remindList] });
 		} else {
@@ -275,7 +275,7 @@ Do you want me to remind you to ${whatToRemind} ${whenToRemind}? React with thum
 		return [confirm, deny].includes(reaction.emoji.name) && user.id === message.author.id;
 	};
 
-	confirmation_message.awaitReactions(filter, { max: 1, time: 20000, errors: ['time'] })
+	confirmation_message.awaitReactions({ filter,  max: 1, time: 20000, errors: ['time'] })
 		.then((collected) => {
 			const reaction = collected.first();
 
