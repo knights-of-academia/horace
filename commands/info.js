@@ -5,7 +5,7 @@ const SearchWords = require('../databaseFiles/searchWordsTable.js');
 
 module.exports.execute = async (client, message, args) => {
 	const errHandler = (err) => {
-		client.channel.get(Config.CHANNELS.ERRORS).send(err);
+		client.channels.cache.get(Config.CHANNELS.ERRORS).send(err);
 	};
 	const cmd = args[0];
 	const term = args[1];
@@ -30,10 +30,10 @@ module.exports.execute = async (client, message, args) => {
 		const infoMessage = '___**List of available search terms:**__\n\n' + theInfoTerms.join(delimiter);
 
 		await message.author.send(infoMessage).catch((err) => {
-			client.channel.get(Config.CHANNELS.ERRORS).send(err);
+			client.channels.cache.get(Config.CHANNELS.ERRORS).send(err);
 		});
 		return await message.channel.send('I have sent you a private message with the list of available search terms.').catch((err) => {
-			client.channel.get(Config.CHANNELS.ERRORS).send(err);
+			client.channels.cache.get(Config.CHANNELS.ERRORS).send(err);
 		});
 	}
 	else if (keywords.length > 1) {
@@ -133,6 +133,10 @@ module.exports.execute = async (client, message, args) => {
 					raw: true
 				}).catch(errHandler);
 
+				if (!termToUpdate || termToUpdate.length === 0) {
+					return await message.channel.send(`I couldn't find the term "${term}" to edit.`);
+				}
+
 				await InfoTerms.update({
 					description: desc
 				}, {
@@ -157,12 +161,12 @@ module.exports.execute = async (client, message, args) => {
 				.setTitle('Knights of Academia Info Help')
 				.setDescription('Here are some commands to help you out with info!')
 				.addFields(
-					{ name: 'Add info', value: '`!info add <term> <comma,seperated,keywords> -<description>`' },
+					{ name: 'Add info', value: '`!info add <term> <comma,separated,keywords> -<description>`' },
 					{ name: 'Remove info', value: '`!info remove <keyword>`' },
 					{ name: 'Edit info description', value: '`!info edit <keyword> -<new description>`' },
 					{ name: 'List info terms', value: '`!info`' }
 				);
-			return await user.send({ embeds: infoHelp });
+			return await user.send({ embeds: [infoHelp] });
 		}
 		else {
 			let inputWord = await SearchWords.findAll({
@@ -173,6 +177,10 @@ module.exports.execute = async (client, message, args) => {
 				raw: true
 			}).catch(errHandler);
 
+			if (!inputWord || inputWord.length === 0) {
+				return await message.channel.send(`I dont know about ${cmd} yet, can you teach me?`);
+			}
+
 			let result = await InfoTerms.findAll({
 				attributes: ['term', 'description'],
 				where: {
@@ -181,14 +189,14 @@ module.exports.execute = async (client, message, args) => {
 				raw: true
 			}).catch(errHandler);
 
-			if (!result) {
-				return await message.channel.send(`I dont know about ${cmd} yet, can you teach me?`);
+			if (!result || result.length === 0) {
+				return await message.channel.send('I found the keyword, but I couldn\'t find a description for it.');
 			}
 
 			const response = new Discord.MessageEmbed()
 				.setTitle(result[0].term)
 				.setDescription(result[0].description);
-			return await message.channel.send({ embeds: response });
+			return await message.channel.send({ embeds: [response] });
 		}
 	}
 };
