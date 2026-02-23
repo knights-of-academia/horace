@@ -6,7 +6,8 @@ class Embed {
 	static async ask(message, question) {
 		const filter = (m) => m.author.id === message.author.id;
 		await message.channel.send(question);
-		let collected = await message.channel.awaitMessages(filter, {
+		let collected = await message.channel.awaitMessages({
+			filter,
 			max: 1,
 			time: 20000
 		});
@@ -23,7 +24,7 @@ class Embed {
 		let answer = await this.ask(message, 'What channel should the embed be posted in?');
 		let channelID = answer.replace(/[<|#|>]/g, '');
 		let isIDValid = message.guild.channels.cache.some((channel) => channel.id === channelID);
-		if (isIDValid == false) {
+		if (isIDValid === false) {
 			throw new errors.EmbedInputErr('Embed channel not valid!');
 		}
 		else {
@@ -44,7 +45,7 @@ class Embed {
 	static async getURL(message) {
 		let answer = await this.ask(message, 'What URL should the title be hyperlinked to? (Reply with No to skip)');
 		let valid = true;
-		if (answer == 'No') {
+		if (answer === 'No') {
 			answer = '';
 		}
 		else {
@@ -108,7 +109,7 @@ class Embed {
 	static async getImage(message) {
 		let answer = await this.ask(message, 'What image should the title be hyperlinked to? (Reply with No to skip)');
 		let valid = true;
-		if (answer == 'No') {
+		if (answer === 'No') {
 			answer = '';
 		}
 		else {
@@ -148,11 +149,14 @@ class Embed {
 				.setTitle(title)
 				.setThumbnail(imageLink)
 				.setURL(url)
-				.setAuthor(message.author.username, 'https://cdn.discordapp.com/avatars/' + message.author.id + '/' + message.author.avatar + '.webp?size=128')
+				.setAuthor({
+					name: message.author.username,
+					iconURL: 'https://cdn.discordapp.com/avatars/' + message.author.id + '/' + message.author.avatar + '.webp?size=128'
+				})
 				.setDescription(description)
-				.addField(subtitle, body)
+				.addFields({ name: subtitle, value: body })
 				.setTimestamp();
-			await channel.send(embedMessage);
+			await channel.send({ embeds: [embedMessage] });
 			await message.channel.send('Your embed was sent!');
 		}
 		catch (err) {
@@ -169,7 +173,7 @@ module.exports = Embed;
 
 module.exports.config = {
 	name: 'embed',
-	aliases: ['createEmbed'],
+	aliases: ['createembed'],
 	description: 'Create an embed (admins only)',
 	usage: ['embed <header> <body>'],
 };

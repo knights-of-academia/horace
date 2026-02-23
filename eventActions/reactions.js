@@ -12,7 +12,7 @@ const react = async function(message, channelId, emoteToAdd, regex = new RegExp(
 {
 	const conditions = [
 		channelId === message.channel.id,
-		regex.test(message)
+		regex.test(message.content)
 	];
 
 	if (conditions.every(Boolean)) {
@@ -43,7 +43,7 @@ const handleReactions = async function(client, message, isCommand) {
 			message,
 			Config.CHANNELS.ACCOUNTABILITY,
 			Config.EMOTES.ACCOUNTABILITY_EMOTES_ARRAY,
-			new RegExp(`${Config.EMOTES.YES2}|:✅:`, 'gi')
+			new RegExp(`${Config.EMOTES.YES2}|✅`, 'gi')
 		),
 
 		react(

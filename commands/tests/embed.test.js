@@ -201,9 +201,9 @@ test('Main function executes correctly given correct roles', async () => {
 		.setTitle('testTitle')
 		.setThumbnail('https://example.com/image.png')
 		.setURL('https://example.com')
-		.setAuthor('MockedUser', 'https://cdn.discordapp.com/avatars/123456789876543210/1123581221345589144.webp?size=128')
+		.setAuthor({ name: 'MockedUser', iconURL: 'https://cdn.discordapp.com/avatars/123456789876543210/1123581221345589144.webp?size=128' })
 		.setDescription('testDescription')
-		.addField('testSubtitle', 'testBody')
+		.addFields({ name: 'testSubtitle', value: 'testBody' })
 		.setTimestamp();
 
 	const responseMessage = await embed.execute(null, message);

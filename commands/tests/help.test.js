@@ -1,8 +1,17 @@
 const Discord = require('discord.js');
+const { Client, Intents } = require('discord.js');
 const MockMessage = require('../../stub/MockMessage.js');
 const help = require('../help.js');
 
-const client = new Discord.Client();
+const client = new Client({
+	intents: [
+		Intents.FLAGS.GUILDS,
+		Intents.FLAGS.GUILD_MESSAGES,
+		Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+		Intents.FLAGS.MESSAGE_CONTENT,
+	],
+	partials: ['MESSAGE', 'REACTION'],
+});
 const message = new MockMessage();
 
 beforeAll(() => {
@@ -28,10 +37,12 @@ test('Sends default help message when no argument is provided', async () => {
 		.setColor('#ff0000')
 		.setTitle('List of available commands')
 		.setDescription('Commands available in KOA')
-		.addField('**!help**', 'I will send you this message, or the usage of a specific command.')
-		.addField('**!invite**', 'Want to invite a friend to the server? This will get you the invite link.')
-		.addField('**!highlights**', 'Highlight a word or phrase you want to keep track of!');
-	expect(message.author.send).toHaveBeenCalledWith(expectedEmbed);
+		.addFields(
+			{ name: '**!help**', value: 'I will send you this message, or the usage of a specific command.' },
+			{ name: '**!invite**', value: 'Want to invite a friend to the server? This will get you the invite link.' },
+			{ name: '**!highlights**', value: 'Highlight a word or phrase you want to keep track of!' },
+		);
+	expect(message.author.send).toHaveBeenCalledWith({ embeds: [expectedEmbed] });
 	expect(message.author.send).toHaveBeenCalledTimes(1);
 
 	const expectedResponse = 'I have sent you a private message with the command list.';
@@ -45,10 +56,12 @@ test('Sends default help message when an argument is provided', async () => {
 		.setColor('#ff0000')
 		.setTitle('!help')
 		.setDescription('You asked for information on !help')
-		.addField('Description:', 'I will send you this message, or the usage of a specific command.')
-		.addField('Aliases:', 'help')
-		.addField('Usage:', 'help\nhelp command');
-	expect(message.channel.send).toHaveBeenCalledWith(expectedResponse);
+		.addFields(
+			{ name: 'Description:', value: 'I will send you this message, or the usage of a specific command.' },
+			{ name: 'Aliases:', value: 'help' },
+			{ name: 'Usage:', value: 'help, help command' }
+		);
+	expect(message.channel.send).toHaveBeenCalledWith({ embeds: [expectedResponse] });
 });
 
 test('Sends name correction when an incorrect command is looked up', async () => {

@@ -10,20 +10,23 @@ class bookmarkActions {
 				.setColor('#0F9BF1')
 				.setTitle(`${swordsEmote} Knights of Academia Bookmark ${swordsEmote}`)
 				.setDescription('You asked to bookmark this post from the Knights of Academia server.')
-				.addField('From', workingMessage.author, true)
-				.addField('Link to Message', `[Jump to Message](${workingMessage.url})`, true)
-				.addField('Channel', workingMessage.channel);
+				.addFields(
+					{ name: 'From', value: workingMessage.author, inline: true },
+					{ name: 'Link to Message', value: `[Jump to Message](${workingMessage.url})`, inline: true },
+					{ name: 'Channel', value: workingMessage.channel }
+				);
 			const messageChunks = workingMessage.content.match(/[\s\S]{1,1024}/g);
 
 			for (const chunk of messageChunks) {
-				bookmarkEmbed.addField('Full Message', chunk);
+				bookmarkEmbed.addFields({ name: 'Full Message', value: chunk });
 			}
 
 			// Add link to attachment
 			if (workingMessage.attachments.array().length > 0) {
 				const attchmnt = workingMessage.attachments.array()[0].url;
 				console.log(attchmnt);
-				bookmarkEmbed.addField('Attachment', attchmnt)
+				bookmarkEmbed
+					.addFields({ name: 'Attachment', value: attchmnt })
 					.setImage(attchmnt);
 			}
 

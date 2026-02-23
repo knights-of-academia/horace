@@ -4,9 +4,16 @@ const Discord = require('discord.js');
 const { Config } = require('./config.js');
 const connect = require('./databaseFiles/connect.js');
 
-const client = new Discord.Client({
-	partials: ['USER', 'REACTION', 'MESSAGE'],
-	ws: { intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'] }
+const { Client, Intents } = require('discord.js');
+
+const client = new Client({
+	intents: [
+		Intents.FLAGS.GUILDS,
+		Intents.FLAGS.GUILD_MESSAGES,
+		Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+		Intents.FLAGS.MESSAGE_CONTENT,
+	],
+	partials: ['MESSAGE', 'REACTION'],
 });
 
 fs.readdir('./events/', (err, files) => {

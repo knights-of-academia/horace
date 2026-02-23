@@ -58,7 +58,7 @@ const tosRemind = async (client) => {
 		if (new Date() - reminder.dataValues.joinTime >= Config.TOS.REMIND_AFTER_HOURS * 3600000) {
 			try {
 				const user = await client.users.fetch(userToRemind);
-				await user.send(messageEmbed);
+				await user.send({ embeds: [messageEmbed] });
 			}
 			catch (err) {
 				console.error('TosReminder error: ', err);

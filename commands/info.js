@@ -5,7 +5,7 @@ const SearchWords = require('../databaseFiles/searchWordsTable.js');
 
 module.exports.execute = async (client, message, args) => {
 	const errHandler = (err) => {
-		client.channel.get(Config.CHANNELS.ERRORS).send(err);
+		client.channels.cache.get(Config.CHANNELS.ERRORS).send(err);
 	};
 	const cmd = args[0];
 	const term = args[1];
@@ -17,7 +17,7 @@ module.exports.execute = async (client, message, args) => {
 	if (keywords.length === 0) {
 		// if no term or command is provided, show available search terms
 		const delimiter = ',';
-		let theInfoTerms = new Array();
+		let theInfoTerms = [];
 		await InfoTerms.findAll({
 			attributes: ['term'],
 			raw: true
@@ -30,16 +30,16 @@ module.exports.execute = async (client, message, args) => {
 		const infoMessage = '___**List of available search terms:**__\n\n' + theInfoTerms.join(delimiter);
 
 		await message.author.send(infoMessage).catch((err) => {
-			client.channel.get(Config.CHANNELS.ERRORS).send(err);
+			client.channels.cache.get(Config.CHANNELS.ERRORS).send(err);
 		});
 		return await message.channel.send('I have sent you a private message with the list of available search terms.').catch((err) => {
-			client.channel.get(Config.CHANNELS.ERRORS).send(err);
+			client.channels.cache.get(Config.CHANNELS.ERRORS).send(err);
 		});
 	}
 	else if (keywords.length > 1) {
 		if (cmd === 'add') { //Add a new term
 			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
-				&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
+				&& (message.member.roles.cache.hasAny(Config.ROLES.GUARDIAN, Config.ROLES.HELPER))) {
 				const searchTerms = args[2].split(',');
 
 				let result = await InfoTerms.findAll({
@@ -52,7 +52,7 @@ module.exports.execute = async (client, message, args) => {
 
 				console.log(result);
 
-				if (result.length > 0) {
+				if (Array.isArray(result) && result.length > 0) {
 					return await message.channel.send(`${term} already exists. Did you mean to type !info edit?`);
 				}
 
@@ -80,14 +80,14 @@ module.exports.execute = async (client, message, args) => {
 			}
 			else {
 				//Inform if user doesn't have authority to edit info
-				if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
+				if (!message.member.roles.cache.hasAny(Config.ROLES.GUARDIAN, Config.ROLES.HELPER)) {
 					message.channel.send('You do not have the experience to complete this command');
 				}
 			}
 		}
 		else if (cmd === 'remove') {
 			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
-					&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
+					&& message.member.roles.cache.hasAny(Config.ROLES.GUARDIAN, Config.ROLES.HELPER)) {
 				//Remove entries
 				let cont = true;
 				await InfoTerms.destroy({
@@ -95,7 +95,7 @@ module.exports.execute = async (client, message, args) => {
 						term: term
 					}
 				}).then((result) => {
-					if (result == 0) {
+					if (result === 0) {
 						user.send('You tried to remove info `' + term + '`, but it doesn\'t exist.');
 						cont = false;
 					}
@@ -116,14 +116,14 @@ module.exports.execute = async (client, message, args) => {
 			}
 			else {
 				//Inform if user doesn't have authority to edit info
-				if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
+				if (!message.member.roles.cache.hasAny(Config.ROLES.GUARDIAN, Config.ROLES.HELPER)) {
 					message.channel.send('You do not have the experience to complete this command');
 				}
 			}
 		}
 		else if (cmd === 'edit') {
 			if (message.channel.id === Config.CHANNELS.COMMAND_CENTER
-						&& (message.member.roles.has(Config.ROLES.GUARDIAN) || message.member.roles.has(Config.ROLES.HELPER))) {
+						&& message.member.roles.cache.hasAny(Config.ROLES.GUARDIAN, Config.ROLES.HELPER)) {
 				//Update InfoTerms
 				let termToUpdate = await SearchWords.findAll({
 					attributes: ['term'],
@@ -132,6 +132,10 @@ module.exports.execute = async (client, message, args) => {
 					},
 					raw: true
 				}).catch(errHandler);
+
+				if (!termToUpdate || termToUpdate.length === 0) {
+					return await message.channel.send(`I couldn't find the term "${term}" to edit.`);
+				}
 
 				await InfoTerms.update({
 					description: desc
@@ -146,21 +150,23 @@ module.exports.execute = async (client, message, args) => {
 			}
 			else {
 				//Inform if user doesn't have authority to edit info
-				if (!message.member.roles.has(Config.ROLES.GUARDIAN) || !message.member.roles.has(Config.ROLES.HELPER)) {
+				if (!message.member.roles.cache.has(Config.ROLES.GUARDIAN) || !message.member.roles.cache.has(Config.ROLES.HELPER)) {
 					message.channel.send('You do not have the experience to complete this command');
 				}
 			}
 		}
 		else if (cmd === 'help') {
-			const infoHelp = new Discord.RichEmbed()
-				.setColor('#FF000')
+			const infoHelp = new Discord.MessageEmbed()
+				.setColor('#FF0000')
 				.setTitle('Knights of Academia Info Help')
 				.setDescription('Here are some commands to help you out with info!')
-				.addField('Add info', '`!info add <term> <comma,seperated,keywords> -<description>`')
-				.addField('Remove info', '`!info remove <keyword>`')
-				.addField('Edit info description', '`!info edit <keyword> -<new description>`')
-				.addField('List info terms', '`!info`');
-			return await user.send(infoHelp);
+				.addFields(
+					{ name: 'Add info', value: '`!info add <term> <comma,separated,keywords> -<description>`' },
+					{ name: 'Remove info', value: '`!info remove <keyword>`' },
+					{ name: 'Edit info description', value: '`!info edit <keyword> -<new description>`' },
+					{ name: 'List info terms', value: '`!info`' }
+				);
+			return await user.send({ embeds: [infoHelp] });
 		}
 		else {
 			let inputWord = await SearchWords.findAll({
@@ -171,6 +177,10 @@ module.exports.execute = async (client, message, args) => {
 				raw: true
 			}).catch(errHandler);
 
+			if (!inputWord || inputWord.length === 0) {
+				return await message.channel.send(`I dont know about ${cmd} yet, can you teach me?`);
+			}
+
 			let result = await InfoTerms.findAll({
 				attributes: ['term', 'description'],
 				where: {
@@ -179,14 +189,14 @@ module.exports.execute = async (client, message, args) => {
 				raw: true
 			}).catch(errHandler);
 
-			if (!result) {
-				return await message.channel.send(`I dont know about ${cmd} yet, can you teach me?`);
+			if (!result || result.length === 0) {
+				return await message.channel.send('I found the keyword, but I couldn\'t find a description for it.');
 			}
 
-			const response = new Discord.RichEmbed()
+			const response = new Discord.MessageEmbed()
 				.setTitle(result[0].term)
 				.setDescription(result[0].description);
-			return await message.channel.send(response);
+			return await message.channel.send({ embeds: [response] });
 		}
 	}
 };

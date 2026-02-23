@@ -4,6 +4,7 @@ let trackerObject = {
 	msgContents: [],
 	msgCounts: []
 };
+
 class CheckChainMessage {
 	// "Load" tracker object with necessary data.
 	static async loadChainMessageTracker(client) {
@@ -25,12 +26,15 @@ class CheckChainMessage {
 	// Helper method to run the comparison if enough chains have been reached. Horace will randomly chain after 3, 4, or 5 messages.
 	static async makeChainMessage(channelId, channelInst) {
 		// Send a message randomly on message number 3 or 4
-		const rand = Math.round(Math.random(3) + 3);
-		if (trackerObject.msgCounts[channelId] == rand) {
+		const rand = Math.round(Math.random() + 3);
+		if (trackerObject.msgCounts[channelId] === rand &&
+			trackerObject.msgContents[channelId] !== '')
+		{
 			channelInst.send('' + trackerObject.msgContents[channelId]);
 		}
 		// Worst case, send it on 6
-		else if (trackerObject.msgCounts[channelId] == 6) {
+		else if (trackerObject.msgCounts[channelId] === 6 &&
+			trackerObject.msgContents[channelId] !== '') {
 			channelInst.send('' + trackerObject.msgContents[channelId]);
 		}
 	}
@@ -39,19 +43,29 @@ class CheckChainMessage {
 	static async chainMessageCheck(message) {
 		const channelId = message.channel.id;
 		const messageContent = message.content;
+		const isBot = message.author.bot;
 
-		// If the message length is greater than limit set in configuration, forgettaboutit
+		if (isBot) {
+			return;
+		}
+
+		if (trackerObject.msgContents[channelId] === undefined) {
+			trackerObject.msgContents[channelId] = 'NIL';
+			trackerObject.msgCounts[channelId] = 1;
+		}
+
+		// If the message length is greater than limit set in configuration, forget about it
 		if (messageContent.length >= Config.CHAIN_MESSAGE_CHAR_LIMIT) {
-			this.resetChannelChain(channelId);
+			await this.resetChannelChain(channelId);
 		}
 
 		const lastMessageInChannel = trackerObject.msgContents[channelId];
 		const currentChainCount = trackerObject.msgCounts[channelId];
 		if (messageContent === lastMessageInChannel) {
 			trackerObject.msgCounts[channelId] = currentChainCount + 1;
-			this.makeChainMessage(channelId, message.channel);
+			await this.makeChainMessage(channelId, message.channel);
 		} else {
-			this.resetChannelChain(channelId, messageContent);
+			await this.resetChannelChain(channelId, messageContent);
 		}
 	}
 }
