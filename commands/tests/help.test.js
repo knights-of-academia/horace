@@ -42,7 +42,7 @@ test('Sends default help message when no argument is provided', async () => {
 			{ name: '**!invite**', value: 'Want to invite a friend to the server? This will get you the invite link.' },
 			{ name: '**!highlights**', value: 'Highlight a word or phrase you want to keep track of!' },
 		);
-	expect(message.author.send).toHaveBeenCalledWith(expectedEmbed);
+	expect(message.author.send).toHaveBeenCalledWith({ embeds: [expectedEmbed] });
 	expect(message.author.send).toHaveBeenCalledTimes(1);
 
 	const expectedResponse = 'I have sent you a private message with the command list.';
@@ -61,7 +61,7 @@ test('Sends default help message when an argument is provided', async () => {
 			{ name: 'Aliases:', value: 'help' },
 			{ name: 'Usage:', value: 'help\nhelp command' }
 		);
-	expect(message.channel.send).toHaveBeenCalledWith(expectedResponse);
+	expect(message.channel.send).toHaveBeenCalledWith({ embeds: [expectedResponse] });
 });
 
 test('Sends name correction when an incorrect command is looked up', async () => {
