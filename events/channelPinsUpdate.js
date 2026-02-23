@@ -1,3 +1,4 @@
+/* eslint-disable no-warning-comments */
 module.exports = async (client, channel) => {
 	const currentChannel = client.channels.cache.get(channel.id);
 	//TODO: make sure to put back the original 50 limit and 45 warning
