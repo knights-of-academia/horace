@@ -1,8 +1,16 @@
-const Discord = require('discord.js');
+const { Discord, Intents } = require('discord.js');
 const MockMessage = require('../../stub/MockMessage.js');
 const help = require('../help.js');
 
-const client = new Discord.Client();
+const client = new Discord.Client({
+	intents: [
+		Intents.FLAGS.GUILDS,
+		Intents.FLAGS.GUILD_MESSAGES,
+		Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+		Intents.FLAGS.MESSAGE_CONTENT,
+	],
+	partials: ['MESSAGE', 'REACTION'],
+});
 const message = new MockMessage();
 
 beforeAll(() => {
