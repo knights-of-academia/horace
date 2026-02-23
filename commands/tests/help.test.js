@@ -59,7 +59,7 @@ test('Sends default help message when an argument is provided', async () => {
 		.addFields(
 			{ name: 'Description:', value: 'I will send you this message, or the usage of a specific command.' },
 			{ name: 'Aliases:', value: 'help' },
-			{ name: 'Usage:', value: 'help\nhelp command' }
+			{ name: 'Usage:', value: 'help, help command' }
 		);
 	expect(message.channel.send).toHaveBeenCalledWith({ embeds: [expectedResponse] });
 });
