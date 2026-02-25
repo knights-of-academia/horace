@@ -107,7 +107,7 @@ class highlightActions {
 				.setDescription('One of your highlights has been triggered!')
 				.addFields([
 					{ name: 'Highlighted Phrase', value: highlightedPhrase },
-					{ name: 'Full Message', value: message.content || '[No Content]'},
+					{ name: 'Full Message', value: message.content || '[No Content]' },
 					{ name: 'From', value: `${message.author}`, inline: true },
 					{ name: 'Link to Message', value: `[Jump to Message](${message.url})`, inline: true },
 					{ name: 'Channel', value: `${message.channel}` }
