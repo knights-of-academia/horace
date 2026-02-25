@@ -105,13 +105,13 @@ class highlightActions {
 				.setColor('#FFEC09')
 				.setTitle(`${highlightsEmote} Knights of Academia Highlight Alert ${highlightsEmote}`)
 				.setDescription('One of your highlights has been triggered!')
-				.addFields(
+				.addFields([
 					{ name: 'Highlighted Phrase', value: highlightedPhrase },
-					{ name: 'Full Message', value: message },
-					{ name: 'From', value: message.author, inline: true },
+					{ name: 'Full Message', value: message.content || '[No Content]'},
+					{ name: 'From', value: `${message.author}`, inline: true },
 					{ name: 'Link to Message', value: `[Jump to Message](${message.url})`, inline: true },
-					{ name: 'Channel', value: message.channel }
-				);
+					{ name: 'Channel', value: `${message.channel}` }
+				]);
 
 			await discordDMWrapper.sendMessage(user, highlightNotification)
 				.catch(() => {

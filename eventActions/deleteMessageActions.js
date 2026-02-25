@@ -1,5 +1,5 @@
 const { Config } = require('../config.js');
-const { EmbedBuilder } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 class deleteMessageActions {
 	static async sendMessageToModeration(client, message) {
@@ -13,24 +13,24 @@ class deleteMessageActions {
 		const isStaffAccountability = message.channel.id === Config.CHANNELS.STAFF_ACCOUNTABILITY;
 
 		if (!(isHoraceBot || isCommand || isStaffAccountability)) {
-			let embed = new EmbedBuilder()
+			let embed = new MessageEmbed()
 				.setTitle('🟡 Warning: Message deleted 🟡')
 				.setColor('#ffae42')
-				.addFields(
+				.addFields([
 					{ name: 'Author', value: message.author.toString(), inline: true },
 					{ name: 'Channel', value: `${message.channel}`, inline: true },
-				);
+				]);
 
 			if (message.content.length > 0) {
-				embed.addFields(
+				embed.addFields([
 					{ name: 'Message', value: message.content }
-				);
+				]);
 			}
 
 			if (message.attachments.size > 0) {
-				embed.addFields(
+				embed.addFields([
 					{ name: 'Files attached to message:', value: message.attachments.values().next().value.filename }
-				);
+				]);
 			}
 
 
