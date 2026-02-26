@@ -17,10 +17,12 @@ class staffaccountability {
 							sentMessage.react(Config.EMOTES.YES2);
 							sentMessage.react(Config.EMOTES.NO);
 							// gather user reactions and ignore bot reactions
-							sentMessage.awaitReactions((reaction, user) => user != sentMessage.author && (reaction.emoji.name == Config.EMOTES.YES2 || reaction.emoji.name == Config.EMOTES.NO),
-								{ max: 1, time: 10000 })
-								.then((collected) => {
-									let item = collected.array()[0];
+							sentMessage.awaitReactions({
+								filter: (reaction, user) => user != sentMessage.author && (reaction.emoji.name == Config.EMOTES.YES2 || reaction.emoji.name == Config.EMOTES.NO),
+								max: 1,
+								time: 10000
+							}).then((collected) => {
+									let item = collected.first();
 									if (item._emoji.name == Config.EMOTES.YES2) {
 										userMessages.shift();
 										originalChannel.bulkDelete(userMessages);

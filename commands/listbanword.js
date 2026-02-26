@@ -10,7 +10,7 @@ module.exports.execute = async (client, message) => {
 
 	for (const element of bannedWords) {
 		const user = client.users.cache.get(element.userID);
-		const username = user.username;
+		const username = user ? user.username : 'Unknown User';
 		embedMessage.addFields({ name: `${element.word}`, value: `added by ${username}` });
 	}
 
