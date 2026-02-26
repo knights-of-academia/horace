@@ -17,19 +17,21 @@ class staffaccountability {
 							sentMessage.react(Config.EMOTES.YES2);
 							sentMessage.react(Config.EMOTES.NO);
 							// gather user reactions and ignore bot reactions
-							sentMessage.awaitReactions((reaction, user) => user != sentMessage.author && (reaction.emoji.name == Config.EMOTES.YES2 || reaction.emoji.name == Config.EMOTES.NO),
-								{ max: 1, time: 10000 })
-								.then((collected) => {
-									let item = collected.array()[0];
-									if (item._emoji.name == Config.EMOTES.YES2) {
-										userMessages.shift();
-										originalChannel.bulkDelete(userMessages);
-										sentMessage.reply('Messages should be deleted.');
-									}
-									else {
-										sentMessage.reply('Gotcha, I won\'t delete your old messages.');
-									}
-								})
+							sentMessage.awaitReactions({
+								filter: (reaction, user) => user != sentMessage.author && (reaction.emoji.name == Config.EMOTES.YES2 || reaction.emoji.name == Config.EMOTES.NO),
+								max: 1,
+								time: 10000
+							}).then((collected) => {
+								let item = collected.first();
+								if (item._emoji.name == Config.EMOTES.YES2) {
+									userMessages.shift();
+									originalChannel.bulkDelete(userMessages);
+									sentMessage.reply('Messages should be deleted.');
+								}
+								else {
+									sentMessage.reply('Gotcha, I won\'t delete your old messages.');
+								}
+							})
 								.catch(() => {
 									sentMessage.reply('No reaction after 60 seconds, messages will not be deleted.');
 								});

@@ -22,15 +22,15 @@ class bookmarkActions {
 			}
 
 			// Add link to attachment
-			if (workingMessage.attachments.array().length > 0) {
-				const attchmnt = workingMessage.attachments.array()[0].url;
+			if (workingMessage.attachments.size > 0) {
+				const attchmnt = workingMessage.attachments.first().url;
 				console.log(attchmnt);
 				bookmarkEmbed
 					.addFields({ name: 'Attachment', value: attchmnt })
 					.setImage(attchmnt);
 			}
 
-			user.send(bookmarkEmbed);
+			user.send({ embeds: [bookmarkEmbed] });
 		}
 	}
 }

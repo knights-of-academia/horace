@@ -16,7 +16,7 @@ class accountabilityActions {
 	static async userPinsMessage(reaction, user) {
 		// Check if we are in the accountability channel and the reaction emote is the proper emote
 		if (reaction.message.channel.id == Config.CHANNELS.ACCOUNTABILITY
-            && reaction._emoji.name == Config.EMOTES.PIN_MESSAGE) {
+            && reaction.emoji.name == Config.EMOTES.PIN_MESSAGE) {
 			const sentMessage = reaction.message;
 			const currentChannel = sentMessage.channel;
 

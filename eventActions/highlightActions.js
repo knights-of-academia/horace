@@ -101,13 +101,17 @@ class highlightActions {
 	static async sendHighlightDM(client, user, message, highlightedPhrase) {
 		const highlightsEmote = '☀️';
 		if (message.author !== user) {
+			const truncatedContent = message.content.length > 1024 ?
+				message.content.substring(0, 1021) + '...' :
+				(message.content || '[No Content]');
+
 			const highlightNotification = new Discord.MessageEmbed()
 				.setColor('#FFEC09')
 				.setTitle(`${highlightsEmote} Knights of Academia Highlight Alert ${highlightsEmote}`)
 				.setDescription('One of your highlights has been triggered!')
 				.addFields([
 					{ name: 'Highlighted Phrase', value: highlightedPhrase },
-					{ name: 'Full Message', value: message.content || '[No Content]' },
+					{ name: 'Full Message', value: truncatedContent },
 					{ name: 'From', value: `${message.author}`, inline: true },
 					{ name: 'Link to Message', value: `[Jump to Message](${message.url})`, inline: true },
 					{ name: 'Channel', value: `${message.channel}` }
