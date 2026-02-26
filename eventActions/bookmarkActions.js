@@ -30,7 +30,7 @@ class bookmarkActions {
 					.setImage(attchmnt);
 			}
 
-			user.send({embeds: [bookmarkEmbed]});
+			user.send({ embeds: [bookmarkEmbed] });
 		}
 	}
 }

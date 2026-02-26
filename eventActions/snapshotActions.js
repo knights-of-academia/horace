@@ -7,7 +7,7 @@ class snapshotActions {
             && message.attachments.size === 0) {
 			await message.delete();
 
-			await message.author.send({ content: `Hey! I noticed you sent a message in <#${Config.CHANNELS.SNAPSHOTS}> that wasn't a picture. To help maintain the integrity of the channel, the staff team has made the decision to only allow pictures, captions and reactions there. As a result of this, your message has been removed. Thanks for understanding! 😄`});
+			await message.author.send({ content: `Hey! I noticed you sent a message in <#${Config.CHANNELS.SNAPSHOTS}> that wasn't a picture. To help maintain the integrity of the channel, the staff team has made the decision to only allow pictures, captions and reactions there. As a result of this, your message has been removed. Thanks for understanding! 😄` });
 
 			const embedMessage = new Discord.MessageEmbed()
 				.setColor('#ff0000')

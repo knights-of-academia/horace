@@ -22,16 +22,16 @@ class staffaccountability {
 								max: 1,
 								time: 10000
 							}).then((collected) => {
-									let item = collected.first();
-									if (item._emoji.name == Config.EMOTES.YES2) {
-										userMessages.shift();
-										originalChannel.bulkDelete(userMessages);
-										sentMessage.reply('Messages should be deleted.');
-									}
-									else {
-										sentMessage.reply('Gotcha, I won\'t delete your old messages.');
-									}
-								})
+								let item = collected.first();
+								if (item._emoji.name == Config.EMOTES.YES2) {
+									userMessages.shift();
+									originalChannel.bulkDelete(userMessages);
+									sentMessage.reply('Messages should be deleted.');
+								}
+								else {
+									sentMessage.reply('Gotcha, I won\'t delete your old messages.');
+								}
+							})
 								.catch(() => {
 									sentMessage.reply('No reaction after 60 seconds, messages will not be deleted.');
 								});
