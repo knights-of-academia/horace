@@ -50,9 +50,9 @@ const handleReactions = async function(client, message, isCommand) {
 			message,
 			Config.CHANNELS.COTW,
 			Config.EMOTES.COTW_REFLECTION,
-			// Match 0 - n instances of a word followed by space, followed by "reflection".
+			// Match 0 - n instances of a word followed by a space, followed by "reflection".
 			// This tests if "reflection" is present in the first n words of the string.
-			new RegExp(`^(\\w+\\s+){0,${Config.REFLECTION_CHECK_DEPTH - 1}}(reflection)`, 'i')
+			new RegExp(`^(\\w+\\s+){0,${Config.REFLECTION_CHECK_DEPTH - 1}}[*_~]*(reflection)`, 'i')
 		),
 
 		react(
