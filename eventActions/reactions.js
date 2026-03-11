@@ -31,7 +31,7 @@ const handleReactions = async function (client, message, isCommand) {
 		react(message, Config.CHANNELS.CONTENT_NOTIFIER, Config.EMOTES.HEART),
 		react(message, Config.CHANNELS.GRATITUDE, Config.EMOTES.GRATITUDE, new RegExp('today +i +am +grateful +for', 'i')),
 		react(message, Config.CHANNELS.SLEEP_CLUB, Config.EMOTES.SLEEP_LOG_REACTION, new RegExp('sleep log', 'gi')),
-		react(message, Config.CHANNELS.COTW, Config.EMOTES.COTW_VOW, new RegExp('i +vow', 'gi')),
+		react(message, Config.CHANNELS.COTW, Config.EMOTES.COTW_VOW, new RegExp('^[*_\\s]*i +vow', 'gi')),
 		react(message, Config.CHANNELS.CITADEL, ['🎄', '☃️', '❄️'], new RegExp('merry|christmas', 'gi')),
 		react(message, Config.CHANNELS.ACCOUNTABILITY, Config.EMOTES.POM, new RegExp('pom', 'gi')),
 		react(message, Config.CHANNELS.ACCOUNTABILITY, '🇫🇷', new RegExp('french', 'gi')),
