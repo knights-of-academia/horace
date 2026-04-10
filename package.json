@@ -23,7 +23,7 @@
     "habitica": "^4.0.0",
     "rss-parser": "^3.13.0",
     "sequelize": "^6.37.8",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^6.0.1"
   },
   "devDependencies": {
     "eslint": "8.57.1",
